@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import styled, { keyframes } from 'styled-components';
 
 const Container = styled.div`
@@ -57,6 +58,10 @@ const Wave = styled.svg`
 export default function Home() {
   return (
     <Container>
+      <Head>
+        <title>Poool Party</title>
+        <link rel="icon" href="/favicon.png" />
+      </Head>
       <Content>
         <Title>poool.party</Title>
       </Content>
