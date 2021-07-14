@@ -1,7 +1,36 @@
-import '../styles/globals.css'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const GlobalStyle = createGlobalStyle`
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  }
+  a {
+  color: inherit;
+  text-decoration: none;
 }
 
-export default MyApp
+* {
+  box-sizing: border-box;
+}
+`
+
+const theme = {
+  colors: {
+    primary: '#0a2540',
+    yellow: '#FEF7CB'
+  },
+}
+
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </>
+  )
+}
