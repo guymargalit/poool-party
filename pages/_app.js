@@ -1,23 +1,14 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
-const appHeight = () => {
-  const doc = document.documentElement;
-  doc.style.setProperty('--app-height', `${window.innerHeight}px`);
-};
-window.addEventListener('resize', appHeight);
-appHeight();
-
 const GlobalStyle = createGlobalStyle`
-  :root {
-    --app-height: 100%;
+  html {
+    height: -webkit-fill-available;
   }
-  html, body {
+  body {
     padding: 0;
     margin: 0;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
-    height: var(--app-height);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   }
