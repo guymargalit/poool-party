@@ -3,8 +3,9 @@ import styled, { keyframes } from 'styled-components';
 
 const Container = styled.div`
   display: flex;
+  position: absolute;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   align-items: center;
   justify-content: center;
 `;
