@@ -1,9 +1,14 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  html {
+    height: -webkit-fill-available;
+  }
   body {
     padding: 0;
     margin: 0;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   }
@@ -15,14 +20,14 @@ const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
-`
+`;
 
 const theme = {
   colors: {
     primary: '#0a2540',
-    yellow: '#FEF7CB'
+    yellow: '#FEF7CB',
   },
-}
+};
 
 export default function App({ Component, pageProps }) {
   return (
@@ -32,5 +37,5 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </ThemeProvider>
     </>
-  )
+  );
 }

@@ -3,8 +3,9 @@ import styled, { keyframes } from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   align-items: center;
   justify-content: center;
 `;
@@ -63,10 +64,10 @@ const Wave = styled.svg`
 `;
 
 const WrapFlamingo = styled.div`
-display: flex;
-justify-content: flex-end;
-padding-right: 10%;
-padding-bottom: 5%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10%;
+  padding-bottom: 5%;
 `;
 
 const Flamingo = styled.svg`
