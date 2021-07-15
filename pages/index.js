@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled, { keyframes } from 'styled-components';
 
@@ -23,6 +24,20 @@ const Title = styled.div`
   font-size: 50px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.yellow};
+`;
+
+const Subtitle = styled.div`
+  font-size: 25px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const Footer = styled.div`
+  text-align: center;
+  font-size: 15px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.primary};
+  width: 300px;
 `;
 
 const Background = styled.div`
@@ -82,7 +97,59 @@ const Flamingo = styled.svg`
   z-index: 6;
 `;
 
-export default function Home() {
+const getTotals = async () => {
+  const date = new Date();
+  const addresses = [
+    '112Rg8jCvVTpe5PiiyvF1NyKRYZnaVVyxVweATzF5UkKCVpqXvZP',
+    '112N87rUHeUhXwh2CbFCx22xyDLZ7wsqLQuGmf9VRTsB2AYjjhat',
+    '11wTukgHY2sPn9psyhjxSZHhS4s3QfCECHcXkixwDTT79Z5BUrC',
+  ];
+  let total = 0;
+  for (const address of addresses) {
+    const result = await fetch(
+      `https://api.helium.io/v1/hotspots/${address}/rewards/sum?min_time=-2%20week&max_time=${date.toISOString()}&bucket=week`
+    );
+    const response = await result.json();
+    if (response.data && response.data[0]) {
+      total += response.data[0].total;
+    }
+  }
+
+  const result = await fetch(
+    'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
+  );
+  const response = await result.json();
+  if (response.helium) {
+    total = parseFloat(response.helium.usd) * total;
+  }
+
+  // Create our number formatter.
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+
+  return {
+    total: formatter.format(total),
+    each: formatter.format(total / 3),
+    updated: new Date().toString(),
+  };
+};
+
+const Home = (props) => {
+  const [data, setData] = useState({
+    total: 0,
+    each: 0,
+    updated: new Date().toString(),
+  });
+  useEffect(async () => {
+    setData(await getTotals());
+    const interval = setInterval(async () => {
+      setData(await getTotals());
+    }, 5000);
+    return () => clearTimeout(interval);
+  }, []);
+
   return (
     <Container>
       <Head>
@@ -91,6 +158,9 @@ export default function Home() {
       </Head>
       <Content>
         <Title>poool.party</Title>
+        <Subtitle>{data.total} USD</Subtitle>
+        <Subtitle>{data.each} USD per Partier</Subtitle>
+        <Footer>Last updated: {data.updated}</Footer>
       </Content>
       <Background>
         <WrapFlamingo>
@@ -221,4 +291,6 @@ export default function Home() {
       </Background>
     </Container>
   );
-}
+};
+
+export default Home;
