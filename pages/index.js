@@ -107,7 +107,7 @@ const getTotals = async () => {
   let total = 0;
   for (const address of addresses) {
     const result = await fetch(
-      `https://api.helium.io/v1/hotspots/${address}/rewards/sum?min_time=-2%20week&max_time=${date.toISOString()}&bucket=week`
+      `https://api.helium.io/v1/hotspots/${address}/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
     );
     const response = await result.json();
     if (response.data && response.data[0]) {
