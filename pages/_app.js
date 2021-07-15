@@ -1,10 +1,7 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  html {
-    height: -webkit-fill-available;
-  }
-  body {
+  html, body {
     padding: 0;
     margin: 0;
     min-height: 100vh;
