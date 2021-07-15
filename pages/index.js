@@ -20,6 +20,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   font-size: 50px;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.yellow};
 `;
 
