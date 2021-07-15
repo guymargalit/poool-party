@@ -22,6 +22,7 @@ const theme = {
   colors: {
     primary: '#0a2540',
     yellow: '#FEF7CB',
+    error: '#d1435b',
   },
 };
 

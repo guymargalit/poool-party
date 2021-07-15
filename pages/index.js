@@ -20,7 +20,7 @@ const Content = styled.div`
   z-index: 4;
 `;
 
-const fade =  keyframes`
+const fade = keyframes`
   0% {
     opacity: 0%;
   }
@@ -49,6 +49,14 @@ const Footer = styled.div`
   width: 300px;
 `;
 
+const Error = styled.div`
+  text-align: center;
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 800;
+  color: ${({ theme }) => theme.colors.error};
+`;
+
 const List = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,7 +67,7 @@ const List = styled.div`
   animation: 1s ease-out 0s 1 ${fade};
 `;
 
-const slide =  keyframes`
+const slide = keyframes`
   0% {
     transform: translateY(10px);
   }
@@ -72,11 +80,13 @@ const Badge = styled.div`
   display: inline-flex;
   text-align: center;
   padding: 0 0.375rem;
-  animation: ${({place}) => css`${place*0.25}s ease-out 0s 1 ${slide}`};
+  animation: ${({ place }) =>
+    css`
+      ${place * 0.25}s ease-out 0s 1 ${slide}
+    `};
   -ms-flex-align: center;
   align-items: center;
-  box-shadow: 
-    0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
   color: #111236;
   background-color: ${({ place }) => {
@@ -125,7 +135,6 @@ const floating = keyframes`
   100%   { transform: translate(0, -0px) rotate(-5deg); }  
 `;
 
-
 const Wave = styled.svg`
   width: 200%;
   animation-name: ${swell};
@@ -134,7 +143,7 @@ const Wave = styled.svg`
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   fill: #54c0f9;
-  z-index: 5;
+  z-index: 3;
   position: absolute;
 `;
 
@@ -158,20 +167,20 @@ const Flamingo = styled.svg`
 
 const getTotals = async () => {
   // First, get latest helium price
-  let heliumUSD = 0.0;
+  let heliumUSD = 0;
+  let estimate = null;
   const result = await fetch(
     'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
   );
   const response = await result.json();
   if (response.helium) {
     heliumUSD = response.helium.usd;
-  }
+  } 
 
-  // Create our number formatter.
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
+  if(heliumUSD == 0) {
+    estimate = 12.0;
+    heliumUSD = estimate;
+  }
 
   // Now, get the data from the hotspots
   const date = new Date();
@@ -210,12 +219,11 @@ const getTotals = async () => {
   total = parseFloat(heliumUSD) * total;
 
   return {
-    hotspots: hotspots
-      .sort((a, b) => b.total - a.total)
-      .map((h) => ({ ...h, total: formatter.format(h.total) })),
-    total: formatter.format(total),
-    each: formatter.format(total / 3),
+    hotspots: hotspots.sort((a, b) => b.total - a.total),
+    total: total,
+    each: total / 3,
     updated: new Date().toString(),
+    estimate: estimate,
   };
 };
 
@@ -225,6 +233,7 @@ const Home = (props) => {
     total: 0,
     each: 0,
     updated: new Date().toString(),
+    estimate: null,
   });
   useEffect(async () => {
     setData(await getTotals());
@@ -232,6 +241,11 @@ const Home = (props) => {
       setData(await getTotals());
     }, 5000);
   }, []);
+  // Create our number formatter.
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
   return (
     <Container>
@@ -242,15 +256,16 @@ const Home = (props) => {
       <Content>
         <List>
           {data.hotspots.map((h, i) => (
-            <Badge place={i}>
-              {h.name}: {h.total}
+            <Badge key={i} place={i}>
+              {h.name}: {formatter.format(h.total)}
             </Badge>
           ))}
         </List>
         <Title>poool.party</Title>
-        <Subtitle>{data.total} USD</Subtitle>
-        <Subtitle>{data.each} USD per Partier</Subtitle>
+        <Subtitle>{data.estimate ? '~':''}{formatter.format(data.total)} USD</Subtitle>
+        <Subtitle>{data.estimate ? '~':''}{formatter.format(data.each)} USD per Partier</Subtitle>
         <Footer>Last updated: {data.updated}</Footer>
+        {data.estimate && <Error>Failed to fetch HNT price. Estimating ~{formatter.format(data.estimate)} USD</Error>}
       </Content>
       <Background>
         <WrapFlamingo>
