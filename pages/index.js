@@ -18,7 +18,7 @@ const Content = styled.div`
   z-index: 4;
 `;
 
-const Title = styled.h1`
+const Title = styled.div`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.yellow};
 `;
