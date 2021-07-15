@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +18,15 @@ const Content = styled.div`
   justify-content: center;
   width: 100%;
   z-index: 4;
+`;
+
+const fade =  keyframes`
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
 `;
 
 const Title = styled.div`
@@ -38,6 +47,55 @@ const Footer = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.colors.primary};
   width: 300px;
+`;
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100px;
+  justify-content: space-evenly;
+  transition: all 0.25s ease 0s;
+  animation: 1s ease-out 0s 1 ${fade};
+`;
+
+const slide =  keyframes`
+  0% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
+const Badge = styled.div`
+  display: inline-flex;
+  text-align: center;
+  padding: 0 0.375rem;
+  animation: ${({place}) => css`${place*0.25}s ease-out 0s 1 ${slide}`};
+  -ms-flex-align: center;
+  align-items: center;
+  box-shadow: 
+    0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: #111236;
+  background-color: ${({ place }) => {
+    switch (place) {
+      case 0:
+        return '#ffb54d';
+      case 1:
+        return '#cddff8';
+      case 2:
+        return '#ff9400';
+      default:
+        return '#e1ddec';
+    }
+  }};
+  border-radius: 0.25rem;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  font-weight: 700;
 `;
 
 const Background = styled.div`
@@ -66,6 +124,7 @@ const floating = keyframes`
   50%  { transform: translate(0, 15px) rotate(15deg); }
   100%   { transform: translate(0, -0px) rotate(-5deg); }  
 `;
+
 
 const Wave = styled.svg`
   width: 200%;
@@ -98,29 +157,14 @@ const Flamingo = styled.svg`
 `;
 
 const getTotals = async () => {
-  const date = new Date();
-  const addresses = [
-    '112Rg8jCvVTpe5PiiyvF1NyKRYZnaVVyxVweATzF5UkKCVpqXvZP',
-    '112N87rUHeUhXwh2CbFCx22xyDLZ7wsqLQuGmf9VRTsB2AYjjhat',
-    '11wTukgHY2sPn9psyhjxSZHhS4s3QfCECHcXkixwDTT79Z5BUrC',
-  ];
-  let total = 0;
-  for (const address of addresses) {
-    const result = await fetch(
-      `https://api.helium.io/v1/hotspots/${address}/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
-    );
-    const response = await result.json();
-    if (response.data && response.data[0]) {
-      total += response.data[0].total;
-    }
-  }
-
+  // First, get latest helium price
+  let heliumUSD = 0.0;
   const result = await fetch(
     'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
   );
   const response = await result.json();
   if (response.helium) {
-    total = parseFloat(response.helium.usd) * total;
+    heliumUSD = response.helium.usd;
   }
 
   // Create our number formatter.
@@ -129,7 +173,46 @@ const getTotals = async () => {
     currency: 'USD',
   });
 
+  // Now, get the data from the hotspots
+  const date = new Date();
+  const spots = [
+    {
+      address: '112Rg8jCvVTpe5PiiyvF1NyKRYZnaVVyxVweATzF5UkKCVpqXvZP',
+      name: 'Fluffy Spruce Tiger',
+    },
+    {
+      address: '112N87rUHeUhXwh2CbFCx22xyDLZ7wsqLQuGmf9VRTsB2AYjjhat',
+      name: 'Soaring Caramel Bat',
+    },
+    {
+      address: '11wTukgHY2sPn9psyhjxSZHhS4s3QfCECHcXkixwDTT79Z5BUrC',
+      name: 'Long Bamboo Dalmatian',
+    },
+  ];
+  let total = 0;
+  let hotspots = [];
+  for (const spot of spots) {
+    const result = await fetch(
+      `https://api.helium.io/v1/hotspots/${
+        spot.address
+      }/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
+    );
+    const response = await result.json();
+    if (response.data && response.data[0]) {
+      hotspots.push({
+        name: spot.name,
+        total: parseFloat(heliumUSD) * response.data[0].total,
+      });
+      total += response.data[0].total;
+    }
+  }
+  // Convert to USD
+  total = parseFloat(heliumUSD) * total;
+
   return {
+    hotspots: hotspots
+      .sort((a, b) => b.total - a.total)
+      .map((h) => ({ ...h, total: formatter.format(h.total) })),
     total: formatter.format(total),
     each: formatter.format(total / 3),
     updated: new Date().toString(),
@@ -138,16 +221,16 @@ const getTotals = async () => {
 
 const Home = (props) => {
   const [data, setData] = useState({
+    hotspots: [],
     total: 0,
     each: 0,
     updated: new Date().toString(),
   });
   useEffect(async () => {
     setData(await getTotals());
-    const interval = setInterval(async () => {
+    setInterval(async () => {
       setData(await getTotals());
     }, 5000);
-    return () => clearTimeout(interval);
   }, []);
 
   return (
@@ -157,6 +240,13 @@ const Home = (props) => {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Content>
+        <List>
+          {data.hotspots.map((h, i) => (
+            <Badge place={i}>
+              {h.name}: {h.total}
+            </Badge>
+          ))}
+        </List>
         <Title>poool.party</Title>
         <Subtitle>{data.total} USD</Subtitle>
         <Subtitle>{data.each} USD per Partier</Subtitle>
