@@ -3,6 +3,17 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 
 const SpotCreate = () => {
+  const [session] = useSession();
+
+  if (!session) {
+    return (
+      <>
+        <h1>Spots</h1>
+        <div>You need to be authenticated to view this page.</div>
+      </>
+    );
+  }
+
   const [address, setAddress] = useState('');
 
   const submitData = async (e) => {

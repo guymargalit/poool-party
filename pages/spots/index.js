@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useSession, getSession } from 'next-auth/client';
 import prisma from '../../lib/prisma';
@@ -11,7 +10,7 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 
   const spots = await prisma.spot.findMany({
-    select: {id: true, name: true}
+    select: { id: true, name: true },
   });
   return {
     props: { spots },
@@ -19,17 +18,6 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 const Spots = (props) => {
-  const [session] = useSession();
-
-  if (!session) {
-    return (
-      <>
-        <h1>Spots</h1>
-        <div>You need to be authenticated to view this page.</div>
-      </>
-    );
-  }
-
   return (
     <>
       <div className="page">

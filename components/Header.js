@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import Router from 'next/router';
@@ -21,40 +21,8 @@ const Container = styled.div`
   }
 
   padding-left: 14px;
-    padding-right: 14px;
+  padding-right: 14px;
   z-index: 10;
-`;
-
-const Login = styled.div`
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
-    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  display: inline-flex;
-  text-align: inherit;
-  text-decoration: none;
-  user-select: auto;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 21px;
-  height: 32px;
-  position: relative;
-  transition: all 0.25s ease 0s;
-  min-width: 80px;
-  z-index: 10;
-  color: ${({ theme }) => theme.colors.primary};
-  :hover {
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
-  }
-`;
-
-const Text = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  font-size: 15px;
-  font-weight: 500;
 `;
 
 const WrapMenu = styled.div`
@@ -136,6 +104,13 @@ const ProfileIcon = styled.svg`
   fill: currentcolor;
 `;
 
+const ProfileImage = styled.img`
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.blue};
+`;
+
 const MenuButton = styled.div`
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
@@ -160,7 +135,7 @@ const MenuButton = styled.div`
   }
 `;
 
-const Header = ({menu, setMenu}) => {
+const Header = ({ menu, setMenu }) => {
   const [session, loading] = useSession();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -174,25 +149,33 @@ const Header = ({menu, setMenu}) => {
   };
 
   return (
-    <Container onClick={() => {menu && setMenu(false)}}>
+    <Container
+      onClick={() => {
+        menu && setMenu(false);
+      }}
+    >
       <Logo />
-      {session?.user ? (
-        <WrapMenu>
-          <MenuButton onClick={() => setMenu(!menu)}>
-            <MenuIcon
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-            >
-              <g fill="none" fillRule="nonzero">
-                <path d="m2 16h28"></path>
-                <path d="m2 24h28"></path>
-                <path d="m2 8h28"></path>
-              </g>
-            </MenuIcon>
-            <Profile>
+      <WrapMenu>
+        <MenuButton onClick={() => setMenu(!menu)}>
+          <MenuIcon
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+          >
+            <g fill="none" fillRule="nonzero">
+              <path d="m2 16h28"></path>
+              <path d="m2 24h28"></path>
+              <path d="m2 8h28"></path>
+            </g>
+          </MenuIcon>
+          <Profile>
+            {session?.user ? (
+              <ProfileImage
+                src={`http://anonymous-animals.herokuapp.com/avatar/${session?.user?.id}`}
+              />
+            ) : (
               <ProfileIcon
                 viewBox="0 0 32 32"
                 xmlns="http://www.w3.org/2000/svg"
@@ -202,26 +185,38 @@ const Header = ({menu, setMenu}) => {
               >
                 <path d="m16 .7c-8.437 0-15.3 6.863-15.3 15.3s6.863 15.3 15.3 15.3 15.3-6.863 15.3-15.3-6.863-15.3-15.3-15.3zm0 28c-4.021 0-7.605-1.884-9.933-4.81a12.425 12.425 0 0 1 6.451-4.4 6.507 6.507 0 0 1 -3.018-5.49c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5a6.513 6.513 0 0 1 -3.019 5.491 12.42 12.42 0 0 1 6.452 4.4c-2.328 2.925-5.912 4.809-9.933 4.809z"></path>
               </ProfileIcon>
-            </Profile>
-          </MenuButton>
-          {menu && (
-            <Menu>
-              <MenuItem onClick={() => {Router.push('/spots'); setMenu(false)}} bold>
-                Spots
-              </MenuItem>
-              <MenuItem onClick={() => {Router.push('/pools'); setMenu(false)}} bold>
-                Pools
-              </MenuItem>
-              <Divider />
+            )}
+          </Profile>
+        </MenuButton>
+        {menu && (
+          <Menu>
+            <MenuItem
+              onClick={() => {
+                Router.push('/spots');
+                setMenu(false);
+              }}
+              bold
+            >
+              Spots
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                Router.push('/pools');
+                setMenu(false);
+              }}
+              bold
+            >
+              Pools
+            </MenuItem>
+            <Divider />
+            {session?.user ? (
               <MenuItem onClick={handleLogout}>Log out</MenuItem>
-            </Menu>
-          )}
-        </WrapMenu>
-      ) : (
-        <Login onClick={handleLogin}>
-          <Text>Log in</Text>
-        </Login>
-      )}
+            ) : (
+              <MenuItem onClick={handleLogin}>Log in</MenuItem>
+            )}
+          </Menu>
+        )}
+      </WrapMenu>
     </Container>
   );
 };
