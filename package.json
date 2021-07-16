@@ -8,10 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.27.0",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.21.5",
     "next": "10.x",
+    "next-auth": "^3.27.3",
     "react": "17.x",
     "react-dom": "17.x",
     "styled-components": "^5.3.0"
@@ -19,6 +21,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^8.3.0",
-    "prettier": "2.3.2"
+    "prettier": "2.3.2",
+    "prisma": "2.27.0"
   }
 }

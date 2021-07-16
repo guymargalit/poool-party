@@ -1,5 +1,7 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import React from 'react';
+import { Provider } from 'next-auth/client';
+import Layout from '../components/Layout';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -21,15 +23,17 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
   colors: {
     primary: '#0a2540',
+    blue: '#54c0f9',
     yellow: '#FEF7CB',
     error: '#d1435b',
+    white: '#F9F9F9',
   },
 };
 
 const resetHeight = () => {
   // reset the body height to that of the inner browser
   document.body.style.height = window.innerHeight + 'px';
-}
+};
 
 export default function App({ Component, pageProps }) {
   React.useEffect(() => {
@@ -40,11 +44,13 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <Provider session={pageProps.session}>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Layout {...pageProps}>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
-    </>
+    </Provider>
   );
 }
