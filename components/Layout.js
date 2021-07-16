@@ -52,9 +52,10 @@ const Layout = (props) => {
       <Content>{props.children}</Content>
       <Background>
         <Toys>
-          <Toy type={"flamingo"} center={props.index} />
-          <Toy type={"unicorn"} center={true} />
-          <Toy type={"zebra"} center={true} />
+          <Toy type={'flamingo'} x={'18%'} y={'2%'} z={7} />
+          <Toy type={'unicorn'} x={'60%'} y={'3%'} z={7} center={true} />
+          <Toy type={'zebra'} x={'80%'} y={'8%'} z={4} center={true} />
+          <Toy type={'tiger'} x={'10%'} y={'6%'} z={4} center={true} />
         </Toys>
         <Wave />
       </Background>
