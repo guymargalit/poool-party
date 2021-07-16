@@ -11,7 +11,7 @@ const swell = keyframes`
 `;
 
 const Svg = styled.svg`
-  width: 300%;
+  width: 200%;
   animation-name: ${swell};
   animation-duration: 2s;
   animation-fill-mode: forwards;
