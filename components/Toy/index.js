@@ -2,15 +2,16 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Flamingo from './toys/Flamingo';
 import Unicorn from './toys/Unicorn';
+import Zebra from './toys/Zebra';
 
 const Container = styled.div`
-  z-index: 3;
-  max-width: ${(props) => (props.center ? '200px' : '300px')};
+  z-index: ${(props) => (props.center ? 3 : 4)};
+  max-width: ${(props) => (props.center ? '200px' : '350px')};
   min-width: 100px;
   width: ${(props) => (props.center ? '30%' : '40%')};
   transition: all 5s ease 0s;
   margin-bottom: 5%;
-  right: ${(props) => (props.center ? '10%' : '30%')};
+  left: ${(props) => (props.center ? '-10%' : '20%')};
   position: relative;
 `;
 
@@ -25,13 +26,20 @@ const Content = styled.div`
   animation-duration: ${(props) => (props.delay ? '3.5s' : '3s')};
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
-  z-index: 3;
 `;
 
 const Toy = ({ center, type }) => {
   return (
     <Container center={center}>
-      <Content delay={type === 'unicorn'}>{type === 'unicorn' ? <Unicorn miners={1}/> : <Flamingo miners={2}/>}</Content>
+      <Content delay={type === 'unicorn'}>
+        {type === 'unicorn' ? (
+          <Unicorn miners={1} />
+        ) : type === 'zebra' ? (
+          <Zebra miners={3} />
+        ) : (
+          <Flamingo miners={2} />
+        )}
+      </Content>
     </Container>
   );
 };

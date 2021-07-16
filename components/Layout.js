@@ -54,6 +54,7 @@ const Layout = (props) => {
         <Toys>
           <Toy type={"flamingo"} center={props.index} />
           <Toy type={"unicorn"} center={true} />
+          <Toy type={"zebra"} center={true} />
         </Toys>
         <Wave />
       </Background>
