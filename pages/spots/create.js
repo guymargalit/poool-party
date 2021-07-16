@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // import Layout from '../components/Layout';
 import Router from 'next/router';
+import { useSession } from 'next-auth/client';
 
 const SpotCreate = () => {
   const [session] = useSession();

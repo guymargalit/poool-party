@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import Router from 'next/router';
@@ -136,6 +136,20 @@ const MenuButton = styled.div`
   }
 `;
 
+const Notification = styled.div`
+  display: ${({ notification }) => (notification ? 'block' : 'none')};
+  background-color: rgb(255, 56, 92);
+  box-shadow: rgb(255 255 255) 0px 0px 0px 1.5px;
+  position: absolute;
+  z-index: 11;
+  border-radius: 50%;
+  height: 10px;
+  min-width: 10px;
+  right: 6px;
+  top: 2px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.35, 1.1) 0s;
+`;
+
 const Header = ({ menu, setMenu }) => {
   const [session, loading] = useSession();
   const handleLogin = (e) => {
@@ -148,6 +162,8 @@ const Header = ({ menu, setMenu }) => {
     setMenu(false);
     signOut();
   };
+
+  const [notification, setNotification] = useState(0);
 
   return (
     <Container
@@ -189,6 +205,7 @@ const Header = ({ menu, setMenu }) => {
               </ProfileIcon>
             )}
           </Profile>
+          <Notification notification={notification} />
         </MenuButton>
         {menu && (
           <Menu>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSession, getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/client';
 import prisma from '../../lib/prisma';
 
 export const getServerSideProps = async ({ req, res }) => {
