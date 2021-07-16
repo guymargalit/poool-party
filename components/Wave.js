@@ -12,14 +12,13 @@ const swell = keyframes`
 
 const Svg = styled.svg`
   width: 200%;
-  min-width: 2000px;
   animation-name: ${swell};
   animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   fill: #54c0f9;
-  z-index: 1;
+  z-index: 2;
   position: absolute;
 `;
 

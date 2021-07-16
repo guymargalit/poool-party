@@ -36,7 +36,7 @@ const Toys = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
-  z-index: 2;
+  z-index: 3;
 `;
 
 const Layout = (props) => {
