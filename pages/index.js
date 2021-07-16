@@ -215,7 +215,7 @@ export const getServerSideProps = async () => {
   const spots = await prisma.spot.findMany({
     select: { name: true, address: true },
   });
-  return { props: { spots, index: true } };
+  return { props: { spots, index: true, type:'unicorn' } };
 };
 
 export default Home;

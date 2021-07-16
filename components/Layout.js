@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from './Header';
-import PoolToy from './PoolToy';
+import Toy from './Toy';
 import Wave from './Wave';
 
 const Container = styled.div`
@@ -17,7 +17,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  z-index: 2;
+  z-index: 4;
 `;
 
 const Background = styled.div`
@@ -52,7 +52,8 @@ const Layout = (props) => {
       <Content>{props.children}</Content>
       <Background>
         <Toys>
-          <PoolToy center={props.index} />
+          <Toy type={"flamingo"} center={props.index} />
+          <Toy type={"unicorn"} center={true} />
         </Toys>
         <Wave />
       </Background>
