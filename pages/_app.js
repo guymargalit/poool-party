@@ -28,6 +28,35 @@ const theme = {
     error: '#d1435b',
     white: '#F9F9F9',
   },
+  palette: {
+    light: {
+      skyBlueTint01: '#6d9feb',
+      skyBlueTint02: '#9dc0f2',
+      skyBlueTint03: '#cddff8',
+      glencoe: '#73cec6',
+      sagano: '#d0eeec',
+      erfoud: '#ffb54d',
+      bagan: '#ffebd0',
+      petra: '#ffab95',
+      nara: '#ffe7e0',
+      valensole: '#a59bc8',
+      tochigi: '#e1ddec',
+      hillier: '#e18b96',
+      harbour: '#f6dde1',
+    },
+    dark: {
+      skyBlue: '#0770e3',
+      skyBlueShade01: '#084eb2',
+      skyBlueShade02: '#042759',
+      skyBlueShade03: '#02122c',
+      monteverde: '#00a698',
+      kolkata: '#ff9400',
+      bunol: '#ff7b59',
+      abisko: '#5a489b',
+      panjin: '#d1435b',
+      skyGray: '#111236',
+    },
+  },
 };
 
 const resetHeight = () => {

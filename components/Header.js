@@ -108,7 +108,8 @@ const ProfileImage = styled.img`
   display: block;
   height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme, index }) =>
+    Object.values(theme.palette.dark)[(index || 0) % 10]};
 `;
 
 const MenuButton = styled.div`
@@ -173,6 +174,7 @@ const Header = ({ menu, setMenu }) => {
           <Profile>
             {session?.user ? (
               <ProfileImage
+                index={session?.user?.id}
                 src={`http://anonymous-animals.herokuapp.com/avatar/${session?.user?.id}`}
               />
             ) : (
