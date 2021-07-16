@@ -367,7 +367,7 @@ const Home = (props) => {
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const spots = await prisma.spot.findMany({
     select: { name: true, address: true },
   });
