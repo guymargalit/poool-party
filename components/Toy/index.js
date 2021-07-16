@@ -8,14 +8,14 @@ import Tiger from './toys/Tiger';
 const Container = styled.div`
   position: absolute;
   z-index: ${(props) => (props.z ? props.z : 4)};
-  max-width: ${(props) => (props.z ? `${props.z*50}px` : '250px')};
+  max-width: ${(props) => (props.z ? `${props.z * 50}px` : '250px')};
   min-width: 10px;
-  width: ${(props) => (props.z ? `${props.z*4}%` : '30%')};
+  width: ${(props) => (props.z ? `${props.z * 4}%` : '30%')};
   transition: all 5s ease 0s;
   transition: transform 1.5s ease-in-out 0s;
-  margin-bottom: ${(props) => (props.y ? props.y : "3%")};;
-  right: ${(props) => (props.x ? props.x : "10%")};
-  transform: ${(props) => (props.x > "40%" ? "scaleX(-1)" : "scaleX(1)")};
+  margin-bottom: ${(props) => (props.y ? props.y : '3%')};
+  right: ${(props) => (props.x ? props.x : '10%')};
+  transform: ${(props) => (props.x > '40%' ? 'scaleX(-1)' : 'scaleX(1)')};
   bottom: 0;
 `;
 
@@ -32,19 +32,18 @@ const Content = styled.div`
   animation-timing-function: ease-in-out;
 `;
 
-const Toy = ({ type, x, y, z }) => {
+const toys = {
+  flamingo: Flamingo,
+  unicorn: Unicorn,
+  zebra: Zebra,
+  tiger: Tiger,
+};
+
+const Toy = ({ type, position, spots }) => {
   return (
-    <Container x={x} y={y} z={z}>
-      <Content z={z}>
-        {type === 'unicorn' ? (
-          <Unicorn miners={1} />
-        ) : type === 'zebra' ? (
-          <Zebra miners={3} />
-        ) : type === 'tiger' ? (
-          <Tiger miners={3} />
-        ) : (
-          <Flamingo miners={2} />
-        )}
+    <Container x={position.x} y={position.y} z={position.z}>
+      <Content z={position.z}>
+        {React.createElement(toys[type], {spots})}
       </Content>
     </Container>
   );

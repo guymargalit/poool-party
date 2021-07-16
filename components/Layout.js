@@ -35,12 +35,33 @@ const Background = styled.div`
 const Toys = styled.div`
   display: flex;
   width: 100%;
-  justify-content: flex-end;
-  z-index: 3;
 `;
 
 const Layout = (props) => {
   const [menu, setMenu] = useState(false);
+
+  const toys = [
+    {
+      type: 'flamingo',
+      position: { x: '18%', y: '2%', z: 7 },
+      spots: 2,
+    },
+    {
+      type: 'unicorn',
+      position: { x: '60%', y: '3%', z: 7 },
+      spots: 3,
+    },
+    {
+      type: 'zebra',
+      position: { x: '80%', y: '8%', z: 4 },
+      spots: 2,
+    },
+    {
+      type: 'tiger',
+      position: { x: '10%', y: '6%', z: 4 },
+      spots: 1,
+    },
+  ];
 
   return (
     <Container
@@ -52,10 +73,9 @@ const Layout = (props) => {
       <Content>{props.children}</Content>
       <Background>
         <Toys>
-          <Toy type={'flamingo'} x={'18%'} y={'2%'} z={7} />
-          <Toy type={'unicorn'} x={'60%'} y={'3%'} z={7} center={true} />
-          <Toy type={'zebra'} x={'80%'} y={'8%'} z={4} center={true} />
-          <Toy type={'tiger'} x={'10%'} y={'6%'} z={4} center={true} />
+          {toys.map((toy) => (
+            <Toy {...toy} />
+          ))}
         </Toys>
         <Wave />
       </Background>
