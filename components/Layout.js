@@ -48,7 +48,7 @@ const Hero = styled.div`
   position: relative;
   height: 350px;
   @media (max-width: 675px) {
-    height: 300px;
+    height: 200px;
   }
 `;
 
@@ -149,6 +149,9 @@ const Panel = styled.div`
   max-width: 1040px;
   height: 350px;
   box-shadow: 0px 16px 32px rgb(0 0 0 / 15%), 0px 3px 8px rgb(0 0 0 / 10%);
+  @media (max-width: 675px) {
+    height: 400px;
+  }
   @media (min-width: 1024px) {
     width: calc(100% - 40px);
     margin-bottom: 20px;

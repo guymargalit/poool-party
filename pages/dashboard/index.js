@@ -15,10 +15,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   flex: 1;
   padding: 0 35px;
+  @media (max-width: 675px) {
+    padding: 0 10px;
+  }
 `;
 
 const Title = styled.div`
