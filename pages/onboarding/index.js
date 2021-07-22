@@ -11,6 +11,10 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  padding: 0 35px;
+  @media (max-width: 675px) {
+    padding: 0 10px;
+  }
 `;
 
 const Title = styled.div`
@@ -19,22 +23,10 @@ const Title = styled.div`
   justify-content: center;
   width: 100%;
   font-weight: 700;
-  max-width: 350px;
   color: #222;
   text-align: center;
   font-size: 24px;
   margin-bottom: 5px;
-  height: 50px;
-`;
-
-const Subtitle = styled.div`
-  width: 100%;
-  max-width: 450px;
-  font-weight: 400;
-  color: #444;
-  text-align: center;
-  font-size: 18px;
-  margin: 5px 0px;
 `;
 
 const Form = styled.form`
@@ -43,11 +35,11 @@ const Form = styled.form`
   background-color: #eeeeee;
   padding: 5px 10px;
   border-radius: 10px;
-  width: calc(100% - 30px);
+  width: 100%;
   margin: 10px 0px;
-  max-height: 300px;
+  max-height: 250px;
   @media (max-width: 675px) {
-    max-height: 175px;
+    max-height: 200px;
   }
 
   overflow-y: auto;
@@ -97,12 +89,12 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(100% - 30px);
+  width: 100%;
   margin-bottom: 10px;
 `;
 
 const Popper = styled.svg`
-  width: 25px;
+  width: 20px;
   margin-left: 10px;
   margin-bottom: 3px;
   transition: all 0.25s ease 0s;
@@ -115,11 +107,11 @@ const Button = styled.div`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.colors.primary};
   padding: 0 10px;
-  margin-top: 10px;
+  margin: 15px 0;
   border-radius: 10px;
   font-weight: 600;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   text-transform: capitalize;
   height: 50px;
   width: 100%;
@@ -131,6 +123,9 @@ const Button = styled.div`
   }
   &:hover ${Popper} {
     transform: rotate(-10deg);
+  }
+  @media (max-width: 675px) {
+    margin-top: 10px;
   }
 `;
 
