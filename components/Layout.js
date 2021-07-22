@@ -145,7 +145,7 @@ const Panel = styled.div`
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
   margin-top: 20px;
-  margin-bottom: 65px;
+  bottom: 65px;
   max-width: 1040px;
   height: 350px;
   box-shadow: 0px 16px 32px rgb(0 0 0 / 15%), 0px 3px 8px rgb(0 0 0 / 10%);
