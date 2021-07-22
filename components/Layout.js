@@ -23,6 +23,7 @@ const Content = styled.div`
   align-items: center;
   justify-content: flex-end;
   z-index: 4;
+  position: sticky;
   background-color: ${({ transparent }) =>
     transparent ? 'transparent' : '#54c0f9'};
 `;
@@ -154,7 +155,7 @@ const Panel = styled.div`
   }
   @media (min-width: 1024px) {
     width: calc(100% - 40px);
-    margin-bottom: 20px;
+    bottom: 20px;
     border-radius: 38px;
   }
 `;

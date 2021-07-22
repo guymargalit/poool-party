@@ -29,7 +29,7 @@ const Title = styled.div`
   font-weight: 700;
   color: #222;
   text-align: center;
-  font-size: 32px;
+  font-size: 30px;
   margin-top: 10px;
 `;
 
@@ -59,7 +59,7 @@ const Button = styled.div`
   border-radius: 10px;
   font-weight: 600;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   text-transform: capitalize;
   height: 50px;
   width: 100%;
@@ -87,6 +87,7 @@ const Amount = styled.div`
 const Logout = styled.svg`
   width: 24px;
   cursor: pointer;
+  fill: #222;
   transition: all 0.25s ease 0s;
   :hover {
     fill: ${(props) => props.theme.palette.dark.abisko};
@@ -200,12 +201,15 @@ const Dashboard = ({ user }) => {
             {loading ? (
               <Skeleton />
             ) : (
-              `Your pools have made a total of 
-          ${
-            usd
-              ? formatter.format(usd * user?.pools[0]?.total)
-              : `${user?.pools[0]?.total} HNT`
-          }.`
+              <>
+                Your pools have a made a total of{' '}
+                <Amount>
+                  {usd
+                    ? formatter.format(usd * user?.pools[0]?.total)
+                    : `${user?.pools[0]?.total} HNT`}
+                </Amount>
+                .
+              </>
             )}
           </Subtitle>
         )}
@@ -214,16 +218,21 @@ const Dashboard = ({ user }) => {
             {loading ? (
               <Skeleton />
             ) : (
-              `You've made a total of 
-          ${
-            usd
-              ? formatter.format((usd * user?.pools[0]?.total) / 3)
-              : `${user?.pools[0]?.total / 3} HNT`
-          }.`
+              <>
+                You've made a total of{' '}
+                <Amount>
+                  {usd
+                    ? formatter.format((usd * user?.pools[0]?.total) / 3)
+                    : `${user?.pools[0]?.total / 3} HNT`}
+                </Amount>
+                .
+              </>
             )}
           </Subtitle>
         )}
-        {!user?.pools[0] && <Subtitle>Join a pool and add a spot to get started!</Subtitle>}
+        {!user?.pools[0] && (
+          <Subtitle>Join a pool and add a spot to get started!</Subtitle>
+        )}
         <Button onClick={() => Router.push('/onboarding')}>
           Update Pool Toy
         </Button>
