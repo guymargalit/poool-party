@@ -46,6 +46,9 @@ const Form = styled.form`
   width: calc(100% - 30px);
   margin: 10px 0px;
   max-height: 300px;
+  @media (max-width: 675px) {
+    max-height: 175px;
+  }
 
   overflow-y: auto;
 `;
@@ -200,7 +203,7 @@ const Onboarding = ({ user }) => {
       behavior: 'smooth',
       block: 'center',
     });
-  useEffect(() => executeScroll);
+  useEffect(() => executeScroll, []);
 
   const options = ['flamingo', 'unicorn', 'zebra', 'tiger'];
   return (

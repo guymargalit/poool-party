@@ -48,7 +48,7 @@ const Hero = styled.div`
   position: relative;
   height: 350px;
   @media (max-width: 675px) {
-    height: 200px;
+    height: 150px;
   }
 `;
 
