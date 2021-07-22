@@ -96,10 +96,6 @@ const Home = (props) => {
 
   return (
     <>
-      <Head>
-        <title>Poool Party</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
       <Content>
         <Title>poool.party</Title>
         <Button onClick={handleLogin}>

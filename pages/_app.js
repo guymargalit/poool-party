@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
 import useSWR from 'swr';
+import Head from 'next/head';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -79,6 +80,10 @@ export default function App({ Component, pageProps, router }) {
   const { data } = useSWR('/api/user', fetcher, { initialData });
   return (
     <Provider session={pageProps.session}>
+      <Head>
+        <title>Poool Party</title>
+        <link rel="icon" href="/favicon.png" />
+      </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Layout user={data} {...pageProps}>
