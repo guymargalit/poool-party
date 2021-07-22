@@ -1,5 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
 import useSWR from 'swr';
@@ -66,14 +66,31 @@ const resetHeight = () => {
   document.body.style.height = window.innerHeight + 'px';
 };
 
+const getHNTtoUSD = async () => {
+  const result = await fetch(
+    'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
+  );
+  const response = await result?.json();
+  return response?.helium?.usd;
+};
+
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
-export default function App({ Component, pageProps, router }) {
+export default function App({ Component, pageProps }) {
   React.useEffect(() => {
     // reset the height whenever the window's resized
     window.addEventListener('resize', resetHeight);
     // called to initially set the height.
     resetHeight();
+  }, []);
+
+  const [usd, setUSD] = useState(0);
+
+  useEffect(async () => {
+    setUSD(await getHNTtoUSD());
+    setInterval(async () => {
+      setUSD(await getHNTtoUSD());
+    }, 5000);
   }, []);
 
   const initialData = pageProps.user;
@@ -87,7 +104,7 @@ export default function App({ Component, pageProps, router }) {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Layout user={data} {...pageProps}>
-          <Component user={data} {...pageProps} />
+          <Component user={data} usd={usd} {...pageProps} />
         </Layout>
       </ThemeProvider>
     </Provider>

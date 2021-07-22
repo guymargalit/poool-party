@@ -99,29 +99,12 @@ const handleLogout = (e) => {
   signOut({ callbackUrl: process.env.APP_URL });
 };
 
-const getHNTtoUSD = async () => {
-  const result = await fetch(
-    'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
-  );
-  const response = await result?.json();
-  return response?.helium?.usd;
-};
-
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
 
-const Dashboard = ({ user }) => {
-  const [usd, setUSD] = useState(0);
-  const [loading, setLoading] = useState(false);
-  useEffect(async () => {
-    setLoading(true);
-    const hntToUSD = await getHNTtoUSD();
-    setUSD(hntToUSD);
-    setLoading(false);
-  }, []);
-
+const Dashboard = ({ user, usd }) => {
   if (!user) {
     return <></>;
   }
@@ -198,7 +181,7 @@ const Dashboard = ({ user }) => {
         <Title>Mazal Tov!</Title>
         {user?.pools[0] && (
           <Subtitle>
-            {loading ? (
+            {!usd ? (
               <Skeleton />
             ) : (
               <>
@@ -215,7 +198,7 @@ const Dashboard = ({ user }) => {
         )}
         {user?.pools[0] && (
           <Subtitle>
-            {loading ? (
+            {!usd ? (
               <Skeleton />
             ) : (
               <>

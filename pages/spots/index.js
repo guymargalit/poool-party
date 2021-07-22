@@ -109,29 +109,12 @@ const parseName = (str) => {
   return str?.replace(/([-_][a-z])/g, (group) => group.replace('-', ' '));
 };
 
-const getHNTtoUSD = async () => {
-  const result = await fetch(
-    'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
-  );
-  const response = await result?.json();
-  return response?.helium?.usd;
-};
-
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
 
-const Spots = ({ user }) => {
-  const [usd, setUSD] = useState(0);
-  const [loading, setLoading] = useState(false);
-  useEffect(async () => {
-    setLoading(true);
-    const hntToUSD = await getHNTtoUSD();
-    setUSD(hntToUSD);
-    setLoading(false);
-  }, []);
-
+const Spots = ({ user, usd }) => {
   const [spots, setSpots] = useState(user?.spots);
   useEffect(
     () => user?.spots?.length > 0 && setSpots(user?.spots),
@@ -151,7 +134,7 @@ const Spots = ({ user }) => {
             <Info>
               <Label>{parseName(spot?.name)}</Label>
               <Amount>
-                {loading ? (
+                {!usd ? (
                   <Skeleton />
                 ) : usd ? (
                   formatter.format(usd * spot?.total)
