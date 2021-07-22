@@ -3,18 +3,22 @@ import prisma from '../../../lib/prisma';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { address } = req.body;
-
     const session = await getSession({ req });
 
     if (!session) {
       return res.status(403).end();
     }
 
+    const { address } = req.body;
+
+    if (!address) {
+      return res.status(400).send("Helium address required");
+    }
+
     // Check if valid address on Helium network
     const result = await fetch(`https://api.helium.io/v1/hotspots/${address}`);
     if (result.status !== 200) {
-      return res.status(result.status).end();
+      return res.status(result.status).send("Hotspot address not found");
     }
 
     const response = await result.json();
