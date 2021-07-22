@@ -2,6 +2,11 @@ name: 5-minute-cron
 on:
   schedule:
     - cron: '* * * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+env:
+
 jobs:
   cron:
     runs-on: ubuntu-latest
