@@ -36,7 +36,6 @@ const Subtitle = styled.div`
   color: #444;
   text-align: center;
   font-size: 18px;
-  margin: 10px 0 30px;
   max-width: 400px;
 `;
 
@@ -53,7 +52,7 @@ const Button = styled.div`
   color: ${(props) => props.theme.colors.white};
   background-color: ${(props) => props.theme.palette.dark.abisko};
   padding: 0 10px;
-  margin-top: 10px;
+  margin-top: 30px;
   border-radius: 10px;
   font-weight: 600;
   text-align: center;
@@ -75,6 +74,11 @@ const Header = styled.div`
   align-items: flex-end;
   width: 100%;
   padding: 15px 35px;
+`;
+
+const Amount = styled.div`
+  display: inline-flex;
+  font-weight: 600;
 `;
 
 const Logout = styled.svg`
@@ -188,19 +192,35 @@ const Dashboard = ({ user }) => {
           <path fill="#77B255" d="M31.999 13L36 7.999 33 6z" />
         </Svg>
         <Title>Mazal Tov!</Title>
-        <Subtitle>
-          {loading ? (
-            <Skeleton />
-          ) : (
-            `You've made a total of 
+        {user?.pools[0] && (
+          <Subtitle>
+            {loading ? (
+              <Skeleton />
+            ) : (
+              `Your pools have made a total of 
           ${
             usd
               ? formatter.format(usd * user?.pools[0]?.total)
               : `${user?.pools[0]?.total} HNT`
-          }
-          from your pools.`
-          )}
-        </Subtitle>
+          }.`
+            )}
+          </Subtitle>
+        )}
+        {user?.pools[0] && (
+          <Subtitle>
+            {loading ? (
+              <Skeleton />
+            ) : (
+              `You've made a total of 
+          ${
+            usd
+              ? formatter.format((usd * user?.pools[0]?.total) / 3)
+              : `${user?.pools[0]?.total / 3} HNT`
+          }.`
+            )}
+          </Subtitle>
+        )}
+        {!user?.pools[0] && <Subtitle>Join a pool and add a spot to get started!</Subtitle>}
         <Button onClick={() => Router.push('/onboarding')}>
           Update Pool Toy
         </Button>
