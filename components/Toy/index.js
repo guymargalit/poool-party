@@ -7,8 +7,9 @@ import Tiger from './toys/Tiger';
 
 const Container = styled.div`
   position: absolute;
-  z-index: ${(props) => (props.z ? props.z : 4)};
-  max-width: ${(props) => (props.z ? `${props.z * 50}px` : '250px')};
+  //z-index: ${(props) => (props.z ? props.z : 4)};
+  z-index: 4;
+  max-width: ${(props) => (props.z ? `${props.z * 40}px` : '250px')};
   min-width: 10px;
   width: ${(props) => (props.z ? `${props.z * 4}%` : '30%')};
   transition: all 5s ease 0s;
@@ -40,6 +41,9 @@ const toys = {
 };
 
 const Toy = ({ type, position, spots }) => {
+  if(!type) {
+    return <></>;
+  }
   return (
     <Container x={position.x} y={position.y} z={position.z}>
       <Content z={position.z}>

@@ -14,12 +14,13 @@ model Spot {
   id        Int      @id @default(autoincrement())
   address   String   @unique
   name      String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(name: "spots", fields: [userId], references: [id])
   userId    Int      @map(name: "user_id")
   pool      Pool?    @relation(fields: [poolId], references: [id])
   poolId    Int?     @map(name: "pool_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
+  total     Float?
 
   @@map(name: "spots")
 }
@@ -27,11 +28,14 @@ model Spot {
 model Pool {
   id        Int      @id @default(autoincrement())
   name      String
-  creator   User     @relation(fields: [creatorId], references: [id])
+  creator   User     @relation(name: "creator", fields: [creatorId], references: [id])
   creatorId Int      @map(name: "creator_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  spots     Spot[]
+  total     Float?
+
+  spots Spot[]
+  users User[] @relation(name: "pools")
 
   @@map(name: "pools")
 }
@@ -44,8 +48,12 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  spots         Spot[]
-  pools         Pool[]
+  toy           String?
+
+  spots Spot[] @relation(name: "spots")
+  pools Pool[] @relation(name: "pools")
+
+  poolsCreated Pool[] @relation(name: "creator")
 
   @@map(name: "users")
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Router from 'next/router';
 import styled from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
 
@@ -15,15 +14,14 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  padding: 0 35px;
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
+  padding-left: 35px;
   color: #222;
   text-align: center;
   font-size: 24px;
@@ -47,17 +45,6 @@ const Chevron = styled.svg`
   display: block;
   fill: #333;
   transition: all 0.25s ease 0s;
-`;
-
-const Plus = styled.svg`
-  display: block;
-  fill: #333;
-  transition: all 0.25s ease 0s;
-  width: 24px;
-  cursor: pointer;
-  :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
-  }
 `;
 
 const Item = styled.div`
@@ -105,10 +92,6 @@ const Amount = styled.div`
   margin-top: 10px;
 `;
 
-const parseName = (str) => {
-  return str?.replace(/([-_][a-z])/g, (group) => group.replace('-', ' '));
-};
-
 const getHNTtoUSD = async () => {
   const result = await fetch(
     'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
@@ -122,7 +105,7 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const Spots = ({ user }) => {
+const Pools = ({ user }) => {
   const [usd, setUSD] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(async () => {
@@ -132,31 +115,29 @@ const Spots = ({ user }) => {
     setLoading(false);
   }, []);
 
-  const [spots, setSpots] = useState(user?.spots);
+  const [pools, setPools] = useState(user?.pools);
   useEffect(
-    () => user?.spots?.length > 0 && setSpots(user?.spots),
-    [user?.spots]
+    () => user?.pools?.length > 0 && setPools(user?.pools),
+    [user?.pools]
   );
+
   return (
     <Container>
       <Header>
-        <Title>Spots</Title>
-        <Plus onClick={() => Router.push('/spots/create')} viewBox="0 0 24 24">
-          <path d="M12 3a1 1 0 0 0-1 1v7H4a1 1 0 0 0 0 2h7v7a1 1 0 0 0 2 0v-7h7a1 1 0 0 0 0-2h-7V4a1 1 0 0 0-1-1z"></path>
-        </Plus>
+        <Title>Pools</Title>
       </Header>
       <Content>
-        {spots?.map((spot) => (
-          <Item key={spot?.name}>
+        {pools?.map((pool) => (
+          <Item key={pool?.name}>
             <Info>
-              <Label>{parseName(spot?.name)}</Label>
+              <Label>{pool?.name}</Label>
               <Amount>
                 {loading ? (
                   <Skeleton />
                 ) : usd ? (
-                  formatter.format(usd * spot?.total)
+                  formatter.format(usd * pool?.total)
                 ) : (
-                  `${spot?.total} HNT`
+                  `${pool?.total} HNT`
                 )}
               </Amount>
             </Info>
@@ -170,4 +151,4 @@ const Spots = ({ user }) => {
   );
 };
 
-export default Spots;
+export default Pools;

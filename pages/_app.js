@@ -2,6 +2,7 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import React from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
+import useSWR from 'swr';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -64,7 +65,9 @@ const resetHeight = () => {
   document.body.style.height = window.innerHeight + 'px';
 };
 
-export default function App({ Component, pageProps }) {
+const fetcher = (url) => fetch(url).then((r) => r.json());
+
+export default function App({ Component, pageProps, router }) {
   React.useEffect(() => {
     // reset the height whenever the window's resized
     window.addEventListener('resize', resetHeight);
@@ -72,14 +75,21 @@ export default function App({ Component, pageProps }) {
     resetHeight();
   }, []);
 
+  const initialData = pageProps.user;
+  const { data } = useSWR('/api/user', fetcher, { initialData });
   return (
     <Provider session={pageProps.session}>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Layout {...pageProps}>
-          <Component {...pageProps} />
+        <Layout user={data} {...pageProps}>
+          <Component user={data} {...pageProps} />
         </Layout>
       </ThemeProvider>
     </Provider>
   );
+}
+
+export async function getServerSideProps() {
+  const user = await fetcher('/api/user');
+  return { props: { user } };
 }
