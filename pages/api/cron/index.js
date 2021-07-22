@@ -18,11 +18,15 @@ export default async function handler(req, res) {
             }/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
           );
           const response = await result.json();
-          if (response.data && response.data[0]) {
+          if (response.data && response.data.length) {
+            let total = 0.0;
+            for(const bucket of response.data) {
+              total += parseFloat(bucket.total)
+            }
             await prisma.spot.update({
               where: { id: spot.id },
               data: {
-                total: parseFloat(response.data[0].total),
+                total: total,
               },
             });
           }
