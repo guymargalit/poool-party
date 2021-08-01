@@ -59,7 +59,7 @@ const Content = styled.div`
 
 const Panel = styled.div`
   height: 65px;
-  background-color:${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
   width: 100%;
   bottom: 0;
 `;
@@ -73,7 +73,7 @@ const Hero = styled.div`
   position: relative;
   height: 300px;
   @media (max-width: 675px) {
-    height:  ${({ home }) => home ? '200px':'130px'};
+    height: ${({ home }) => (home ? '200px' : '130px')};
   }
 `;
 
@@ -130,8 +130,10 @@ const WrapItem = styled.div`
   border-radius: 8px;
   color: ${(props) =>
     props.active ? `rgb(34, 34, 34)` : `rgb(113, 113, 113)`};
-  :hover {
-    color: rgb(34, 34, 34);
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      color: rgb(34, 34, 34);
+    }
   }
   ${Item} {
     color: ${(props) =>
@@ -139,8 +141,10 @@ const WrapItem = styled.div`
         ? `${props.theme.palette.dark.abisko}`
         : `rgb(176, 176, 176)`};
   }
-  :hover ${Item} {
-    color: ${(props) => props.theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover ${Item} {
+      color: ${(props) => props.theme.palette.dark.abisko};
+    }
   }
   cursor: pointer;
   display: flex;
