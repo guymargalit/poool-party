@@ -13,13 +13,7 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-      background-image:
-    linear-gradient(#8fd0fa,#8fd0fa),
-    linear-gradient(#ffffff,#ffffff);
-  background-size:
-    calc(1 * (100% / 2)) 100%,
-    calc(2 * (100% / 2)) 100%;
-  background-repeat:no-repeat;
+  background-color: #8fd0fa;
       -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   a {
