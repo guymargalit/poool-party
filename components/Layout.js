@@ -96,7 +96,7 @@ const Navigation = styled.nav`
   user-select: none;
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
   transition: all 0.5s ease 0s;
-  padding-bottom: env(safe-area-inset-bottom);
+  margin-bottom: env(safe-area-inset-bottom);
 `;
 
 const Bar = styled.div`
