@@ -16,7 +16,6 @@ const GlobalStyle = createGlobalStyle`
   background-color: #8fd0fa;
   background: linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%);
       -webkit-tap-highlight-color: rgba(0,0,0,0);
-      padding-top: env(safe-area-inset-top);
   }
   a {
   color: inherit;

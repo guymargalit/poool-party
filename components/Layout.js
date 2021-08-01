@@ -45,15 +45,19 @@ const Content = styled.div`
   margin-top: 20px;
   overflow: hidden;
   transition: all 0.5s ease 0s;
-  height: ${({ height }) => height || '50%'};
-  bottom: ${({ navigation }) => (navigation ? '65px' : '0px')};
+  height: ${({ height }) =>
+    `calc(${height} - env(safe-area-inset-top))` || '50%'};
+  bottom: ${({ navigation }) =>
+    navigation
+      ? `calc(65px + env(safe-area-inset-top))`
+      : 'env(safe-area-inset-top)'};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
   }
   ${({ background }) =>
     !background &&
     css`
-      height: calc(100% - 65px);
+      height: calc(100% - 65px - env(safe-area-inset-top));
     `};
 `;
 
