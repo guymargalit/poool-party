@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: #8fd0fa;
+  background: linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%);
       -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   a {
@@ -78,7 +79,7 @@ export default function App({ Component, pageProps }) {
         <link rel="icon" href="/favicon.png" />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
         <meta name="theme-color" content="#5a489b" />
         <link rel="apple-touch-icon" href="/favicon.png" />
