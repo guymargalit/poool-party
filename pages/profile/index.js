@@ -186,7 +186,7 @@ const Profile = ({ user }) => {
   return (
     <Fragment>
       <Header>
-        <Title>What's up, {user?.name?.split(' ')[0]}</Title>
+        <Title>What's up, {user?.venmo?.displayName?.split(' ')[0]}</Title>
         <Logout onClick={handleLogout} />
       </Header>
       <Content>
@@ -194,7 +194,7 @@ const Profile = ({ user }) => {
           <Info>
             <Avatar src={user?.venmo?.image} />
             <WrapText>
-              <Name>{user?.name}</Name>
+              <Name>{user?.venmo?.displayName}</Name>
               <Label>@{user?.venmo?.username}</Label>
             </WrapText>
           </Info>
