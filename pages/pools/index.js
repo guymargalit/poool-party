@@ -1,50 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { Fragment, useState, useEffect } from 'react';
+import Router from 'next/router';
+import styled, { keyframes } from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`;
+import { IconAdd, IconPartyFace, IconRightChevron } from '../../icons';
 
 const Header = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0px 35px;
+  height: 75px;
+  border-bottom: 1px solid #eeeeee;
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  padding-left: 35px;
   color: #222;
   text-align: center;
   font-size: 24px;
-  margin-bottom: 5px;
   height: 50px;
+  @media (max-width: 675px) {
+    font-size: 20px;
+  }
 `;
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  margin: 10px 0px;
-  height: 300px;
-
+  height: calc(100% - 75px);
   overflow-y: auto;
 `;
 
-const Chevron = styled.svg`
-  height: 12px;
-  width: 12px;
+const Chevron = styled(IconRightChevron)`
+  height: 18px;
+  width: 18px;
+  display: block;
+  fill: ${({loading}) => loading ? '#e2e2e2':'#555'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Plus = styled(IconAdd)`
   display: block;
   fill: #333;
   transition: all 0.25s ease 0s;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  :hover {
+    fill: ${(props) => props.theme.palette.dark.abisko};
+  }
 `;
 
 const Item = styled.div`
@@ -57,7 +63,7 @@ const Item = styled.div`
   padding: 0 35px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: #eeeeee;
+  border-bottom: 1px solid #eeeeee;
   color: ${(props) => (props.checked ? '#fff' : '#222')};
   :hover {
     background-color: ${(props) => props.theme.palette.dark.abisko};
@@ -83,54 +89,173 @@ const Info = styled.div`
   flex: 1;
 `;
 
-const Amount = styled.div`
+const Description = styled.div`
   display: flex;
   align-items: center;
   font-weight: 500;
   text-align: center;
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
+const WrapAvatar = styled.div`
+  display: inline-flex;
+  margin-right: 5px;
+`;
 
-const Pools = ({ user, usd }) => {
-  const [pools, setPools] = useState(user?.pools);
-  useEffect(
-    () => user?.pools?.length > 0 && setPools(user?.pools),
-    [user?.pools]
-  );
+const Avatar = styled.img`
+  width: 25px;
+  height: 25px;
+  border-radius: 25px;
+`;
+
+const Text = styled.div`
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+  font-size: 18px;
+  margin-top: 5px;
+  @media (max-width: 675px) {
+    font-size: 16px;
+  }
+`;
+
+const WrapPartyFace = styled.div`
+  min-width: 35px;
+  max-width: 55px;
+  width: 10%;
+  margin-top: 20px;
+`;
+
+const Area = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  user-select: none;
+`;
+
+const WrapLoader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  height: 100%;
+`;
+
+const rotate = keyframes`
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const dash = keyframes`
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+`;
+
+const Loader = styled.svg`
+  animation: ${rotate} 2s linear infinite;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  margin-bottom: 2px;
+`;
+
+const Circle = styled.circle`
+  stroke: #222;
+  stroke-linecap: round;
+  animation: ${dash} 1.5s ease-in-out infinite;
+  fill: none;
+  stroke-width: 8px;
+`;
+
+const Pools = () => {
+  const getPools = async () => {
+    const response = await fetch('/api/pools', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    setPools(await response.json());
+    setLoading(false);
+  };
+
+  const [pools, setPools] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    getPools();
+  }, []);
 
   return (
-    <Container>
+    <Fragment>
       <Header>
         <Title>Pools</Title>
+        <Plus onClick={() => Router.push('/pools/create')} />
       </Header>
       <Content>
-        {pools?.map((pool) => (
-          <Item key={pool?.name}>
-            <Info>
-              <Label>{pool?.name}</Label>
-              <Amount>
-                {!usd ? (
-                  <Skeleton />
-                ) : usd ? (
-                  formatter.format(usd * pool?.total)
-                ) : (
-                  `${pool?.total} HNT`
-                )}
-              </Amount>
-            </Info>
-            <Chevron viewBox="0 0 18 18">
-              <path d="m4.29 1.71a1 1 0 1 1 1.42-1.41l8 8a1 1 0 0 1 0 1.41l-8 8a1 1 0 1 1 -1.42-1.41l7.29-7.29z"></path>
-            </Chevron>
-          </Item>
-        ))}
+        {loading ? (
+          Array(4)
+            .fill(0)
+            .map((p, i) => (
+              <Item key={i}>
+                <Info>
+                  <Label>
+                    <Skeleton width={100 + 30*(i%3)} />
+                  </Label>
+                  <Description>
+                    {Array(2 + (i === 3 ? 2 : i%2))
+                      .fill(0)
+                      .map((u, j) => (
+                        <WrapAvatar key={j}>
+                          <Skeleton circle={true} height={25} width={25} />
+                        </WrapAvatar>
+                      ))}
+                  </Description>
+                </Info>
+                <Chevron loading={loading?.toString()}/>
+              </Item>
+            ))
+        ) : pools?.length > 0 ? (
+          pools?.map((pool) => (
+            <Item
+              onClick={() => Router.push(`/pools/${pool?.id}`)}
+              key={pool?.id}
+            >
+              <Info>
+                <Label>{pool?.name}</Label>
+                <Description>
+                  {pool?.users?.map((u,i) => (
+                    <WrapAvatar key={i}>
+                      <Avatar src={u?.venmo?.image} />
+                    </WrapAvatar>
+                  ))}
+                </Description>
+              </Info>
+              <Chevron />
+            </Item>
+          ))
+        ) : (
+          <Area>
+            <WrapPartyFace>
+              <IconPartyFace />
+            </WrapPartyFace>
+            <Text>You've got no pools!</Text>
+          </Area>
+        )}
       </Content>
-    </Container>
+    </Fragment>
   );
 };
 

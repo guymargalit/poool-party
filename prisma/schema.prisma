@@ -10,34 +10,99 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Spot {
+enum Interval {
+  day
+  week
+  month
+  year
+}
+
+model Expense {
+  id            Int       @id @default(autoincrement())
+  name          String
+  total         Float
+  creator       User      @relation("expenses_created", fields: [creatorId], references: [id])
+  creatorId     Int       @map(name: "creator_id")
+  pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
+  poolId        Int?      @map(name: "pool_id")
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  interval      Interval?
+  intervalCount Int?      @map(name: "interval_count")
+  startDate     DateTime  @default(now()) @map(name: "start_date")
+  lastRequest   DateTime? @default(now()) @map(name: "last_request")
+  active        Boolean   @default(true)
+
+  requests Request[]     @relation(name: "expense_requests")
+  users    ExpenseUser[] @relation(name: "expense_users")
+
+  @@map(name: "expenses")
+}
+
+model ExpenseUser {
   id        Int      @id @default(autoincrement())
-  address   String   @unique
-  name      String
-  user      User     @relation(name: "spots", fields: [userId], references: [id])
+  amount    Float
+  expense   Expense  @relation(name: "expense_users", fields: [expenseId], references: [id])
+  expenseId Int      @map(name: "expense_id")
+  user      PoolUser @relation("expenses", fields: [userId], references: [id])
   userId    Int      @map(name: "user_id")
-  pool      Pool?    @relation(fields: [poolId], references: [id])
-  poolId    Int?     @map(name: "pool_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  total     Float?
 
-  @@map(name: "spots")
+  @@map(name: "expenseusers")
+}
+
+enum Status {
+  succeeded
+  pending
+  failed
+}
+
+model Request {
+  id        Int      @id @default(autoincrement())
+  name      String
+  amount    Float
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  expense   Expense  @relation(name: "expense_requests", fields: [expenseId], references: [id])
+  expenseId Int      @map(name: "expense_id")
+  user      PoolUser @relation("requests", fields: [userId], references: [id])
+  userId    Int      @map(name: "user_id")
+  status    Status   @default(pending)
+  paid      Boolean  @default(false)
+  paymentId String?  @map(name: "payment_id")
+
+  @@map(name: "requests")
 }
 
 model Pool {
   id        Int      @id @default(autoincrement())
   name      String
-  creator   User     @relation(name: "creator", fields: [creatorId], references: [id])
+  creator   User     @relation(name: "pools_created", fields: [creatorId], references: [id])
   creatorId Int      @map(name: "creator_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  total     Float?
 
-  spots Spot[]
-  users User[] @relation(name: "pools")
+  expenses Expense[]  @relation(name: "pool_expenses")
+  users    PoolUser[] @relation(name: "users")
 
   @@map(name: "pools")
+}
+
+model PoolUser {
+  id      Int     @id @default(autoincrement())
+  user    User?   @relation("pools", fields: [userId], references: [id])
+  userId  Int?    @map(name: "user_id")
+  pool    Pool    @relation("users", fields: [poolId], references: [id])
+  poolId  Int     @map(name: "pool_id")
+  venmo   Venmo?  @relation("venmos", fields: [venmoId], references: [id])
+  venmoId String? @map(name: "venmo_id")
+
+  expenses ExpenseUser[] @relation(name: "expenses")
+  requests Request[]     @relation(name: "requests")
+
+  @@unique([userId, venmoId, poolId], name: "userpoolvenmoId")
+  @@map(name: "poolusers")
 }
 
 model User {
@@ -49,13 +114,34 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   toy           String?
+  settings      Json?
 
-  spots Spot[] @relation(name: "spots")
-  pools Pool[] @relation(name: "pools")
+  venmo Venmo? @relation(name: "venmo")
 
-  poolsCreated Pool[] @relation(name: "creator")
+  pools        PoolUser[] @relation(name: "pools")
+  poolsCreated Pool[]     @relation(name: "pools_created")
+  expenses     Expense[]  @relation(name: "expenses_created")
 
   @@map(name: "users")
+}
+
+model Venmo {
+  id          String    @id
+  username    String
+  displayName String    @map(name: "display_name")
+  email       String?
+  phone       String?
+  image       String?
+  user        User?     @relation("venmo", fields: [userId], references: [id])
+  userId      Int?      @map(name: "user_id")
+  accessToken String?   @map(name: "access_token")
+  expiredAt   DateTime? @map(name: "expired_at")
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @updatedAt @map(name: "updated_at")
+
+  poolUsers PoolUser[] @relation(name: "venmos")
+
+  @@map(name: "venmos")
 }
 
 model Account {

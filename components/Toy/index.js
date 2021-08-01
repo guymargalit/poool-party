@@ -7,9 +7,8 @@ import Tiger from './toys/Tiger';
 
 const Container = styled.div`
   position: absolute;
-  //z-index: ${(props) => (props.z ? props.z : 4)};
   z-index: 4;
-  max-width: ${(props) => (props.z ? `${props.z * 40}px` : '250px')};
+  max-width: ${(props) => (props.z ? `${props.z * 30}px` : '250px')};
   min-width: 10px;
   width: ${(props) => (props.z ? `${props.z * 4}%` : '30%')};
   transition: all 5s ease 0s;

@@ -10,12 +10,11 @@ export default async function handler(req, res) {
     const updateUser = await prisma.user.update({
       where: { id: session?.user?.id },
       data: {
-        toy: req.body.toy
+        toy: req.body.toy,
       },
     });
     res.json(updateUser);
-  }
-  else if (req.method === 'GET') {
+  } else if (req.method === 'GET') {
     const session = await getSession({ req });
     if (!session) {
       return res.status(403).end();
@@ -26,15 +25,24 @@ export default async function handler(req, res) {
         id: true,
         name: true,
         toy: true,
-        spots: {
-          select: { id: true, name: true, address: true, total: true},
-        },
-        pools: {
-          select: { id: true, name: true, total: true },
+        venmo: {
+          select: { username: true, displayName: true, image: true}
         },
       },
     });
     res.json(user);
+  } else if (req.method === 'PUT') {
+    const session = await getSession({ req });
+    if (!session) {
+      return res.status(403).end();
+    }
+    const updateUser = await prisma.user.update({
+      where: { id: session?.user?.id },
+      data: {
+        settings: req.body.settings,
+      },
+    });
+    res.json(updateUser);
   } else {
     // Handle any other HTTP method
   }

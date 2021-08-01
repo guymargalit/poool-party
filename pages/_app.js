@@ -1,16 +1,26 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
 import useSWR from 'swr';
 import Head from 'next/head';
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
     padding: 0;
     margin: 0;
+    overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      background-image:
+    linear-gradient(#8fd0fa,#8fd0fa),
+    linear-gradient(#ffffff,#ffffff);
+  background-size:
+    calc(1 * (100% / 2)) 100%,
+    calc(2 * (100% / 2)) 100%;
+  background-repeat:no-repeat;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   a {
   color: inherit;
@@ -27,7 +37,8 @@ const theme = {
     primary: '#0a2540',
     blue: '#54c0f9',
     yellow: '#FEF7CB',
-    error: '#d1435b',
+    error: '#ed5f74',
+    success: '#00C851',
     white: '#F9F9F9',
   },
   palette: {
@@ -61,38 +72,9 @@ const theme = {
   },
 };
 
-const resetHeight = () => {
-  // reset the body height to that of the inner browser
-  document.body.style.height = window.innerHeight + 'px';
-};
-
-const getHNTtoUSD = async () => {
-  const result = await fetch(
-    'https://api.coingecko.com/api/v3/simple/price?ids=helium&vs_currencies=usd'
-  );
-  const response = await result?.json();
-  return response?.helium?.usd;
-};
-
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
 export default function App({ Component, pageProps }) {
-  React.useEffect(() => {
-    // reset the height whenever the window's resized
-    window.addEventListener('resize', resetHeight);
-    // called to initially set the height.
-    resetHeight();
-  }, []);
-
-  const [usd, setUSD] = useState(0);
-
-  useEffect(async () => {
-    setUSD(await getHNTtoUSD());
-    setInterval(async () => {
-      setUSD(await getHNTtoUSD());
-    }, 5000);
-  }, []);
-
   const initialData = pageProps.user;
   const { data } = useSWR('/api/user', fetcher, { initialData });
   return (
@@ -100,12 +82,28 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Poool Party</title>
         <link rel="icon" href="/favicon.png" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+        />
+        <meta name="theme-color" content="#5a489b" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-title" content="Poool Party" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        ></meta>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </Head>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Layout user={data} {...pageProps}>
-          <Component user={data} usd={usd} {...pageProps} />
-        </Layout>
+        <SkeletonTheme color="#e2e2e2" highlightColor="#e9e9e9">
+          <Layout user={data} {...pageProps}>
+            <Component user={data} {...pageProps} />
+          </Layout>
+        </SkeletonTheme>
       </ThemeProvider>
     </Provider>
   );

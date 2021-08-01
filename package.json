@@ -8,13 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^2.27.0",
+    "@fingerprintjs/fingerprintjs": "^3.2.0",
+    "@prisma/client": "^2.28.0",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "crypto": "^1.0.1",
+    "currency.js": "^2.0.4",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.21.5",
+    "moment": "^2.29.1",
     "next": "10.x",
     "next-auth": "^3.27.3",
     "react": "17.x",
+    "react-currency-input-field": "^3.4.2",
     "react-dom": "17.x",
     "react-loading-skeleton": "^2.2.0",
     "styled-components": "^5.3.0",
@@ -24,6 +29,6 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.3.2",
-    "prisma": "2.27.0"
+    "prisma": "^2.28.0"
   }
 }

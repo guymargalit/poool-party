@@ -1,4 +1,5 @@
 import prisma from '../../../lib/prisma';
+import moment from 'moment';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -6,48 +7,94 @@ export default async function handler(req, res) {
       const { authorization } = req.headers;
 
       if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
-        // Update the hotspot data from helium
-        const date = new Date();
-        const spots = await prisma.spot.findMany({
-          select: { id: true, address: true },
-        });
-        for (const spot of spots || []) {
-          const result = await fetch(
-            `https://api.helium.io/v1/hotspots/${
-              spot.address
-            }/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
-          );
-          const response = await result.json();
-          if (response.data && response.data.length) {
-            let total = 0.0;
-            for(const bucket of response.data) {
-              total += parseFloat(bucket.total)
-            }
-            await prisma.spot.update({
-              where: { id: spot.id },
-              data: {
-                total: total,
+        const expenses = await prisma.expense.findMany({
+          select: {
+            id: true,
+            name: true,
+            creatorId: true,
+            active: true,
+            interval: true,
+          },
+          where: {
+            active: true,
+            startDate: {
+              gte: new Date(),
+            },
+            OR: [
+              {
+                interval: 'week',
+                lastRequest: {
+                  lte: moment().subtract(7, 'days').toDate(),
+                },
               },
-            });
-          }
-        }
-        const poolTotals = await prisma.spot.groupBy({
-          by: ['poolId'],
-          _sum: {
-            total: true,
+              {
+                interval: 'month',
+                lastRequest: {
+                  lte: moment().subtract(1, 'months').toDate(),
+                },
+              },
+            ],
           },
         });
-        for (const total of poolTotals) {
-          if (total.poolId) {
-            await prisma.pool.update({
-              where: { id: total.poolId },
+
+        for (const expense of expenses) {
+          const expenseUsers = await prisma.expenseUser.findMany({
+            where: { expenseId: expense?.id },
+            select: {
+              expenseId: true,
+              amount: true,
+              userId: true,
+              user: {
+                select: {
+                  userId: true,
+                  venmo: { select: { id: true, accessToken: true } },
+                },
+              },
+            },
+          });
+
+          for (const expenseUser of expenseUsers) {
+            // Don't create venmo request for expense creator
+            if (expenseUser?.user?.userId !== expense?.creatorId) {
+              // Start venmo request
+              const result = await fetch('https://api.venmo.com/v1/payments', {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${expenseUser?.user?.venmo?.accessToken}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  note: expense?.name,
+                  amount: `-${parseFloat(expenseUser?.amount)}`,
+                  user_id: expenseUser?.user?.venmo?.id,
+                  audience: 'private',
+                }),
+              });
+              const response = await result.json();
+
+              await prisma.request.create({
+                data: {
+                  amount: parseFloat(expenseUser?.amount),
+                  expense: { connect: { id: expense?.id } },
+                  user: { connect: { id: expenseUser?.userId } },
+                  name: expense?.name,
+                  status: response?.data?.payment?.status || 'failed',
+                  paid: false,
+                  paymentId: response?.data?.payment?.id,
+                },
+              });
+            }
+
+            await prisma.expense.update({
+              where: { id: expense?.id },
               data: {
-                total: total._sum?.total,
+                lastRequest: new Date(),
               },
             });
           }
         }
-        res.status(200).json({ success: true });
+
+        return res.status(200).json({ success: true });
       } else {
         res.status(401).json({ success: false });
       }

@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import Head from 'next/head';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { signIn } from 'next-auth/client';
+import { signIn, useSession } from 'next-auth/client';
+import Router from 'next/router';
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
   z-index: 4;
+  overflow: hidden;
+  @media (max-width: 675px) {
+    justify-content: center;
+  }
 `;
 
 const rotate = keyframes`
@@ -36,6 +40,12 @@ const dash = keyframes`
 const Title = styled.div`
   font-size: 50px;
   font-weight: 700;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const Subtitle = styled.div`
+  font-size: 20px;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -86,28 +96,27 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
-const Home = (props) => {
-  const [loading, setLoading] = useState(false);
+const Home = () => {
+  const [loggingIn, setLoggingIn] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
-    signIn('apple', { callbackUrl: `${process.env.APP_URL}/dashboard` });
+    setLoggingIn(true);
+    signIn('apple', { callbackUrl: 'https://poool.party/dashboard' });
   };
 
   return (
-    <>
-      <Content>
-        <Title>poool.party</Title>
-        <Button onClick={handleLogin}>
-          Get Started{' '}
-          {loading && (
-            <Svg viewBox="0 0 50 50">
-              <Circle cx="25" cy="25" r="20"></Circle>
-            </Svg>
-          )}
-        </Button>
-      </Content>
-    </>
+    <Content>
+      <Title>poool.party</Title>
+      <Subtitle>Do stuff with Venmo, but easier</Subtitle>
+      <Button onClick={handleLogin}>
+        Get Started{' '}
+        {loggingIn && (
+          <Svg viewBox="0 0 50 50">
+            <Circle cx="25" cy="25" r="20"></Circle>
+          </Svg>
+        )}
+      </Button>
+    </Content>
   );
 };
 
