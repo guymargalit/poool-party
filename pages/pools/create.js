@@ -18,6 +18,7 @@ const Container = styled.div`
   bottom: 0px;
   width: 100%;
   height: 100%;
+  padding-top: env(safe-area-inset-top);
   position: fixed;
   transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;

@@ -77,7 +77,7 @@ const Hero = styled.div`
   position: relative;
   height: 300px;
   @media (max-width: 675px) {
-    height: ${({ home }) => (home ? '200px' : '130px')};
+    height: ${({ home }) => (home ? `200px` : 'calc(190px + env(safe-area-inset-top))')};
   }
 `;
 
