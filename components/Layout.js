@@ -49,7 +49,7 @@ const Content = styled.div`
     `calc(${height} - env(safe-area-inset-top))` || '50%'};
   bottom: ${({ navigation }) =>
     navigation
-      ? `calc(65px + env(safe-area-inset-top))`
+      ? `65px`
       : 'env(safe-area-inset-top)'};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
