@@ -5,7 +5,6 @@ import Layout from '../components/Layout';
 import useSWR from 'swr';
 import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import { disableBodyScroll } from 'body-scroll-lock';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -73,12 +72,6 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function App({ Component, pageProps }) {
   const initialData = pageProps.user;
   const { data } = useSWR('/api/user', fetcher, { initialData });
-
-  useEffect(() => {
-    const targetElement = document.querySelector('body');
-    disableBodyScroll(targetElement);
-  });
-
   return (
     <Provider session={pageProps.session}>
       <Head>
