@@ -3,7 +3,7 @@ import Router from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { signOut, useSession } from 'next-auth/client';
 import { IconLogout, IconPopper } from '../../icons';
-import Link from 'next/link'
+import Link from 'next/link';
 
 const Content = styled.div`
   display: flex;
@@ -51,6 +51,7 @@ const VenmoWrap = styled.div`
   padding: 0 15px;
   background-color: #0074de;
   user-select: none;
+  cursor: pointer;
 `;
 
 const Info = styled.div`
@@ -195,23 +196,22 @@ const Profile = ({ user }) => {
         <Logout onClick={handleLogout} />
       </Header>
       <Content>
-        <VenmoWrap>
-          <Info>
-            <Avatar src={user?.venmo?.image} />
-            <WrapText>
-              <Name>{user?.venmo?.displayName}</Name>
-              <Label>@{user?.venmo?.username}</Label>
-            </WrapText>
-          </Info>
-        </VenmoWrap>
+        <Link href={`venmo://users/${user?.venmo?.id}`}>
+          <VenmoWrap>
+            <Info>
+              <Avatar src={user?.venmo?.image} />
+              <WrapText>
+                <Name>{user?.venmo?.displayName}</Name>
+                <Label>@{user?.venmo?.username}</Label>
+              </WrapText>
+            </Info>
+          </VenmoWrap>
+        </Link>
         <Footer>
           <Button onClick={() => Router.push('/choose-a-toy')}>
             Choose a pool toy
             <Popper />
           </Button>
-          <Link href="venmo://users/guymargalit">
-            Open Venmo
-          </Link>
         </Footer>
       </Content>
     </Fragment>
