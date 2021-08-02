@@ -79,11 +79,13 @@ const Button = styled.div`
   user-select: none;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.skyGray};
-  }
-  &:hover ${Popper} {
-    transform: rotate(-10deg);
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.skyGray};
+    }
+    &:hover ${Popper} {
+      transform: rotate(-10deg);
+    }
   }
 `;
 
@@ -150,8 +152,10 @@ const Chevron = styled(IconLeftChevron)`
   cursor: pointer;
   fill: #222;
   transition: all 0.25s ease 0s;
-  :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${(props) => props.theme.palette.dark.abisko};
+    }
   }
 `;
 
@@ -231,9 +235,11 @@ const Item = styled.div`
   transition: all 0.25s ease 0s;
   background-color: #eeeeee;
   color: ${(props) => (props.checked ? '#fff' : '#222')};
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.abisko};
-    color: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.abisko};
+      color: #fff;
+    }
   }
 `;
 
@@ -473,7 +479,9 @@ const PoolCreate = () => {
                 <Circle cx="25" cy="25" r="20"></Circle>
               </Loader>
             ) : (
-              <>Create Pool <Popper /></>
+              <>
+                Create Pool <Popper />
+              </>
             )}
           </Button>
           {success ? (

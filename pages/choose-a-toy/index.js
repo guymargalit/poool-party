@@ -61,9 +61,11 @@ const Radio = styled.label`
   background-color: ${(props) =>
     props.checked ? `${props.theme.palette.dark.abisko}` : 'transparent'};
   color: ${(props) => (props.checked ? '#fff' : '#222')};
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.abisko};
-    color: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.abisko};
+      color: #fff;
+    }
   }
 `;
 
@@ -120,11 +122,13 @@ const Button = styled.div`
   user-select: none;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.skyGray};
-  }
-  &:hover ${Popper} {
-    transform: rotate(-10deg);
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.skyGray};
+    }
+    &:hover ${Popper} {
+      transform: rotate(-10deg);
+    }
   }
   @media (max-width: 675px) {
     margin-top: 10px;
@@ -174,8 +178,10 @@ const Confirm = styled.svg`
   width: 32px;
   height: 32px;
   cursor: pointer;
-  :hover {
-    fill: ${(props) => props.theme.palette.dark.monteverde};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${(props) => props.theme.palette.dark.monteverde};
+    }
   }
 `;
 

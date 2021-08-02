@@ -37,7 +37,7 @@ const Chevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({loading}) => loading ? '#e2e2e2':'#555'};
+  fill: ${({ loading }) => (loading ? '#e2e2e2' : '#555')};
   transition: all 0.25s ease 0s;
 `;
 
@@ -48,8 +48,10 @@ const Plus = styled(IconAdd)`
   width: 32px;
   height: 32px;
   cursor: pointer;
-  :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${(props) => props.theme.palette.dark.abisko};
+    }
   }
 `;
 
@@ -65,12 +67,14 @@ const Item = styled.div`
   transition: all 0.25s ease 0s;
   border-bottom: 1px solid #eeeeee;
   color: ${(props) => (props.checked ? '#fff' : '#222')};
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.abisko};
-    color: #fff;
-  }
-  :hover ${Chevron} {
-    fill: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.abisko};
+      color: #fff;
+    }
+    :hover ${Chevron} {
+      fill: #fff;
+    }
   }
 `;
 
@@ -212,10 +216,10 @@ const Pools = () => {
               <Item key={i}>
                 <Info>
                   <Label>
-                    <Skeleton width={100 + 30*(i%3)} />
+                    <Skeleton width={100 + 30 * (i % 3)} />
                   </Label>
                   <Description>
-                    {Array(2 + (i === 3 ? 2 : i%2))
+                    {Array(2 + (i === 3 ? 2 : i % 2))
                       .fill(0)
                       .map((u, j) => (
                         <WrapAvatar key={j}>
@@ -224,7 +228,7 @@ const Pools = () => {
                       ))}
                   </Description>
                 </Info>
-                <Chevron loading={loading?.toString()}/>
+                <Chevron loading={loading?.toString()} />
               </Item>
             ))
         ) : pools?.length > 0 ? (
@@ -236,7 +240,7 @@ const Pools = () => {
               <Info>
                 <Label>{pool?.name}</Label>
                 <Description>
-                  {pool?.users?.map((u,i) => (
+                  {pool?.users?.map((u, i) => (
                     <WrapAvatar key={i}>
                       <Avatar src={u?.venmo?.image} />
                     </WrapAvatar>

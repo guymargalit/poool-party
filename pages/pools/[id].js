@@ -79,8 +79,10 @@ const LeftChevron = styled(IconLeftChevron)`
   cursor: pointer;
   fill: #222;
   transition: all 0.25s ease 0s;
-  :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${(props) => props.theme.palette.dark.abisko};
+    }
   }
 `;
 
@@ -111,12 +113,14 @@ const WrapPlus = styled.div`
   border-radius: 40px;
   border: 1px solid #555;
   cursor: pointer;
-  :hover {
-    background: ${(props) => props.theme.palette.dark.abisko};
-    border: 2px solid ${(props) => props.theme.palette.dark.abisko};
-  }
-  :hover ${Plus} {
-    fill: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background: ${(props) => props.theme.palette.dark.abisko};
+      border: 2px solid ${(props) => props.theme.palette.dark.abisko};
+    }
+    :hover ${Plus} {
+      fill: #fff;
+    }
   }
   transition: all 0.25s ease 0s;
 `;
@@ -211,11 +215,13 @@ const Button = styled.div`
   user-select: none;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.skyGray};
-  }
-  &:hover ${Popper} {
-    transform: rotate(-10deg);
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.skyGray};
+    }
+    &:hover ${Popper} {
+      transform: rotate(-10deg);
+    }
   }
 `;
 
@@ -229,7 +235,7 @@ const RightChevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({loading}) => loading ? '#e2e2e2':'#555'};
+  fill: ${({ loading }) => (loading ? '#e2e2e2' : '#555')};
   transition: all 0.25s ease 0s;
 `;
 
@@ -248,12 +254,14 @@ const Item = styled.div`
   transition: all 0.25s ease 0s;
   border-top: 1px solid #eeeeee;
   color: ${(props) => (props.checked ? '#fff' : '#222')};
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.abisko};
-    color: #fff;
-  }
-  :hover ${RightChevron} {
-    fill: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.abisko};
+      color: #fff;
+    }
+    :hover ${RightChevron} {
+      fill: #fff;
+    }
   }
 `;
 

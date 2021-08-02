@@ -76,8 +76,10 @@ const Button = styled.div`
   user-select: none;
   background-color: ${({ theme }) => theme.palette.dark.kolkata};
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${({ theme }) => theme.palette.dark.bunol};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ theme }) => theme.palette.dark.bunol};
+    }
   }
 `;
 

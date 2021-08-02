@@ -79,8 +79,10 @@ const Close = styled(IconClose)`
   cursor: pointer;
   fill: ${({ theme }) => theme.colors.white};
   transition: all 0.25s ease 0s;
-  :hover {
-    fill: ${({ theme }) => theme.palette.dark.skyGray};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.palette.dark.skyGray};
+    }
   }
 `;
 
@@ -158,12 +160,14 @@ const Button = styled.div`
   user-select: none;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${({ disabled, theme }) =>
-      !disabled && theme.palette.dark.skyGray};
-  }
-  &:hover ${Popper} {
-    transform: rotate(-10deg);
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ disabled, theme }) =>
+        !disabled && theme.palette.dark.skyGray};
+    }
+    &:hover ${Popper} {
+      transform: rotate(-10deg);
+    }
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   ƒ :disabled {
@@ -352,8 +356,10 @@ const Lock = styled(IconLock)`
   margin-left: 5px;
   fill: #333;
   cursor: pointer;
-  :hover {
-    fill: ${({ theme }) => theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.palette.dark.abisko};
+    }
   }
 `;
 
@@ -362,8 +368,10 @@ const Unlock = styled(IconUnlock)`
   margin-left: 5px;
   fill: #333;
   cursor: pointer;
-  :hover {
-    fill: ${({ theme }) => theme.palette.dark.abisko};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.palette.dark.abisko};
+    }
   }
 `;
 
@@ -380,8 +388,10 @@ const WrapSelect = styled.div`
   font-size: 16px;
   margin: 10px 0;
   cursor: pointer;
-  :hover {
-    background-color: #e2e2e2;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #e2e2e2;
+    }
   }
 `;
 
@@ -399,8 +409,10 @@ const WrapDate = styled.div`
   font-size: 16px;
   margin: 10px 0;
   cursor: pointer;
-  :hover {
-    background-color: #e2e2e2;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #e2e2e2;
+    }
   }
   text-align: center;
 `;
@@ -690,18 +702,22 @@ const Expense = (props) => {
             <Subtitle>How Often?</Subtitle>
             <WrapSelect onClick={() => setModal(true)}>{frequency}</WrapSelect>
           </Section>
-          {frequency !== 'One Time' &&<Section>
-            <Subtitle>When Should We Start?</Subtitle>
-            <WrapDate>
-              <DateInput
-                type="date"
-                value={date}
-                onChange={(e) =>
-                  setDate(new Date(e.target.value).toISOString().substr(0, 10))
-                }
-              />
-            </WrapDate>
-          </Section>}
+          {frequency !== 'One Time' && (
+            <Section>
+              <Subtitle>When Should We Start?</Subtitle>
+              <WrapDate>
+                <DateInput
+                  type="date"
+                  value={date}
+                  onChange={(e) =>
+                    setDate(
+                      new Date(e.target.value).toISOString().substr(0, 10)
+                    )
+                  }
+                />
+              </WrapDate>
+            </Section>
+          )}
           <WrapModal onClick={() => setModal(false)} modal={modal}>
             <Modal modal={modal}>
               <Tab />
@@ -721,7 +737,12 @@ const Expense = (props) => {
       <WrapFooter>
         <Footer>
           <Button
-            disabled={!total || name === '' || (frequency !== 'One Time' && !date) || submitting}
+            disabled={
+              !total ||
+              name === '' ||
+              (frequency !== 'One Time' && !date) ||
+              submitting
+            }
             onClick={() =>
               !total || name === '' || submitting ? null : submitData()
             }

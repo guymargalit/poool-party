@@ -144,8 +144,10 @@ const VenmoButton = styled.div`
   user-select: none;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.25s ease 0s;
-  :hover {
-    background-color: ${({ disabled }) => !disabled && '#00d791'};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ disabled }) => !disabled && '#00d791'};
+    }
   }
   :disabled {
     cursor: not-allowed;
@@ -187,7 +189,7 @@ const VenmoAuth = ({ user }) => {
       setError(response.error);
     } else if (response?.user) {
       setSuccess();
-      Router.push('/profile')
+      Router.push('/profile');
     }
   };
 
@@ -245,9 +247,7 @@ const VenmoAuth = ({ user }) => {
                 <Circle cx="25" cy="25" r="20"></Circle>
               </Loader>
             ) : (
-              <>
-                Submit Code
-              </>
+              <>Submit Code</>
             )}
           </VenmoButton>
         </Form>

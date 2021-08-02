@@ -24,9 +24,11 @@ const Radio = styled.label`
   background-color: ${(props) =>
     props.checked ? `${props.theme.palette.dark.abisko}` : 'transparent'};
   color: ${(props) => (props.checked ? '#fff' : '#222')};
-  :hover {
-    background-color: ${(props) => props.theme.palette.dark.abisko};
-    color: #fff;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${(props) => props.theme.palette.dark.abisko};
+      color: #fff;
+    }
   }
 `;
 
