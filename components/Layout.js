@@ -7,6 +7,7 @@ import Toy from './Toy';
 import Wave from './Wave';
 import { routes } from '../lib/routes';
 import { IconDashboard, IconPools, IconProfile } from '../icons';
+import Venmo from './Venmo';
 
 const Container = styled.div`
   display: flex;
@@ -47,10 +48,7 @@ const Content = styled.div`
   transition: all 0.5s ease 0s;
   height: ${({ height }) =>
     `calc(${height} - env(safe-area-inset-top))` || '50%'};
-  bottom: ${({ navigation }) =>
-    navigation
-      ? `65px`
-      : '0px'};
+  bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
   }
@@ -89,7 +87,8 @@ const Toys = styled.div`
 const Navigation = styled.nav`
   align-items: center;
   background-color: rgb(255, 255, 255);
-  border-top: ${({ visible }) => (visible ? '1px solid rgb(221, 221, 221)':'0px')};
+  border-top: ${({ visible }) =>
+    visible ? '1px solid rgb(221, 221, 221)' : '0px'};
   bottom: 0px;
   height: ${({ visible }) => (visible ? '65px' : '0px')};
   left: 0px;
@@ -166,6 +165,40 @@ const WrapItem = styled.div`
   user-select: none;
 `;
 
+const WrapModal = styled.div`
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  z-index: 998;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  transition: all 0.25s ease 0s;
+  background-color: ${({ modal }) =>
+    modal ? ' rgba(0, 0, 0, 0.4)' : ' rgba(0, 0, 0, 0);'};
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 18px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  overflow: hidden;
+  transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
+  height: ${({ modal }) => (modal ? '80%' : '0')};
+`;
+
 const toys = [
   {
     type: 'zebra',
@@ -187,9 +220,10 @@ const toys = [
 
 const Layout = (props) => {
   const router = useRouter();
-  const {navigation, setNavigation} = props;
+  const { navigation, setNavigation } = props;
   const [session, loading] = useSession();
   const [isAuth, setIsAuth] = useState(false);
+  const [venmo, setVenmo] = useState(false);
 
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(false);
@@ -220,9 +254,9 @@ const Layout = (props) => {
       session &&
       props?.user &&
       (!props?.user?.venmo || props?.user?.venmo?.expiredAt) &&
-      router.pathname !== '/connect/venmo'
+      !venmo
     ) {
-      Router.push('/connect/venmo');
+      setVenmo(true);
     } else if (session && props?.user?.venmo) {
       setIsAuth(true);
     }
@@ -230,6 +264,11 @@ const Layout = (props) => {
 
   return (
     <Container>
+      <WrapModal modal={venmo}>
+        <Modal modal={venmo}>
+          <Venmo />
+        </Modal>
+      </WrapModal>
       <Hero background={background}>
         {props?.user ? (
           <Toy type={toy} position={{ x: '18%', y: '5%', z: 7 }} />

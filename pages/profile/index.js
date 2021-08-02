@@ -204,14 +204,6 @@ const Profile = ({ user }) => {
               <Label>@{user?.venmo?.username}</Label>
             </WrapText>
           </Info>
-          {user?.venmo?.expiredAt && (
-            <VenmoButton onClick={() => Router.push('/connect/venmo')}>
-              <VenmoIcon viewBox="0 0 20 20">
-                <path d="M17.8403 0.77C18.5249 1.87835 18.8338 3.01961 18.8338 4.46184C18.8338 9.06059 14.8274 15.0349 11.5754 19.23H4.14835L1.17 1.77723L7.67325 1.17209L9.2479 13.5911C10.7198 11.242 12.5352 7.55014 12.5352 5.03327C12.5352 3.65605 12.2945 2.71704 11.9181 1.94497L17.8403 0.77Z"></path>
-              </VenmoIcon>
-              Connect
-            </VenmoButton>
-          )}
         </VenmoWrap>
         <Footer>
           <Button onClick={() => Router.push('/choose-a-toy')}>
