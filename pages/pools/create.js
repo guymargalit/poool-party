@@ -324,7 +324,7 @@ const WrapFooter = styled.div`
   border-top: 1px solid rgb(221, 221, 221);
   bottom: 0px;
   width: 100%;
-  height: 80px;
+  height: calc(80px + env(safe-area-inset-bottom));
   position: absolute;
   transition: all 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;

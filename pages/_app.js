@@ -11,8 +11,8 @@ const GlobalStyle = createGlobalStyle`
     height: 100vh;
     background: ${({ navigation }) =>
       navigation
-        ? 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%)'
-        : 'linear-gradient(to bottom, #8fd0fa 0vh, #8fd0fa 50vh, #54c0f9 50vh, #54c0f9 100vh)'};
+        ? 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 80%, #FFFFFF 80%, #FFFFFF 100%)'
+        : 'linear-gradient(to bottom, #8fd0fa 0vh, #8fd0fa 50%, #54c0f9 50%, #54c0f9 100%)'};
     padding: 0;
     margin: 0;
     overflow: hidden;

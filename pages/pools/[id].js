@@ -187,6 +187,7 @@ const Footer = styled.div`
   flex: 1;
   justify-content: center;
   border-top: 1px solid rgb(221, 221, 221);
+  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const Popper = styled(IconPopper)`

@@ -47,7 +47,7 @@ const Content = styled.div`
   overflow: hidden;
   transition: all 0.5s ease 0s;
   height: ${({ height }) =>
-    `calc(${height} - env(safe-area-inset-top))` || '50%'};
+    `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` || '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
@@ -90,7 +90,7 @@ const Navigation = styled.nav`
   border-top: ${({ visible }) =>
     visible ? '1px solid rgb(221, 221, 221)' : '0px'};
   bottom: 0px;
-  height: ${({ visible }) => (visible ? 'calc(65px + env(safe-area-inset-top))' : '0px')};
+  height: ${({ visible }) => (visible ? 'calc(65px + env(safe-area-inset-bottom))' : '0px')};
   left: 0px;
   overflow: hidden;
   position: fixed;
