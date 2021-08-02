@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         name: true,
         toy: true,
         venmo: {
-          select: { username: true, displayName: true, image: true}
+          select: { username: true, displayName: true, image: true, expiredAt: true}
         },
       },
     });
