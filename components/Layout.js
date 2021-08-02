@@ -77,7 +77,7 @@ const Hero = styled.div`
   position: relative;
   height: 300px;
   @media (max-width: 675px) {
-    height: ${({ home }) => (home ? `200px` : 'calc(190px + env(safe-area-inset-top))')};
+    height: calc(190px + env(safe-area-inset-top));
   }
 `;
 
@@ -89,7 +89,7 @@ const Toys = styled.div`
 const Navigation = styled.nav`
   align-items: center;
   background-color: rgb(255, 255, 255);
-  border-top: 1px solid rgb(221, 221, 221);
+  border-top: ${({ visible }) => (visible ? '1px solid rgb(221, 221, 221)':'0px')};
   bottom: 0px;
   height: ${({ visible }) => (visible ? '65px' : '0px')};
   left: 0px;
@@ -230,7 +230,7 @@ const Layout = (props) => {
 
   return (
     <Container>
-      <Hero home={router.pathname === '/'} background={background}>
+      <Hero background={background}>
         {props?.user ? (
           <Toy type={toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !isLoading && !session && router.pathname === '/' ? (
