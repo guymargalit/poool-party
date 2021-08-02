@@ -185,7 +185,6 @@ const Footer = styled.div`
     padding: 0 10px;
   }
   flex: 1;
-  max-width: 1040px;
   justify-content: center;
   border-top: 1px solid rgb(221, 221, 221);
 `;
@@ -215,6 +214,7 @@ const Button = styled.div`
   user-select: none;
   cursor: pointer;
   transition: all 0.25s ease 0s;
+  max-width: 1040px;
   @media (hover: hover) and (pointer: fine) {
     :hover {
       background-color: ${(props) => props.theme.palette.dark.skyGray};

@@ -28,7 +28,7 @@ const Content = styled.div`
   width: 100%;
   height: calc(100% - 150px);
   overflow-y: auto;
-  padding: 0 35px;
+  padding: 30px 35px 0;
   @media (max-width: 675px) {
     padding: 10px 20px 0;
   }

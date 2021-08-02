@@ -90,7 +90,7 @@ const Navigation = styled.nav`
   border-top: ${({ visible }) =>
     visible ? '1px solid rgb(221, 221, 221)' : '0px'};
   bottom: 0px;
-  height: ${({ visible }) => (visible ? '65px' : '0px')};
+  height: ${({ visible }) => (visible ? 'calc(65px + env(safe-area-inset-top))' : '0px')};
   left: 0px;
   overflow: hidden;
   position: fixed;
