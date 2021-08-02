@@ -180,14 +180,13 @@ const Panel = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  padding: 0 35px;
+  padding: 0 35px calc(env(safe-area-inset-bottom));
   @media (max-width: 675px) {
-    padding: 0 10px;
+    padding: 0 10px calc(env(safe-area-inset-bottom));
   }
   flex: 1;
   justify-content: center;
   border-top: 1px solid rgb(221, 221, 221);
-  padding-bottom: env(safe-area-inset-bottom);
 `;
 
 const Popper = styled(IconPopper)`
