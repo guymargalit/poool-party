@@ -12,6 +12,14 @@ export default async function handler(req, res) {
       data: {
         toy: req.body.toy,
       },
+      select: {
+        id: true,
+        name: true,
+        toy: true,
+        venmo: {
+          select: { id: true, username: true, displayName: true, image: true, expiredAt: true}
+        },
+      },
     });
     res.json(updateUser);
   } else if (req.method === 'GET') {
