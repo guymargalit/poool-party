@@ -562,9 +562,6 @@ const Expense = (props) => {
   };
 
   const updateAmount = (usr, amt) => {
-    if (Number.isNaN(Number(amt))) {
-      return;
-    }
     if (unlockedUsers > 1) {
       const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
       setUsers([
