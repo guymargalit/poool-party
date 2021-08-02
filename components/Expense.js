@@ -19,11 +19,13 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   padding-top: env(safe-area-inset-top);
+  background-color: ${({ theme }) => theme.palette.dark.abisko};
 `;
 
 const WrapContent = styled.div`
   width: 100%;
   height: 100%;
+  background-color: #ffffff;
 `;
 
 const Content = styled.div`
