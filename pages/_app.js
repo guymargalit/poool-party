@@ -1,5 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
 import useSWR from 'swr';
@@ -13,9 +13,11 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #8fd0fa;
-  background: linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%);
       -webkit-tap-highlight-color: rgba(0,0,0,0);
+      background: ${({ navigation }) =>
+        navigation
+          ? 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%)'
+          : 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #54c0f9 50%, #54c0f9 100%)'};
   }
   a {
   color: inherit;
@@ -72,6 +74,7 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function App({ Component, pageProps }) {
   const initialData = pageProps.user;
   const { data } = useSWR('/api/user', fetcher, { initialData });
+  const [navigation, setNavigation] = useState(true);
   return (
     <Provider session={pageProps.session}>
       <Head>
@@ -92,10 +95,15 @@ export default function App({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
-      <GlobalStyle />
+      <GlobalStyle navigation={navigation} />
       <ThemeProvider theme={theme}>
         <SkeletonTheme color="#e2e2e2" highlightColor="#e9e9e9">
-          <Layout user={data} {...pageProps}>
+          <Layout
+            navigation={navigation}
+            setNavigation={setNavigation}
+            user={data}
+            {...pageProps}
+          >
             <Component user={data} {...pageProps} />
           </Layout>
         </SkeletonTheme>

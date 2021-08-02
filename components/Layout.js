@@ -187,11 +187,11 @@ const toys = [
 
 const Layout = (props) => {
   const router = useRouter();
+  const {navigation, setNavigation} = props;
   const [session, loading] = useSession();
   const [isAuth, setIsAuth] = useState(false);
 
   const [height, setHeight] = useState('50%');
-  const [navigation, setNavigation] = useState(true);
   const [background, setBackground] = useState(false);
 
   const [toy, setToy] = useState(props.user?.toy);
