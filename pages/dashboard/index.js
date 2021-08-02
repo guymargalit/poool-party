@@ -64,18 +64,6 @@ const WrapPopper = styled.div`
 `;
 
 const Dashboard = ({ user }) => {
-  const createNotification = () => {
-    new Notification("You've got a notification", {
-      body: "Wow that's sweet!'",
-    });
-  };
-  useEffect(() => {
-    Notification.requestPermission().then((result) => {
-      if (result === 'granted') {
-        setTimeout(createNotification, 10000);
-      }
-    });
-  },[]);
   return (
     <Fragment>
       <Header>
