@@ -49,6 +49,7 @@ export default async function handler(req, res) {
             username: u?.username,
             displayName: u?.display_name,
             image: u?.profile_picture_url,
+            expiredAt: new Date()
           },
         });
         await prisma.poolUser.create({

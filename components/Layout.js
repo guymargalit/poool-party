@@ -247,17 +247,10 @@ const Layout = (props) => {
     // Auth-user redirected from homepage to dashboard
     else if (!isLoading && session && router.pathname === '/') {
       Router.push('/dashboard');
-    }
-    // Non venmo user redirected to connect venmo
-    else if (
-      !isLoading &&
-      session &&
-      props?.user &&
-      (!props?.user?.venmo || props?.user?.venmo?.expiredAt) &&
-      !venmo
-    ) {
-      setVenmo(true);
-    } else if (session && props?.user?.venmo) {
+    } else if (!isLoading && session) {
+      if (props?.user && props?.user?.venmo?.expiredAt && !venmo) {
+        setVenmo(true);
+      }
       setIsAuth(true);
     }
   }, [props?.user, props?.user?.venmo, isLoading, session, router.pathname]);

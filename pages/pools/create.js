@@ -384,7 +384,7 @@ const PoolCreate = () => {
       if (!response?.ok) {
         setError(await response.text());
       } else {
-        setSuccess('Pool created successfully');
+        Router.push('/pools')
       }
       setSubmitting(false);
     } catch (err) {

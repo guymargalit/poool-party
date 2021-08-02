@@ -611,7 +611,7 @@ const Expense = (props) => {
       if (!response?.ok) {
         setError(await response.text());
       } else {
-        setSuccess('Requests Sent');
+        props.close();
       }
       setSubmitting(false);
     } catch (err) {
