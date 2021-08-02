@@ -244,17 +244,17 @@ const Layout = (props) => {
     } else {
       if (
         props?.user?.id &&
-        (!props?.user?.venmoVerified)
+        (!props?.user?.venmo || props?.user?.venmo?.expiredAt)
       ) {
         if (!venmo) {
           setVenmo(true);
         }
-      } else if(props?.user?.venmoVerified) {
+      } else if(props?.user?.id && props?.user?.venmo) {
         setIsAuth(true);
         setVenmo(false);
       }
     }
-  }, [props?.user?.id, props?.user?.venmoVerified, isLoading, session, router.pathname]);
+  }, [props?.user?.id, props?.user?.venmo, isLoading, session, router.pathname]);
 
   return (
     <Container>
@@ -283,7 +283,7 @@ const Layout = (props) => {
           <>
             {router.pathname === '/' ? (
               <>{props.children}</>
-            ) : props?.user?.venmoVerified ? (
+            ) : (props?.user?.venmo && !props?.user?.venmo?.expiredAt) ? (
               <WrapContent>
                 <Content
                   background={background}
@@ -297,7 +297,7 @@ const Layout = (props) => {
             ) : (
               <></>
             )}
-            <Navigation visible={isAuth && navigation && props?.user?.venmoVerified}>
+            <Navigation visible={isAuth && navigation && props?.user?.venmo && !props?.user?.venmo?.expiredAt}>
               <Bar>
                 <WrapItem
                   active={router.pathname === '/dashboard'}

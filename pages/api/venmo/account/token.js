@@ -101,7 +101,6 @@ export default async function handler(req, res) {
             expiredAt: true,
           },
         },
-        venmoVerified: true,
       },
     });
     return res.json({ user: user });

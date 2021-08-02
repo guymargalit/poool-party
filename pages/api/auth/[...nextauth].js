@@ -24,7 +24,6 @@ const options = {
         where: { id: token?.id },
         select: {
           id: true,
-          venmoVerified: true,
           venmo: {
             select: {
               id: true
@@ -32,7 +31,6 @@ const options = {
           },
         },
       });
-      session.user.venmoVerified = user?.venmoVerified;
       session.user.venmoId = user?.venmo?.id;
       return session;
     },
