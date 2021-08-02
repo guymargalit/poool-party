@@ -228,12 +228,6 @@ const Layout = (props) => {
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(false);
 
-  const [toy, setToy] = useState(props.user?.toy);
-  useEffect(
-    () => props.user?.toy && setToy(props.user?.toy),
-    [props.user?.toy]
-  );
-
   const isLoading = typeof window !== 'undefined' && loading;
 
   useEffect(() => {
@@ -270,8 +264,8 @@ const Layout = (props) => {
         </Modal>
       </WrapModal>
       <Hero background={background}>
-        {props?.user ? (
-          <Toy type={toy} position={{ x: '18%', y: '5%', z: 7 }} />
+        {props?.user?.toy ? (
+          <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !isLoading && !session && router.pathname === '/' ? (
           <Toys>
             {toys.map((toy, i) => (

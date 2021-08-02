@@ -49,7 +49,7 @@ export default async function handler(req, res) {
             username: u?.username,
             displayName: u?.display_name,
             image: u?.profile_picture_url,
-            expiredAt: new Date()
+            expiredAt: new Date(),
           },
         });
         await prisma.poolUser.create({
@@ -63,11 +63,30 @@ export default async function handler(req, res) {
 
     res.json(pool);
   } else if (req.method === 'GET') {
+    const session = await getSession({ req });
+
+    if (!session) {
+      return res.status(403).end();
+    }
     const result = await prisma.pool.findMany({
+      where: {
+        users: {
+          some: {
+            venmoId: {
+              contains: session?.user?.venmoId,
+            },
+          },
+        },
+      },
       select: {
         id: true,
         name: true,
-        users: { select: { venmo: { select: { image: true, username: true } } } },
+        users: {
+          select: {
+            venmoId: true,
+            venmo: { select: { image: true, username: true } },
+          },
+        },
       },
     });
     res.json(result);

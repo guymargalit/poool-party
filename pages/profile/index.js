@@ -68,9 +68,6 @@ const Avatar = styled.img`
   height: 50px;
   border-radius: 50px;
   margin-right: 10px;
-  @media (max-width: 675px) {
-    display: none;
-  }
 `;
 
 const Name = styled.div`
