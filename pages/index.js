@@ -103,7 +103,10 @@ const Home = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     setLoggingIn(true);
-    signIn('apple', { callbackUrl: 'https://poool.party/dashboard' });
+    signIn('apple', {
+      redirect: false,
+      callbackUrl: 'https://poool.party/dashboard',
+    });
   };
 
   return (
