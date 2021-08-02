@@ -247,13 +247,20 @@ const Layout = (props) => {
     // Auth-user redirected from homepage to dashboard
     else if (!isLoading && session && router.pathname === '/') {
       Router.push('/dashboard');
-    } else if (!isLoading && session) {
-      if (props?.user && props?.user?.venmo?.expiredAt && !venmo) {
-        setVenmo(true);
+    } else {
+      if (
+        props?.user?.id &&
+        (!props?.user?.venmoVerified)
+      ) {
+        if (!venmo) {
+          setVenmo(true);
+        }
+      } else if(props?.user?.venmoVerified) {
+        setIsAuth(true);
+        setVenmo(false);
       }
-      setIsAuth(true);
     }
-  }, [props?.user, props?.user?.venmo, isLoading, session, router.pathname]);
+  }, [props?.user?.id, props?.user?.venmoVerified, isLoading, session, router.pathname]);
 
   return (
     <Container>
@@ -282,7 +289,7 @@ const Layout = (props) => {
           <>
             {router.pathname === '/' ? (
               <>{props.children}</>
-            ) : (
+            ) : props?.user?.venmoVerified ? (
               <WrapContent>
                 <Content
                   background={background}
@@ -293,8 +300,10 @@ const Layout = (props) => {
                 </Content>
                 <Panel />
               </WrapContent>
+            ) : (
+              <></>
             )}
-            <Navigation visible={isAuth && navigation}>
+            <Navigation visible={isAuth && navigation && props?.user?.venmoVerified}>
               <Bar>
                 <WrapItem
                   active={router.pathname === '/dashboard'}

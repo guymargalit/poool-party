@@ -78,9 +78,33 @@ export default async function handler(req, res) {
         phone: response?.user?.phone,
         image: response?.user?.profile_picture_url,
         accessToken: response?.access_token,
-        expiredAt: null
+        expiredAt: null,
       },
     });
+    await prisma.user.update({
+      where: { id: session?.user?.id },
+      data: {
+        venmoVerified: new Date(),
+      },
+    });
+    const user = await prisma.user.findUnique({
+      where: { id: session?.user?.id },
+      select: {
+        id: true,
+        name: true,
+        toy: true,
+        venmo: {
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            expiredAt: true,
+          },
+        },
+        venmoVerified: true,
+      },
+    });
+    return res.json({ user: user });
   }
   res.json(response);
 }

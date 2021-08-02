@@ -45,7 +45,8 @@ export default async function handler(req, res) {
           id: true,
           name: true,
           createdAt: true,
-          total: true
+          total: true,
+          users: true
         }
       }
     },

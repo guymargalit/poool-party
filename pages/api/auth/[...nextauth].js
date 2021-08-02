@@ -13,15 +13,23 @@ const options = {
     async jwt(token, user) {
       // Add user id to the token right after signin
       if (user?.id) {
-        token.id = user.id
+        token.id = user.id;
       }
       return Promise.resolve(token);
     },
     async session(session, token) {
       // Add property to session
-      session.user.id = token.id
-      return session
-    }
+      session.user.id = token.id;
+      const user = await prisma.user.findUnique({
+        where: { id: token?.id },
+        select: {
+          id: true,
+          venmoVerified: true,
+        },
+      });
+      session.user.venmoVerified = user?.venmoVerified;
+      return session;
+    },
   },
   providers: [
     Providers.Apple({

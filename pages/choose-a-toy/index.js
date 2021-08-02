@@ -210,7 +210,8 @@ const Profile = ({ user }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      await mutate(updatedUser);
+      const response = await updatedUser?.json()
+      await mutate(response);
       setSubmitting(false);
     } catch (error) {
       console.error(error);

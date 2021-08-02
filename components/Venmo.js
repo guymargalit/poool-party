@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { IconVenmo } from '../icons';
 import Router from 'next/router';
+import useSWR from 'swr';
 
 const Title = styled.div`
   width: 100%;
@@ -163,6 +164,7 @@ const Venmo = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [deviceId, setDeviceId] = useState('');
+  const { mutate } = useSWR('/api/user');
   useEffect(async () => {
     const fpPromise = FingerprintJS.load();
     const fp = await fpPromise;
@@ -184,11 +186,12 @@ const Venmo = () => {
       body: JSON.stringify(body),
     });
     const response = await result?.json();
-    setLoading(false);
     if (response?.error) {
       setError(response.error);
+      setLoading(false);
     } else if (response?.user) {
-      setSuccess();
+      await mutate(response?.user);
+      setLoading(false);
       Router.push('/profile');
     }
   };
