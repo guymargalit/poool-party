@@ -28,8 +28,8 @@ const Svg = styled.svg`
   animation-timing-function: linear;
   fill: #54c0f9;
   z-index: 2;
-  position: fixed;
-  animation: 1s ease-out 0s 1 ${slideUp};
+  position: absolute;
+  /* animation: 1s ease-out 0s 1 ${slideUp}; */
 `;
 
 const Wave = (props) => {
