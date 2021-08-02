@@ -81,12 +81,6 @@ export default async function handler(req, res) {
         expiredAt: null,
       },
     });
-    await prisma.user.update({
-      where: { id: session?.user?.id },
-      data: {
-        venmoVerified: new Date(),
-      },
-    });
     const user = await prisma.user.findUnique({
       where: { id: session?.user?.id },
       select: {

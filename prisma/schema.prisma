@@ -115,7 +115,6 @@ model User {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   toy           String?
   settings      Json?
-  venmoVerified DateTime? @map(name: "venmo_verified")
 
   venmo Venmo? @relation(name: "venmo")
 
