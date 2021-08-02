@@ -50,7 +50,7 @@ const Content = styled.div`
   bottom: ${({ navigation }) =>
     navigation
       ? `65px`
-      : 'env(safe-area-inset-top)'};
+      : '0px'};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
   }
