@@ -75,7 +75,7 @@ const Dashboard = ({ user }) => {
         setTimeout(createNotification, 10000);
       }
     });
-  });
+  },[]);
   return (
     <Fragment>
       <Header>
