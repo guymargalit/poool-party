@@ -12,7 +12,7 @@ import Venmo from './Venmo';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   width: 100%;
   min-height: 100%;
   z-index: 1;
