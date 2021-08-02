@@ -3,6 +3,7 @@ import Router from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { signOut, useSession } from 'next-auth/client';
 import { IconLogout, IconPopper } from '../../icons';
+import Link from 'next/link'
 
 const Content = styled.div`
   display: flex;
@@ -86,6 +87,7 @@ const Label = styled.div`
 
 const Footer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -207,6 +209,9 @@ const Profile = ({ user }) => {
             Choose a pool toy
             <Popper />
           </Button>
+          <Link href="venmo://users/guymargalit">
+            Open Venmo
+          </Link>
         </Footer>
       </Content>
     </Fragment>
