@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { IconPartyFace, IconPopper } from '../../icons';
 
@@ -63,7 +63,19 @@ const WrapPopper = styled.div`
   transition: all 0.25s ease 0s;
 `;
 
-const Dashboard = ({user}) => {
+const Dashboard = ({ user }) => {
+  const createNotification = () => {
+    new Notification("You've got a notification", {
+      body: "Wow that's sweet!'",
+    });
+  };
+  useEffect(() => {
+    Notification.requestPermission().then((result) => {
+      if (result === 'granted') {
+        setTimeout(createNotification, 10000);
+      }
+    });
+  });
   return (
     <Fragment>
       <Header>
