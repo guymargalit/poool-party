@@ -10,6 +10,15 @@ const swell = keyframes`
   }
 `;
 
+const slideUp = keyframes`
+  0% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+`;
+
 const Svg = styled.svg`
   width: 200%;
   animation-name: ${swell};
@@ -19,7 +28,8 @@ const Svg = styled.svg`
   animation-timing-function: linear;
   fill: #54c0f9;
   z-index: 2;
-  position: absolute;
+  position: fixed;
+  animation: 1s ease-out 0s 1 ${slideUp};
 `;
 
 const Wave = (props) => {

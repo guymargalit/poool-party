@@ -75,7 +75,7 @@ const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function App({ Component, pageProps }) {
   const initialData = pageProps.user;
   const { data } = useSWR('/api/user', fetcher, { initialData });
-  const [navigation, setNavigation] = useState(true);
+  const [navigation, setNavigation] = useState(false);
   return (
     <Provider session={pageProps.session}>
       <Head>

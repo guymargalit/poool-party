@@ -12,7 +12,7 @@ import Venmo from './Venmo';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   width: 100%;
   min-height: 100%;
   z-index: 1;
@@ -226,14 +226,14 @@ const Layout = (props) => {
   const [venmo, setVenmo] = useState(false);
 
   const [height, setHeight] = useState('50%');
-  const [background, setBackground] = useState(false);
+  const [background, setBackground] = useState(true);
 
   const isLoading = typeof window !== 'undefined' && loading;
 
   useEffect(() => {
-    setNavigation(routes[router.pathname]?.navigation);
+    setNavigation((isLoading || !session || !props?.user?.id) ? false : routes[router.pathname]?.navigation);
     setHeight(routes[router.pathname]?.height);
-    setBackground(routes[router.pathname]?.background);
+    setBackground((isLoading || !session || !props?.user?.id) ? true : routes[router.pathname]?.background);
     // Non-auth user can only access homepage
     if (!isLoading && !session && router.pathname !== '/') {
       Router.push('/');
