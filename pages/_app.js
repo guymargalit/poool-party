@@ -11,14 +11,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     overflow: hidden;
-    background-color: #8fd0fa;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
       -webkit-tap-highlight-color: rgba(0,0,0,0);
-      /* background: ${({ navigation }) =>
+      background: ${({ navigation }) =>
         navigation
           ? 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #FFFFFF 50%, #FFFFFF 100%)'
-          : 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #54c0f9 50%, #54c0f9 100%)'}; */
+          : 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 50%, #54c0f9 50%, #54c0f9 100%)'};
   }
   a {
   color: inherit;
