@@ -33,7 +33,6 @@ model Expense {
   lastRequest   DateTime? @default(now()) @map(name: "last_request")
   active        Boolean   @default(true)
 
-  requests Request[]     @relation(name: "expense_requests")
   users    ExpenseUser[] @relation(name: "expense_users")
 
   @@map(name: "expenses")
@@ -49,6 +48,7 @@ model ExpenseUser {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
+  requests Request[] @relation(name: "expense_user_requests")
   @@map(name: "expenseusers")
 }
 
@@ -59,18 +59,16 @@ enum Status {
 }
 
 model Request {
-  id        Int      @id @default(autoincrement())
-  name      String
-  amount    Float
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-  expense   Expense  @relation(name: "expense_requests", fields: [expenseId], references: [id])
-  expenseId Int      @map(name: "expense_id")
-  user      PoolUser @relation("requests", fields: [userId], references: [id])
-  userId    Int      @map(name: "user_id")
-  status    Status   @default(pending)
-  paid      Boolean  @default(false)
-  paymentId String?  @map(name: "payment_id")
+  id            Int          @id @default(autoincrement())
+  name          String
+  amount        Float
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  expenseUser   ExpenseUser? @relation("expense_user_requests", fields: [expenseUserId], references: [id])
+  expenseUserId Int?         @map(name: "expense_user_id")
+  status        Status       @default(pending)
+  paid          Boolean      @default(false)
+  paymentId     String?      @map(name: "payment_id")
 
   @@map(name: "requests")
 }
@@ -99,7 +97,6 @@ model PoolUser {
   venmoId String? @map(name: "venmo_id")
 
   expenses ExpenseUser[] @relation(name: "expenses")
-  requests Request[]     @relation(name: "requests")
 
   @@unique([userId, venmoId, poolId], name: "userpoolvenmoId")
   @@map(name: "poolusers")

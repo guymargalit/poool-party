@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Router from 'next/router';
 import { useRouter } from 'next/router';
-import Expense from '../../components/Expense';
+import Expense from '../../../components/Expense';
 import {
   IconEmpty,
   IconLeftChevron,
@@ -11,7 +11,7 @@ import {
   IconPopper,
   IconRightChevron,
   IconSettings,
-} from '../../icons';
+} from '../../../icons';
 import currency from 'currency.js';
 import Skeleton from 'react-loading-skeleton';
 
@@ -309,64 +309,49 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const Pool = (props) => {
+const PoolExpense = (props) => {
   const router = useRouter();
-  const { id } = router.query;
-  const [pool, setPool] = useState(props?.pool);
+  const { id, eid } = router.query;
+  const [expense, setExpense] = useState(props?.expense);
   const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState(false);
 
-  const getPool = async () => {
-    const response = await fetch(`/api/pools/${id}`, {
+  const getPoolExpense = async () => {
+    const response = await fetch(`/api/expenses/${eid}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
-    setPool(await response.json());
+    setExpense(await response.json());
     setLoading(false);
   };
   useEffect(() => {
-    getPool();
+    getPoolExpense();
   }, []);
 
   return (
     <Fragment>
       <Header>
-        <LeftChevron onClick={() => Router.push('/pools')} />
+        <LeftChevron onClick={() => Router.push(`/pools/${id}`)} />
         {loading ? (
           <Skeleton height={20} width={150} />
         ) : (
-          <Title>{pool?.name}</Title>
+          <Title>{expense?.name}</Title>
         )}
         <Settings />
       </Header>
       <WrapContent>
         <Content>
           <Section>
-            <Subtitle>Your Party</Subtitle>
-            <List>
-              {loading
-                ? Array(2)
-                    .fill(0)
-                    .map((u, i) => (
-                      <WrapAvatar key={i}>
-                        <Skeleton circle={true} height={40} width={40} />
-                        <Name>
-                          <Skeleton width={40} />
-                        </Name>
-                      </WrapAvatar>
-                    ))
-                : pool?.users?.map((u, i) => (
-                    <WrapAvatar key={i}>
-                      <Avatar src={u?.venmo?.image} />
-                      <Name>{u?.venmo?.displayName?.split(' ')[0]}</Name>
-                    </WrapAvatar>
-                  ))}
-              {/* {!loading && <WrapPlus>
-                <Plus />
-              </WrapPlus>} */}
-            </List>
+            <Subtitle>Expense</Subtitle>
+            <Item onClick={() => {}} key={expense?.id}>
+              <Info>
+                <Label>{expense?.name}</Label>
+                <Description>{formatter.format(expense?.total)}</Description>
+              </Info>
+              <RightChevron />
+            </Item>
           </Section>
-          <Subtitle>Expenses</Subtitle>
+          <Subtitle>Requests</Subtitle>
           <Items>
             {loading ? (
               Array(3)
@@ -384,14 +369,12 @@ const Pool = (props) => {
                     <RightChevron loading={loading} />
                   </Item>
                 ))
-            ) : pool?.expenses?.length > 0 ? (
-              pool?.expenses?.map((expense) => (
-                <Item onClick={() => {}} key={expense?.id}>
+            ) : expense?.requests?.length > 0 ? (
+              expense?.requests?.map((r) => (
+                <Item onClick={() => {}} key={r?.id}>
                   <Info>
-                    <Label>{expense?.name}</Label>
-                    <Description>
-                      {formatter.format(expense?.total)}
-                    </Description>
+                    <Label>{r?.name}</Label>
+                    <Description>{formatter.format(r?.amount)}</Description>
                   </Info>
                   <RightChevron />
                 </Item>
@@ -401,28 +384,16 @@ const Pool = (props) => {
                 <WrapPartyFace>
                   <IconPartyFace />
                 </WrapPartyFace>
-                <Text>You've got no expenses!</Text>
+                <Text>You've got no requests!</Text>
               </Area>
             ) : (
               <></>
             )}
           </Items>
         </Content>
-        <Panel panel={panel}>
-          {panel ? (
-            <Expense pool={pool} {...props} close={() => setPanel(false)} />
-          ) : (
-            <Footer>
-              <Button onClick={() => setPanel(true)}>
-                New Expense
-                <Popper />
-              </Button>
-            </Footer>
-          )}
-        </Panel>
       </WrapContent>
     </Fragment>
   );
 };
 
-export default Pool;
+export default PoolExpense;
