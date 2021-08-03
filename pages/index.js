@@ -62,7 +62,6 @@ const Button = styled.div`
   display: flex;
   text-align: center;
   padding: 0.7rem 1.8rem;
-  text-transform: capitalize;
   animation: 1s ease-out 0s 1 ${slide};
   align-items: center;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
@@ -106,18 +105,37 @@ const Home = () => {
     signIn('apple', { callbackUrl: 'https://poool.party/dashboard' });
   };
 
+  const handleAddToHomescreenClick = () => {
+    alert(`
+      1. Open Share menu in Safari
+      2. Tap on "Add to Home Screen" button`);
+  };
+
+  const isIos = () => {
+    var t = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(t);
+  };
+
+  const isInStandaloneMode = () => {
+    return 'standalone' in window.navigator && window.navigator.standalone;
+  };
+
   return (
     <Content>
       <Title>poool.party</Title>
       <Subtitle>Do stuff with Venmo, but easier</Subtitle>
-      <Button onClick={handleLogin}>
-        Get Started{' '}
-        {loggingIn && (
-          <Svg viewBox="0 0 50 50">
-            <Circle cx="25" cy="25" r="20"></Circle>
-          </Svg>
-        )}
-      </Button>
+      {typeof window !== 'undefined' && isIos() && !isInStandaloneMode() ? (
+        <Button onClick={handleAddToHomescreenClick}>Install on iOS</Button>
+      ) : (
+        <Button onClick={handleLogin}>
+          Get Started{' '}
+          {loggingIn && (
+            <Svg viewBox="0 0 50 50">
+              <Circle cx="25" cy="25" r="20"></Circle>
+            </Svg>
+          )}
+        </Button>
+      )}
     </Content>
   );
 };

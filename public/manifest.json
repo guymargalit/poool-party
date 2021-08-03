@@ -1,16 +1,17 @@
 {
-    "name": "Poool Party",
-    "short_name": "Poool Party",
-    "description": "Poool Party",
-    "display": "fullscreen",
-    "start_url": "/",
-    "background_color": "#54c0f9",
-    "theme_color": "#5a489b",
-    "icons": [
-      {
-        "src": "favicon.png",
-        "sizes": "167x167",
-        "type": "image/png"
-      }
-    ]
-  }
+  "name": "Poool Party",
+  "short_name": "Poool Party",
+  "description": "Poool Party",
+  "display": "fullscreen",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "background_color": "#54c0f9",
+  "theme_color": "#5a489b",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "167x167",
+      "type": "image/png"
+    }
+  ]
+}
