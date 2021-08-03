@@ -186,7 +186,7 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
-const Pools = ({user}) => {
+const Pools = ({ user }) => {
   const getPools = async () => {
     const response = await fetch('/api/pools', {
       method: 'GET',
@@ -255,7 +255,11 @@ const Pools = ({user}) => {
             <WrapPartyFace>
               <IconPartyFace />
             </WrapPartyFace>
-            <Text>You've got no pools!</Text>
+            <Text>
+              {user?.venmo
+                ? "You've got no pools!"
+                : 'Link your Venmo to start making pools!'}
+            </Text>
           </Area>
         )}
       </Content>

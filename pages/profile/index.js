@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { signOut, useSession } from 'next-auth/client';
-import { IconLogout, IconPopper } from '../../icons';
+import { IconLogout, IconPopper, IconVenmo, IconVenmoLogo } from '../../icons';
 import Link from 'next/link';
 
 const Content = styled.div`
@@ -51,7 +51,7 @@ const VenmoWrap = styled.div`
   padding: 0 15px;
   background-color: #0074de;
   user-select: none;
-  cursor: pointer;
+  cursor: ${({link}) => link ? 'pointer':'inherit'};
 `;
 
 const Info = styled.div`
@@ -133,7 +133,7 @@ const Button = styled.div`
   }
 `;
 
-const VenmoIcon = styled.svg`
+const VenmoIcon = styled(IconVenmo)`
   fill: #0074de;
   width: 20px;
   height: 20px;
@@ -141,14 +141,14 @@ const VenmoIcon = styled.svg`
   font-size: 1.5rem;
   flex-shrink: 0;
   user-select: none;
-  margin-right: 10px;
+  margin-right: 8px;
   transition: all 0.25s ease 0s;
 `;
 
 const VenmoButton = styled.div`
   display: flex;
   text-align: center;
-  min-width: 150px;
+  min-width: 160px;
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -171,6 +171,12 @@ const VenmoButton = styled.div`
   }
 `;
 
+const VenmoLogo = styled(IconVenmoLogo)`
+  height: 23px;
+  margin-left: 10px;
+`;
+
+
 const Logout = styled(IconLogout)`
   width: 28px;
   cursor: pointer;
@@ -188,17 +194,20 @@ const handleLogout = (e) => {
   signOut({ callbackUrl: process.env.APP_URL });
 };
 
-const Profile = ({ user }) => {
+const Profile = ({ user, setVenmo }) => {
   return (
     <Fragment>
       <Header>
-        <Title>What's up, {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}</Title>
+        <Title>
+          What's up,{' '}
+          {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}
+        </Title>
         <Logout onClick={handleLogout} />
       </Header>
       <Content>
-        {user?.venmo && (
+        {user?.venmo ? (
           <Link href={`venmo://users/${user?.venmo?.id}`}>
-            <VenmoWrap>
+            <VenmoWrap link>
               <Info>
                 <Avatar src={user?.venmo?.image} />
                 <WrapText>
@@ -208,6 +217,17 @@ const Profile = ({ user }) => {
               </Info>
             </VenmoWrap>
           </Link>
+        ) : (
+          <VenmoWrap>
+            <Info>
+              <VenmoLogo />
+            </Info>
+            <VenmoButton onClick={() => setVenmo(true)}>
+              {' '}
+              <VenmoIcon />
+              Link Account
+            </VenmoButton>
+          </VenmoWrap>
         )}
         <Footer>
           <Button onClick={() => Router.push('/choose-a-toy')}>

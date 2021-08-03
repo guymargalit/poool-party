@@ -279,7 +279,12 @@ const Layout = (props) => {
     <Container>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
-          <Venmo close={() => setHideVenmo(true)} />
+          <Venmo
+            close={() => {
+              setHideVenmo(true);
+              setVenmo(false);
+            }}
+          />
         </Modal>
       </WrapModal>
       <Hero background={background}>
@@ -309,7 +314,7 @@ const Layout = (props) => {
                   navigation={navigation}
                   height={height}
                 >
-                  {props.children}
+                  {React.cloneElement(props.children, { setVenmo })}
                 </Content>
                 <Panel />
               </WrapContent>
