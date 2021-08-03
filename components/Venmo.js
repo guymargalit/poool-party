@@ -276,6 +276,7 @@ const Venmo = (props) => {
               placeholder="EMAIL, MOBILE, OR USERNAME"
               type="text"
               value={username}
+              autoComplete="username"
             />
           </Label>
           <Label>
@@ -285,6 +286,7 @@ const Venmo = (props) => {
               placeholder="PASSWORD"
               type="password"
               value={password}
+              autoComplete="current-password"
             />
           </Label>
           <VenmoButton onClick={getToken}>
