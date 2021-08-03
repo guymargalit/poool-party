@@ -68,6 +68,11 @@ export default async function handler(req, res) {
     if (!session) {
       return res.status(403).end();
     }
+
+    if(!session?.user?.venmoId) {
+      return res.json([]);
+    }
+
     const result = await prisma.pool.findMany({
       where: {
         users: {

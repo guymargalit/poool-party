@@ -186,7 +186,7 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
-const Pools = () => {
+const Pools = ({user}) => {
   const getPools = async () => {
     const response = await fetch('/api/pools', {
       method: 'GET',
@@ -206,7 +206,7 @@ const Pools = () => {
     <Fragment>
       <Header>
         <Title>Pools</Title>
-        <Plus onClick={() => Router.push('/pools/create')} />
+        {user?.venmo && <Plus onClick={() => Router.push('/pools/create')} />}
       </Header>
       <Content>
         {loading ? (

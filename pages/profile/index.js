@@ -192,21 +192,23 @@ const Profile = ({ user }) => {
   return (
     <Fragment>
       <Header>
-        <Title>What's up, {user?.venmo?.displayName?.split(' ')[0]}</Title>
+        <Title>What's up, {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}</Title>
         <Logout onClick={handleLogout} />
       </Header>
       <Content>
-        <Link href={`venmo://users/${user?.venmo?.id}`}>
-          <VenmoWrap>
-            <Info>
-              <Avatar src={user?.venmo?.image} />
-              <WrapText>
-                <Name>{user?.venmo?.displayName}</Name>
-                <Label>@{user?.venmo?.username}</Label>
-              </WrapText>
-            </Info>
-          </VenmoWrap>
-        </Link>
+        {user?.venmo && (
+          <Link href={`venmo://users/${user?.venmo?.id}`}>
+            <VenmoWrap>
+              <Info>
+                <Avatar src={user?.venmo?.image} />
+                <WrapText>
+                  <Name>{user?.venmo?.displayName}</Name>
+                  <Label>@{user?.venmo?.username}</Label>
+                </WrapText>
+              </Info>
+            </VenmoWrap>
+          </Link>
+        )}
         <Footer>
           <Button onClick={() => Router.push('/choose-a-toy')}>
             Choose a pool toy

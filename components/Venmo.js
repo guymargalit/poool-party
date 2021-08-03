@@ -156,7 +156,18 @@ const VenmoButton = styled.div`
   }
 `;
 
-const Venmo = () => {
+const Caption = styled.div`
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  width: 100%;
+  margin: 10px 0px;
+  color: #888;
+  cursor: pointer;
+  text-align: center;
+`;
+
+const Venmo = (props) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOTP] = useState(undefined);
@@ -287,6 +298,7 @@ const Venmo = () => {
               </>
             )}
           </VenmoButton>
+          <Caption onClick={() => props.close()}>not now</Caption>
         </Form>
       )}
     </Fragment>

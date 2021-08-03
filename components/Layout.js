@@ -47,7 +47,8 @@ const Content = styled.div`
   overflow: hidden;
   transition: all 0.5s ease 0s;
   height: ${({ height }) =>
-    `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` || '50%'};
+    `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` ||
+    '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
     height: calc(100vh - 100px);
@@ -90,7 +91,8 @@ const Navigation = styled.nav`
   border-top: ${({ visible }) =>
     visible ? '1px solid rgb(221, 221, 221)' : '0px'};
   bottom: 0px;
-  height: ${({ visible }) => (visible ? 'calc(65px + env(safe-area-inset-bottom))' : '0px')};
+  height: ${({ visible }) =>
+    visible ? 'calc(65px + env(safe-area-inset-bottom))' : '0px'};
   left: 0px;
   overflow: hidden;
   position: fixed;
@@ -224,6 +226,7 @@ const Layout = (props) => {
   const [session, loading] = useSession();
   const [isAuth, setIsAuth] = useState(false);
   const [venmo, setVenmo] = useState(false);
+  const [hideVenmo, setHideVenmo] = useState(false);
 
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
@@ -231,9 +234,17 @@ const Layout = (props) => {
   const isLoading = typeof window !== 'undefined' && loading;
 
   useEffect(() => {
-    setNavigation((isLoading || !session || !props?.user?.id) ? false : routes[router.pathname]?.navigation);
+    setNavigation(
+      isLoading || !session || !props?.user?.id
+        ? false
+        : routes[router.pathname]?.navigation
+    );
     setHeight(routes[router.pathname]?.height);
-    setBackground((isLoading || !session || !props?.user?.id) ? true : routes[router.pathname]?.background);
+    setBackground(
+      isLoading || !session || !props?.user?.id
+        ? true
+        : routes[router.pathname]?.background
+    );
     // Non-auth user can only access homepage
     if (!isLoading && !session && router.pathname !== '/') {
       Router.push('/');
@@ -244,23 +255,31 @@ const Layout = (props) => {
     } else {
       if (
         props?.user?.id &&
+        !hideVenmo &&
         (!props?.user?.venmo || props?.user?.venmo?.expiredAt)
       ) {
         if (!venmo) {
           setVenmo(true);
         }
-      } else if(props?.user?.id && props?.user?.venmo) {
+      } else if (props?.user?.id && (props?.user?.venmo || hideVenmo)) {
         setIsAuth(true);
         setVenmo(false);
       }
     }
-  }, [props?.user?.id, props?.user?.venmo, isLoading, session, router.pathname]);
+  }, [
+    props?.user?.id,
+    props?.user?.venmo,
+    hideVenmo,
+    isLoading,
+    session,
+    router.pathname,
+  ]);
 
   return (
     <Container>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
-          <Venmo />
+          <Venmo close={() => setHideVenmo(true)} />
         </Modal>
       </WrapModal>
       <Hero background={background}>
@@ -283,7 +302,7 @@ const Layout = (props) => {
           <>
             {router.pathname === '/' ? (
               <>{props.children}</>
-            ) : (props?.user?.venmo && !props?.user?.venmo?.expiredAt) ? (
+            ) : (
               <WrapContent>
                 <Content
                   background={background}
@@ -294,10 +313,8 @@ const Layout = (props) => {
                 </Content>
                 <Panel />
               </WrapContent>
-            ) : (
-              <></>
             )}
-            <Navigation visible={isAuth && navigation && props?.user?.venmo && !props?.user?.venmo?.expiredAt}>
+            <Navigation visible={isAuth && navigation}>
               <Bar>
                 <WrapItem
                   active={router.pathname === '/dashboard'}
