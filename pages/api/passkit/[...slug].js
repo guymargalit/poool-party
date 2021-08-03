@@ -14,5 +14,5 @@ export default async function handler(req, res) {
     },
   });
 
-  res.status(200).send(['8j23fm3']);
+  res.status(200).send({'lastUpdated':'123','serialNumbers':['8j23fm3']});
 }
