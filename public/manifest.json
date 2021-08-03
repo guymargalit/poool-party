@@ -3,7 +3,7 @@
   "short_name": "Poool Party",
   "description": "Poool Party",
   "display": "fullscreen",
-  "start_url": "/dashboard",
+  "start_url": "/",
   "scope": "/",
   "background_color": "#54c0f9",
   "theme_color": "#5a489b",
