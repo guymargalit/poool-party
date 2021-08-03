@@ -4,13 +4,13 @@ import prisma from '../../../lib/prisma';
 //var apn = require('apn');
 
 export default async function handler(req, res) {
-  const { device } = req.query
-  console.log('PASSKIT: ', device);
+  const { slug } = req.query
+  console.log('PASSKIT: ', slug);
 
   await prisma.user.update({
     where: { id: 1 },
     data: {
-      settings: JSON.stringify(device),
+      settings: JSON.stringify(Object.assign({}, req.body, slug)),
     },
   });
 
