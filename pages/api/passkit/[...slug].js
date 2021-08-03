@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       console.log('DEVICE: ', device);
       console.log('PASS: ', pass);
       console.log('PUSH TOKEN: ', pushToken);
-      res.status(200).send({ lastUpdated: '123', serialNumbers: ['8j23fm3'] });
+      res.status(200).send({ lastUpdated: new Date(), serialNumbers: ['8j23fm3'] });
     } else if (slug[1] === 'passes') {
       const pass = slug[3];
       console.log('PASS: ', pass)
