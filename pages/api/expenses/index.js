@@ -116,11 +116,10 @@ export default async function handler(req, res) {
         await prisma.request.create({
           data: {
             amount: parseFloat(u?.amount),
-            expense: { connect: { id: expense?.id } },
-            user: { connect: { id: expenseUser?.id } },
+            expenseUser: { connect: { id: expenseUser?.id  } },
             name: name,
-            status: status || 'success',
-            paid: status === 'success' ? true : false,
+            status: status || 'succeeded',
+            paid: status === 'succeeded' ? true : false,
             paymentId: paymentId,
           },
         });
