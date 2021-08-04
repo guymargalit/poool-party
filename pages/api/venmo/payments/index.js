@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     where: { id: session?.user?.id },
     select: {
       id: true,
-      venmo: { select: { accessToken: true } },
+      venmo: { select: { id: true, accessToken: true } },
     },
   });
 
@@ -48,8 +48,14 @@ export default async function handler(req, res) {
     },
     body: JSON.stringify(body),
   });
-  console.log(result)
   const response = await result.json();
-  console.log(response)
-  res.json(response);
+
+  if (response?.error) {
+    await prisma.venmo.update({
+      data: { expiredAt: new Date() },
+      where: { id: user?.venmo?.id },
+    });
+  }
+
+  return res.json(response);
 }

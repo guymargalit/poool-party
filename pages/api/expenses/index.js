@@ -111,6 +111,14 @@ export default async function handler(req, res) {
               }),
             });
             const response = await result.json();
+
+            if (response?.error) {
+              await prisma.venmo.update({
+                data: { expiredAt: new Date() },
+                where: { id: user?.venmo?.id },
+              });
+            }
+
             status = response?.data?.payment?.status || 'failed';
             paymentId = response?.data?.payment?.id;
           }
