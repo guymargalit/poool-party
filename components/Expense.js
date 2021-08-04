@@ -1,6 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Router from 'next/router';
 import {
   IconClose,
   IconEmpty,
@@ -30,7 +29,7 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 155px);
+  height: calc(100% - 155px - env(safe-area-inset-top));
   overflow-y: auto;
 `;
 
