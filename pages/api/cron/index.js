@@ -46,7 +46,6 @@ export default async function handler(req, res) {
               userId: true,
               user: {
                 select: {
-                  userId: true,
                   venmo: { select: { id: true, accessToken: true } },
                 },
               },
@@ -55,7 +54,8 @@ export default async function handler(req, res) {
 
           for (const expenseUser of expenseUsers) {
             // Don't create venmo request for expense creator
-            if (expenseUser?.user?.userId !== expense?.creatorId) {
+            let paymentId, status;
+            if (expenseUser?.userId !== expense?.creatorId) {
               // Start venmo request
               const result = await fetch('https://api.venmo.com/v1/payments', {
                 method: 'POST',
@@ -71,27 +71,29 @@ export default async function handler(req, res) {
                 }),
               });
               const response = await result.json();
-
-              await prisma.request.create({
-                data: {
-                  amount: parseFloat(expenseUser?.amount),
-                  expense: { connect: { id: expense?.id } },
-                  user: { connect: { id: expenseUser?.userId } },
-                  name: expense?.name,
-                  status: response?.data?.payment?.status || 'failed',
-                  paid: false,
-                  paymentId: response?.data?.payment?.id,
-                },
-              });
+              status = response?.data?.payment?.status || 'failed';
+              paymentId = response?.data?.payment?.id;
             }
 
-            await prisma.expense.update({
-              where: { id: expense?.id },
+            await prisma.request.create({
               data: {
-                lastRequest: new Date(),
+                amount: parseFloat(expenseUser?.amount),
+                expense: { connect: { id: expense?.id } },
+                user: { connect: { id: expenseUser?.id } },
+                name: expense?.name,
+                status: status || 'success',
+                paid: status === 'success' ? true : false,
+                paymentId: paymentId,
               },
             });
           }
+
+          await prisma.expense.update({
+            where: { id: expense?.id },
+            data: {
+              lastRequest: new Date(),
+            },
+          });
         }
 
         return res.status(200).json({ success: true });

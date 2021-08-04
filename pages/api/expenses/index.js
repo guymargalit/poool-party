@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     where: { id: session?.user?.id },
     select: {
       id: true,
-      venmo: { select: { accessToken: true } },
+      venmo: { select: { id: true, accessToken: true } },
     },
   });
 
@@ -44,10 +44,19 @@ export default async function handler(req, res) {
     return res.status(400).send('Total required');
   }
 
+  const expenseCreator = await prisma.poolUser.findUnique({
+    where: { venmopoolId: `${user?.venmo?.id}${pool?.id}` },
+    select: {
+      id: true,
+      venmoId: true,
+      poolId: true,
+    },
+  });
+
   const expense = await prisma.expense.create({
     data: {
       name: name,
-      creator: { connect: { id: session?.user?.id } },
+      creator: { connect: { id: expenseCreator?.id } },
       pool: { connect: { id: pool?.id } },
       active: true,
       total: parseFloat(total),
@@ -63,14 +72,13 @@ export default async function handler(req, res) {
         where: { id: parseInt(u?.id) },
         select: {
           id: true,
-          userId: true,
           venmoId: true,
           poolId: true,
         },
       });
 
       if (poolUser) {
-        await prisma.expenseUser.create({
+        const expenseUser = await prisma.expenseUser.create({
           data: {
             amount: parseFloat(u?.amount),
             expense: { connect: { id: expense?.id } },
@@ -79,7 +87,8 @@ export default async function handler(req, res) {
         });
 
         // Don't create venmo request for expense creator
-        if (poolUser?.userId !== expense?.creatorId) {
+        let paymentId, status;
+        if (poolUser?.id !== expense?.creatorId) {
           // Start venmo request
           const result = await fetch('https://api.venmo.com/v1/payments', {
             method: 'POST',
@@ -95,19 +104,21 @@ export default async function handler(req, res) {
             }),
           });
           const response = await result.json();
-
-          await prisma.request.create({
-            data: {
-              amount: parseFloat(u?.amount),
-              expense: { connect: { id: expense?.id } },
-              user: { connect: { id: poolUser?.id } },
-              name: name,
-              status: response?.data?.payment?.status || 'failed',
-              paid: false,
-              paymentId: response?.data?.payment?.id,
-            },
-          });
+          status = response?.data?.payment?.status || 'failed';
+          paymentId = response?.data?.payment?.id;
         }
+
+        await prisma.request.create({
+          data: {
+            amount: parseFloat(u?.amount),
+            expense: { connect: { id: expense?.id } },
+            user: { connect: { id: expenseUser?.id } },
+            name: name,
+            status: status || 'success',
+            paid: status === 'success' ? true : false,
+            paymentId: paymentId,
+          },
+        });
       }
     }
   }

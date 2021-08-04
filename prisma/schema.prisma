@@ -21,7 +21,7 @@ model Expense {
   id            Int       @id @default(autoincrement())
   name          String
   total         Float
-  creator       User      @relation("expenses_created", fields: [creatorId], references: [id])
+  creator       PoolUser  @relation("expenses_created", fields: [creatorId], references: [id])
   creatorId     Int       @map(name: "creator_id")
   pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
   poolId        Int?      @map(name: "pool_id")
@@ -33,7 +33,7 @@ model Expense {
   lastRequest   DateTime? @default(now()) @map(name: "last_request")
   active        Boolean   @default(true)
 
-  users    ExpenseUser[] @relation(name: "expense_users")
+  users ExpenseUser[] @relation(name: "expense_users")
 
   @@map(name: "expenses")
 }
@@ -76,8 +76,8 @@ model Request {
 model Pool {
   id        Int      @id @default(autoincrement())
   name      String
-  creator   User     @relation(name: "pools_created", fields: [creatorId], references: [id])
-  creatorId Int      @map(name: "creator_id")
+  user   Venmo    @relation(name: "pools_created", fields: [userId], references: [id])
+  userId String   @map(name: "creator_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
@@ -89,16 +89,15 @@ model Pool {
 
 model PoolUser {
   id      Int     @id @default(autoincrement())
-  user    User?   @relation("pools", fields: [userId], references: [id])
-  userId  Int?    @map(name: "user_id")
   pool    Pool    @relation("users", fields: [poolId], references: [id])
   poolId  Int     @map(name: "pool_id")
   venmo   Venmo?  @relation("venmos", fields: [venmoId], references: [id])
   venmoId String? @map(name: "venmo_id")
 
-  expenses ExpenseUser[] @relation(name: "expenses")
+  expenses        ExpenseUser[] @relation(name: "expenses")
+  expensesCreated Expense[]     @relation(name: "expenses_created")
 
-  @@unique([userId, venmoId, poolId], name: "userpoolvenmoId")
+  @@unique([venmoId, poolId], name: "venmopoolId")
   @@map(name: "poolusers")
 }
 
@@ -114,10 +113,6 @@ model User {
   settings      Json?
 
   venmo Venmo? @relation(name: "venmo")
-
-  pools        PoolUser[] @relation(name: "pools")
-  poolsCreated Pool[]     @relation(name: "pools_created")
-  expenses     Expense[]  @relation(name: "expenses_created")
 
   @@map(name: "users")
 }
@@ -136,7 +131,8 @@ model Venmo {
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @updatedAt @map(name: "updated_at")
 
-  poolUsers PoolUser[] @relation(name: "venmos")
+  poolUsers    PoolUser[] @relation(name: "venmos")
+  poolsCreated Pool[]     @relation(name: "pools_created")
 
   @@map(name: "venmos")
 }
