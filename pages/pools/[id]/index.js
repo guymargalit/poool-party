@@ -388,7 +388,7 @@ const Pool = (props) => {
               pool?.expenses?.map((expense) => (
                 <Item
                   onClick={() =>
-                    Router.push(`/pools/${pool?.id}/${expense?.id}`)
+                    Router.push(`/pools/${pool?.id}/expenses/${expense?.id}`)
                   }
                   key={expense?.id}
                 >

@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Router from 'next/router';
 import { useRouter } from 'next/router';
-import Expense from '../../../components/Expense';
+import Expense from '../../../../components/Expense';
 import {
   IconEmpty,
   IconLeftChevron,
@@ -11,9 +11,10 @@ import {
   IconPopper,
   IconRightChevron,
   IconSettings,
-} from '../../../icons';
+} from '../../../../icons';
 import currency from 'currency.js';
 import Skeleton from 'react-loading-skeleton';
+import moment from 'moment';
 
 const WrapContent = styled.div`
   width: 100%;
@@ -243,6 +244,7 @@ const Item = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   margin: 1px 0;
   height: 70px;
   width: 100%;
@@ -274,13 +276,56 @@ const Label = styled.div`
   text-transform: capitalize;
 `;
 
-const Info = styled.div`
+const Left = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
+`;
+
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 const Description = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 5px;
+`;
+
+const Status = styled.div`
+  font-size: 12px;
+  text-transform: uppercase;
+  display: inline-flex;
+  text-align: center;
+  padding: 0 0.375rem;
+  align-items: center;
+  box-shadow: 
+    0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: #222;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case 'pending':
+        return '#ffb54d';
+      case 'failed':
+        return '#e18b96';
+      case 'success':
+        return '#73cec6';
+      default:
+        return '#e1ddec';
+    }
+  }};
+  border-radius: 0.25rem;
+  margin: 0;
+  line-height: 1rem;
+  font-weight: 700;
+`;
+
+const Date = styled.div`
   display: flex;
   align-items: center;
   font-weight: 500;
@@ -343,13 +388,25 @@ const PoolExpense = (props) => {
         <Content>
           <Section>
             <Subtitle>Expense</Subtitle>
-            <Item onClick={() => {}} key={expense?.id}>
-              <Info>
-                <Label>{expense?.name}</Label>
-                <Description>{formatter.format(expense?.total)}</Description>
-              </Info>
-              <RightChevron />
-            </Item>
+            {loading ? (
+              <Item>
+                <Left>
+                  <Label>
+                    <Skeleton width={120} />
+                  </Label>
+                  <Description>
+                    <Skeleton width={40} />
+                  </Description>
+                </Left>
+              </Item>
+            ) : (
+              <Item key={expense?.id}>
+                <Left>
+                  <Label>{expense?.name}</Label>
+                  <Description>{formatter.format(expense?.total)}</Description>
+                </Left>
+              </Item>
+            )}
           </Section>
           <Subtitle>Requests</Subtitle>
           <Items>
@@ -358,27 +415,31 @@ const PoolExpense = (props) => {
                 .fill(0)
                 .map((u, i) => (
                   <Item key={i}>
-                    <Info>
+                    <Left>
                       <Label>
                         <Skeleton width={120} />
                       </Label>
                       <Description>
                         <Skeleton width={40} />
                       </Description>
-                    </Info>
-                    <RightChevron loading={loading} />
+                    </Left>
                   </Item>
                 ))
-            ) : expense?.requests?.length > 0 ? (
-              expense?.requests?.map((r) => (
-                <Item onClick={() => {}} key={r?.id}>
-                  <Info>
-                    <Label>{r?.name}</Label>
-                    <Description>{formatter.format(r?.amount)}</Description>
-                  </Info>
-                  <RightChevron />
-                </Item>
-              ))
+            ) : expense?.users?.length > 0 ? (
+              expense?.users?.map((u) =>
+                u?.requests?.map((r) => (
+                  <Item onClick={() => {}} key={u?.id}>
+                    <Left>
+                      <Label>{u?.user?.venmo?.displayName}</Label>
+                      <Description>{formatter.format(u?.amount)}</Description>
+                    </Left>
+                    <Right>
+                      <Status status={r?.status}>{r?.status}</Status>
+                      <Date>{moment(r?.createdAt).format('M/D/YY h:mmA')}</Date>
+                    </Right>
+                  </Item>
+                ))
+              )
             ) : !loading ? (
               <Area>
                 <WrapPartyFace>

@@ -29,6 +29,8 @@ export default async function handler(req, res) {
       total: true,
       users: {
         select: {
+          id: true,
+          amount: true,
           user: {
             select: {
               venmo: {
