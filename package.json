@@ -19,6 +19,7 @@
     "moment": "^2.29.1",
     "next": "10.x",
     "next-auth": "^3.27.3",
+    "next-pwa": "^5.2.24",
     "react": "17.x",
     "react-currency-input-field": "^3.4.2",
     "react-dom": "17.x",

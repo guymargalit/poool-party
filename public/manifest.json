@@ -3,6 +3,7 @@
   "short_name": "Poool Party",
   "description": "Poool Party",
   "display": "fullscreen",
+  "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
   "background_color": "#54c0f9",
