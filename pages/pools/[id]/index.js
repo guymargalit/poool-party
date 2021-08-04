@@ -327,7 +327,7 @@ const Pool = (props) => {
   };
   useEffect(() => {
     getPool();
-  }, [panel]);
+  }, []);
 
   return (
     <Fragment>
@@ -416,7 +416,14 @@ const Pool = (props) => {
         </Content>
         <Panel panel={panel}>
           {panel ? (
-            <Expense pool={pool} {...props} close={() => setPanel(false)} />
+            <Expense
+              pool={pool}
+              {...props}
+              close={() => {
+                setPanel(false);
+                getPool();
+              }}
+            />
           ) : (
             <Footer>
               <Button onClick={() => setPanel(true)}>
