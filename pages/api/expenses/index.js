@@ -45,7 +45,12 @@ export default async function handler(req, res) {
   }
 
   const expenseCreator = await prisma.poolUser.findUnique({
-    where: { venmopoolId: `${user?.venmo?.id}${pool?.id}` },
+    where: {
+      venmopoolId: {
+        venmoId: user?.venmo?.id,
+        poolId: pool?.id,
+      },
+    },
     select: {
       id: true,
       venmoId: true,
