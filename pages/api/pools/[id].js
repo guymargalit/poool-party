@@ -29,13 +29,13 @@ export default async function handler(req, res) {
       users: {
         select: {
           id: true,
-          user: { select: { toy: true } },
           venmo: {
             select: {
               id: true,
               username: true,
               displayName: true,
               image: true,
+              user: { select: { toy: true } },
             },
           },
         },
