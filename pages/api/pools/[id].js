@@ -44,11 +44,13 @@ export default async function handler(req, res) {
         select: {
           id: true,
           name: true,
+          active: true,
+          paid: true,
           createdAt: true,
+          interval: true,
           total: true,
-          users: true
-        }
-      }
+        },
+      },
     },
   });
   res.json(pool);

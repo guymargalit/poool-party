@@ -32,6 +32,8 @@ model Expense {
   startDate     DateTime  @default(now()) @map(name: "start_date")
   lastRequest   DateTime? @default(now()) @map(name: "last_request")
   active        Boolean   @default(true)
+  amount        Float?
+  paid          Boolean   @default(false)
 
   users ExpenseUser[] @relation(name: "expense_users")
 
@@ -56,6 +58,7 @@ enum Status {
   succeeded
   pending
   failed
+  cancelled
 }
 
 model Request {
@@ -67,7 +70,6 @@ model Request {
   expenseUser   ExpenseUser? @relation("expense_user_requests", fields: [expenseUserId], references: [id])
   expenseUserId Int?         @map(name: "expense_user_id")
   status        Status       @default(pending)
-  paid          Boolean      @default(false)
   paymentId     String?      @map(name: "payment_id")
 
   @@map(name: "requests")
@@ -76,8 +78,8 @@ model Request {
 model Pool {
   id        Int      @id @default(autoincrement())
   name      String
-  venmo      Venmo    @relation(name: "pools_created", fields: [venmoId], references: [id])
-  venmoId    String   @map(name: "venmo_id")
+  venmo     Venmo    @relation(name: "pools_created", fields: [venmoId], references: [id])
+  venmoId   String   @map(name: "venmo_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 

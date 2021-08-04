@@ -231,7 +231,7 @@ const Layout = (props) => {
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
 
-  const isLoading = typeof window !== 'undefined' && loading;
+  const isLoading = typeof window !== 'undefined' && loading && !props.error && !props.user;
 
   useEffect(() => {
     setNavigation(
@@ -269,6 +269,7 @@ const Layout = (props) => {
   }, [
     props?.user?.id,
     props?.user?.venmo,
+    props?.error,
     hideVenmo,
     isLoading,
     session,

@@ -316,7 +316,7 @@ const Status = styled.div`
       case 'succeeded':
         return '#00C851';
       default:
-        return '#e1ddec';
+        return '#aaaaaa';
     }
   }};
   border-radius: 0.25rem;

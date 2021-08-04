@@ -284,10 +284,15 @@ const Info = styled.div`
 const Description = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 8px;
+`;
+
+const Total = styled.div`
+  display: flex;
+  align-items: center;
   font-weight: 500;
   text-align: center;
   font-size: 12px;
-  margin-top: 5px;
 `;
 
 const WrapPartyFace = styled.div`
@@ -305,10 +310,33 @@ const Area = styled.div`
   user-select: none;
 `;
 
+const Badge = styled.div`
+  font-size: 10px;
+  text-transform: uppercase;
+  display: inline-flex;
+  text-align: center;
+  padding: 0 0.2rem;
+  align-items: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: #fefefe;
+  background-color: ${({ paid }) => (paid ? '#00C851' : '#aaaaaa')};
+  border-radius: 0.25rem;
+  margin-left: 10px;
+  line-height: 1rem;
+  font-weight: 700;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+const intervalOptions = {
+  month: 'Monthly',
+  week: 'Weekly',
+  [null]: 'One Time',
+};
 
 const Pool = (props) => {
   const router = useRouter();
@@ -396,7 +424,13 @@ const Pool = (props) => {
                   <Info>
                     <Label>{expense?.name}</Label>
                     <Description>
-                      {formatter.format(expense?.total)}
+                      <Total>{formatter.format(expense?.total)}</Total>
+                      {expense?.interval && (
+                        <Badge>{intervalOptions[expense?.interval]}</Badge>
+                      )}
+                      {expense?.paid && (
+                        <Badge paid>Paid</Badge>
+                      )}
                     </Description>
                   </Info>
                   <RightChevron />
