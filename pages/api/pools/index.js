@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     const pool = await prisma.pool.create({
       data: {
         name: name,
-        creator: { connect: { id: session?.user?.id } },
+        venmo: { connect: { id: user?.venmo?.id } },
       },
     });
     // Join creator to pool
