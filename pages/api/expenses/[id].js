@@ -54,13 +54,6 @@ export default async function handler(req, res) {
       );
       const response = await result.json();
 
-      if (response?.error) {
-        await prisma.venmo.update({
-          data: { expiredAt: new Date() },
-          where: { id: user?.venmo?.id },
-        });
-      }
-
       if (response?.data?.status) {
         await prisma.request.update({
           where: { id: request?.id },
