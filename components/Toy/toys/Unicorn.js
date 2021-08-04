@@ -191,6 +191,7 @@ const Unicorn = ({ spots }) => {
               })`}
               id="Layer_11"
               data-name="Layer 11"
+              key={i}
             >
               <path
                 fill="#8d8d8d"

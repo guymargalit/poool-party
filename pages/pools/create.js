@@ -453,7 +453,7 @@ const PoolCreate = () => {
           <List>
             {result?.map((u) => (
               <Item onClick={() => addUser(u)} key={u?.id}>
-                <Image src={u?.profile_picture_url} />
+                <Image alt="profile_picture" src={u?.profile_picture_url} />
                 <Info>
                   <FullName>{u?.display_name}</FullName>
                   <Username>@{u?.username}</Username>
@@ -465,7 +465,7 @@ const PoolCreate = () => {
         {users?.length > 0 && <Subtitle>Your Party</Subtitle>}
         <PartyList>
           {users.map((u) => (
-            <WrapAvatar>
+            <WrapAvatar key={u?.id}>
               <Avatar src={u?.profile_picture_url} />
               <Name>{u?.first_name}</Name>
             </WrapAvatar>

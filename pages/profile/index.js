@@ -206,7 +206,7 @@ const Profile = ({ user, setVenmo }) => {
       </Header>
       <Content>
         {user?.venmo ? (
-          <Link href={`venmo://users/${user?.venmo?.id}`}>
+          <Link passHref href={`venmo://users/${user?.venmo?.id}`}>
             <VenmoWrap link>
               <Info>
                 <Avatar src={user?.venmo?.image} />
