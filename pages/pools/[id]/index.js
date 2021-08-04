@@ -346,6 +346,7 @@ const Pool = (props) => {
   const [panel, setPanel] = useState(false);
 
   const getPool = async () => {
+    setLoading(true);
     const response = await fetch(`/api/pools/${id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },

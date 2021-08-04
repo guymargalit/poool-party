@@ -22,6 +22,12 @@ export default async function handler(req, res) {
             },
             OR: [
               {
+                interval: 'day',
+                lastRequest: {
+                  lte: moment().subtract(1, 'days').toDate(),
+                },
+              },
+              {
                 interval: 'week',
                 lastRequest: {
                   lte: moment().subtract(7, 'days').toDate(),
@@ -81,7 +87,6 @@ export default async function handler(req, res) {
                 expenseUser: { connect: { id: expenseUser?.id } },
                 name: expense?.name,
                 status: status || 'succeeded',
-                paid: status === 'succeeded' ? true : false,
                 paymentId: paymentId,
               },
             });

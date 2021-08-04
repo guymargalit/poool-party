@@ -359,9 +359,9 @@ const PoolExpense = (props) => {
   const { id, eid } = router.query;
   const [expense, setExpense] = useState(props?.expense);
   const [loading, setLoading] = useState(true);
-  const [panel, setPanel] = useState(false);
 
   const getPoolExpense = async () => {
+    setLoading(true)
     const response = await fetch(`/api/expenses/${eid}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
