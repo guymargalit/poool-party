@@ -29,7 +29,7 @@ const Title = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 75px);
+  height: calc(100% - 75px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 

@@ -23,7 +23,7 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 155px);
+  height: calc(100% - 155px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -228,7 +228,7 @@ const Button = styled.div`
 
 const Items = styled.div`
   width: 100%;
-  height: calc(100% - 150px);
+  height: calc(100% - 150px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -306,15 +306,15 @@ const Status = styled.div`
   box-shadow: 
     0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  color: #222;
+  color: #fefefe;
   background-color: ${({ status }) => {
     switch (status) {
       case 'pending':
         return '#ffb54d';
       case 'failed':
-        return '#e18b96';
-      case 'success':
-        return '#73cec6';
+        return '#ed5f74';
+      case 'succeeded':
+        return '#00C851';
       default:
         return '#e1ddec';
     }

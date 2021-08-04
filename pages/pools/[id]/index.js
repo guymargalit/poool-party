@@ -22,7 +22,7 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 155px);
+  height: calc(100% - 155px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -187,6 +187,7 @@ const Footer = styled.div`
   flex: 1;
   justify-content: center;
   border-top: 1px solid rgb(221, 221, 221);
+  background-color: #ffffff;
 `;
 
 const Popper = styled(IconPopper)`
@@ -227,7 +228,7 @@ const Button = styled.div`
 
 const Items = styled.div`
   width: 100%;
-  height: calc(100% - 150px);
+  height: calc(100% - 150px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -326,7 +327,7 @@ const Pool = (props) => {
   };
   useEffect(() => {
     getPool();
-  }, []);
+  }, [panel]);
 
   return (
     <Fragment>

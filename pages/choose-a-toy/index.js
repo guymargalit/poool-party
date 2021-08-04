@@ -5,7 +5,7 @@ import useSWR from 'swr';
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 70px);
+  height: calc(100% - 70px - env(safe-area-inset-bottom));
   overflow-y: auto;
   padding: 0 35px;
   @media (max-width: 675px) {
