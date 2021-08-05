@@ -18,13 +18,13 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   padding-top: env(safe-area-inset-top);
-  background-color: ${({ theme }) => theme.palette.dark.abisko};
+  background-color: ${({ theme }) => theme.colors.purple};
 `;
 
 const WrapContent = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.bg.content};
 `;
 
 const Content = styled.div`
@@ -49,7 +49,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: #444;
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: 16px;
   margin-top: 10px;
 `;
@@ -64,8 +64,8 @@ const Header = styled.div`
     padding: 0 20px;
   }
   height: 75px;
-  background-color: ${({ theme }) => theme.palette.dark.abisko};
-  border-bottom: 1px solid #eeeeee;
+  background-color: ${({ theme }) => theme.colors.purple};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const Empty = styled(IconEmpty)`
@@ -80,7 +80,7 @@ const Close = styled(IconClose)`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.palette.dark.skyGray};
+      fill: ${({ theme }) => theme.button.hover};
     }
   }
 `;
@@ -101,7 +101,7 @@ const Section = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 0 20px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const List = styled.div`
@@ -124,7 +124,7 @@ const Name = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: #555;
+  color: ${({ theme }) => theme.text.tertiary};
   margin: 5px 0 0;
 `;
 
@@ -145,9 +145,9 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   background-color: ${({ disabled, theme }) =>
-    disabled ? '#aaa' : theme.palette.dark.abisko};
+    disabled ? theme.colors.disabled : theme.colors.purple};
   padding: 0 10px;
   border-radius: 24px;
   font-weight: 600;
@@ -162,7 +162,7 @@ const Button = styled.div`
   @media (hover: hover) and (pointer: fine) {
     :hover {
       background-color: ${({ disabled, theme }) =>
-        !disabled && theme.palette.dark.skyGray};
+        !disabled && theme.button.hover};
     }
     &:hover ${Popper} {
       transform: rotate(-10deg);
@@ -212,7 +212,7 @@ const Loader = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: #fff;
+  stroke: ${({ theme }) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -225,7 +225,7 @@ const Success = styled.div`
   justify-content: center;
   width: 100%;
   font-weight: 400;
-  color: ${({ theme }) => theme.palette.dark.monteverde};
+  color: $ ${({ theme }) => theme.colors.purple};
   text-align: center;
   font-size: 14px;
   margin-top: 5px;
@@ -247,8 +247,8 @@ const WrapFooter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 255, 255);
-  border-top: 1px solid rgb(221, 221, 221);
+  background-color: ${({ theme }) => theme.nav.bg};
+  border-top: 1px solid ${({ theme }) => theme.nav.border};
   bottom: 0px;
   width: 100%;
   height: calc(80px + env(safe-area-inset-bottom));
@@ -272,7 +272,7 @@ const Label = styled.div`
   margin-left: 5px;
   font-weight: 500;
   font-size: 15px;
-  color: #333;
+  color: ${({ theme }) => theme.text.secondary};
   flex: 6;
 `;
 
@@ -282,7 +282,8 @@ const WrapInput = styled.div`
   font-weight: 400;
   align-items: center;
   width: 100%;
-  background-color: #eeeeee;
+  color: ${({ theme }) => theme.text.secondary};
+  background-color: ${({ theme }) => theme.bg.border};
   padding: 13px 10px;
   margin: 10px 0;
   min-height: 1px;
@@ -316,12 +317,12 @@ const Split = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: #eeeeee;
+  background-color: ${({ theme }) => theme.bg.item};
   padding: 8px;
 `;
 
 const WrapAmount = styled.div`
-  background-color: #e2e2e2;
+  background-color: ${({ theme }) => theme.bg.border};
   border-radius: 8px;
   min-width: 75px;
   flex: 1;
@@ -333,7 +334,7 @@ const WrapAmount = styled.div`
 `;
 
 const Amount = styled(CurrencyInput)`
-  color: #333;
+  color: ${({ theme }) => theme.text.secondary};
   padding-left: 5px;
   background-color: transparent;
   font-size: 16px;
@@ -354,11 +355,11 @@ const Venmo = styled(IconVenmo)`
 const Lock = styled(IconLock)`
   width: 20px;
   margin-left: 5px;
-  fill: #333;
+  fill: ${({ theme }) => theme.text.secondary};
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.palette.dark.abisko};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -366,11 +367,11 @@ const Lock = styled(IconLock)`
 const Unlock = styled(IconUnlock)`
   width: 20px;
   margin-left: 5px;
-  fill: #333;
+  fill: ${({ theme }) => theme.text.secondary};
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.palette.dark.abisko};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -379,8 +380,8 @@ const WrapSelect = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #444;
-  background-color: #eeeeee;
+  color: ${({ theme }) => theme.text.tertiary};
+  background-color: ${({ theme }) => theme.bg.border};
   border-radius: 8px;
   height: 40px;
   transition: all 0.25s ease 0s;
@@ -390,7 +391,7 @@ const WrapSelect = styled.div`
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: #e2e2e2;
+      background-color: ${({ theme }) => theme.bg.item};
     }
   }
 `;
@@ -399,8 +400,8 @@ const WrapDate = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #444;
-  background-color: #eeeeee;
+  color: ${({ theme }) => theme.text.tertiary};
+  background-color: ${({ theme }) => theme.bg.border};
   border-radius: 8px;
   height: 40px;
   padding: 0 10px;
@@ -411,7 +412,7 @@ const WrapDate = styled.div`
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: #e2e2e2;
+      background-color: ${({ theme }) => theme.bg.item};
     }
   }
   text-align: center;
@@ -421,7 +422,7 @@ const DateInput = styled.input`
   width: 100%;
   cursor: pointer;
   font-weight: 500;
-  color: #444;
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -476,7 +477,7 @@ const Modal = styled.div`
   align-items: center;
   z-index: 999;
   width: 100%;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.bg.content};
   bottom: 0px;
   border-radius: 18px;
   border-bottom-left-radius: 0px;

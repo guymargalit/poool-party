@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   min-height: 100%;
   z-index: 1;
-  background-color: #54c0f9;
+  background-color: ${({theme}) => theme.bg.wave};
   overflow: hidden;
 `;
 
@@ -39,7 +39,7 @@ const Content = styled.div`
   align-items: center;
   flex: 1;
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color:  ${({theme}) => theme.bg.content};
   border-radius: ${({ background }) => (background ? '38px' : '0px')};
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -62,7 +62,7 @@ const Content = styled.div`
 
 const Panel = styled.div`
   height: 65px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color:  ${({theme}) => theme.bg.content};
   width: 100%;
   bottom: 0;
 `;
@@ -71,7 +71,7 @@ const Hero = styled.div`
   display: ${({ background }) => (background ? 'flex' : 'none')};
   flex-direction: column;
   justify-content: flex-end;
-  background-color: #8fd0fa;
+  background-color:  ${({theme}) => theme.bg.sky};
   overflow: hidden;
   position: relative;
   height: 300px;
@@ -87,9 +87,9 @@ const Toys = styled.div`
 
 const Navigation = styled.nav`
   align-items: center;
-  background-color: rgb(255, 255, 255);
-  border-top: ${({ visible }) =>
-    visible ? '1px solid rgb(221, 221, 221)' : '0px'};
+  background-color:  ${({theme}) => theme.nav.bg};
+  border-top: ${({ visible, theme }) =>
+    visible ? `1px solid ${theme.nav.border}` : '0px'};
   bottom: 0px;
   height: ${({ visible }) =>
     visible ? 'calc(65px + env(safe-area-inset-bottom))' : '0px'};
@@ -133,22 +133,22 @@ const WrapItem = styled.div`
   outline: none;
   align-items: center;
   border-radius: 8px;
-  color: ${(props) =>
-    props.active ? `rgb(34, 34, 34)` : `rgb(113, 113, 113)`};
+  color: ${({active, theme}) =>
+    active ? theme.text.primary : theme.nav.text};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      color: rgb(34, 34, 34);
+      color: ${({theme}) => theme.text.primary};
     }
   }
   ${Item} {
-    color: ${(props) =>
-      props.active
-        ? `${props.theme.palette.dark.abisko}`
-        : `rgb(176, 176, 176)`};
+    color: ${({active, theme}) =>
+      active
+        ? theme.colors.purple
+        : theme.nav.icon};
   }
   @media (hover: hover) and (pointer: fine) {
     :hover ${Item} {
-      color: ${(props) => props.theme.palette.dark.abisko};
+      color: ${({theme}) => theme.colors.purple};
     }
   }
   cursor: pointer;
@@ -192,7 +192,7 @@ const Modal = styled.div`
   align-items: center;
   z-index: 999;
   width: 100%;
-  background-color: #fff;
+  background-color: ${({theme}) => theme.bg.content};
   border-radius: 18px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -223,6 +223,7 @@ const toys = [
 const Layout = (props) => {
   const router = useRouter();
   const { navigation, setNavigation } = props;
+  const { setDark } = props;
   const [session, loading] = useSession();
   const [isAuth, setIsAuth] = useState(false);
   const [venmo, setVenmo] = useState(false);
@@ -319,7 +320,7 @@ const Layout = (props) => {
                   navigation={navigation}
                   height={height}
                 >
-                  {React.cloneElement(props.children, { setVenmo })}
+                  {React.cloneElement(props.children, { setVenmo, setDark })}
                 </Content>
                 <Panel />
               </WrapContent>

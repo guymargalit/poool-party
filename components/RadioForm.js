@@ -21,13 +21,13 @@ const Radio = styled.label`
   padding-left: 10px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: ${(props) =>
-    props.checked ? `${props.theme.palette.dark.abisko}` : 'transparent'};
-  color: ${(props) => (props.checked ? '#fff' : '#222')};
+  background-color: ${({theme, checked}) =>
+    checked ? theme.colors.purple : 'transparent'};
+  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.abisko};
-      color: #fff;
+      background-color: ${({theme}) => theme.colors.purple};
+      color: ${({theme}) => theme.colors.white};
     }
   }
 `;

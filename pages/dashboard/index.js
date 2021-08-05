@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { IconPartyFace, IconPopper } from '../../icons';
 
@@ -15,14 +15,14 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   @media (max-width: 675px) {
@@ -36,7 +36,7 @@ const Subtitle = styled.div`
   align-items: center;
   width: 100%;
   font-weight: 300;
-  color: #444;
+  color: ${({theme}) => theme.text.tertiary};
   text-align: center;
   font-size: 18px;
   max-width: 400px;
@@ -46,7 +46,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {
@@ -76,6 +76,17 @@ const WrapPopper = styled.div`
 `;
 
 const Dashboard = ({ user }) => {
+  // const [requests, setRequests] = useState([]);
+  // useEffect(() => {
+  //   const getRequests = async () => {
+  //     const response = await fetch(`/api/venmo/requests`, {
+  //       method: 'GET',
+  //       headers: { 'Content-Type': 'application/json' },
+  //     });
+  //     setRequests(await response.json());
+  //   };
+  //   getRequests();
+  // }, []);
   return (
     <Fragment>
       <Header>

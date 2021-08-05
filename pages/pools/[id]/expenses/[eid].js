@@ -31,7 +31,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -43,7 +43,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: #444;
+  color: ${({theme}) => theme.text.tertiary};
   font-size: 16px;
   margin: 10px 0;
   padding: 0 35px;
@@ -56,7 +56,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {
@@ -71,18 +71,18 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
   user-select: none;
 `;
 
 const LeftChevron = styled(IconLeftChevron)`
   width: 28px;
   cursor: pointer;
-  fill: #222;
+  fill: ${({theme}) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${(props) => props.theme.palette.dark.abisko};
+      fill: ${({theme}) => theme.colors.purple};
     }
   }
 `;
@@ -91,7 +91,7 @@ const Settings = styled(IconEmpty)`
   width: 28px;
   height: 28px;
   /* cursor: pointer; */
-  fill: #222;
+  fill: ${({theme}) => theme.text.primary};
   transition: all 0.25s ease 0s;
   /* :hover {
     fill: ${(props) => props.theme.palette.dark.abisko};
@@ -101,7 +101,7 @@ const Settings = styled(IconEmpty)`
 const Plus = styled(IconPlus)`
   width: 24px;
   height: 24px;
-  fill: #555;
+  fill: ${({theme}) => theme.text.tertiary};
   transition: all 0.25s ease 0s;
 `;
 
@@ -130,7 +130,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 
 const List = styled.div`
@@ -166,64 +166,11 @@ const Avatar = styled.img`
   border-radius: 40px;
 `;
 
-const Panel = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255);
-  bottom: 0px;
-  width: 100%;
-  height: ${({ panel }) => (panel ? '100%' : '80px')};
-  position: ${({ panel }) => (panel ? 'fixed' : 'absolute')};
-  transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
-  user-select: none;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  padding: 0 35px calc(env(safe-area-inset-bottom));
-  @media (max-width: 675px) {
-    padding: 0 10px calc(env(safe-area-inset-bottom));
-  }
-  flex: 1;
-  justify-content: center;
-  border-top: 1px solid rgb(221, 221, 221);
-`;
-
 const Popper = styled(IconPopper)`
   width: 20px;
   margin-left: 6px;
   margin-bottom: 2px;
   transition: all 0.25s ease 0s;
-`;
-
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.palette.dark.abisko};
-  padding: 0 10px;
-  margin: 15px 0;
-  border-radius: 24px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 16px;
-  text-transform: capitalize;
-  height: 50px;
-  width: 100%;
-  user-select: none;
-  cursor: pointer;
-  transition: all 0.25s ease 0s;
-  max-width: 1040px;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      background-color: ${(props) => props.theme.palette.dark.skyGray};
-    }
-    &:hover ${Popper} {
-      transform: rotate(-10deg);
-    }
-  }
 `;
 
 const Items = styled.div`
@@ -236,7 +183,7 @@ const RightChevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({ loading }) => (loading ? '#e2e2e2' : '#555')};
+  fill: ${({ loading, theme }) => (loading ? '#e2e2e2' : theme.text.quarternary)};
   transition: all 0.25s ease 0s;
 `;
 
@@ -254,15 +201,15 @@ const Item = styled.div`
   }
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-top: 1px solid #eeeeee;
-  color: ${(props) => (props.checked ? '#fff' : '#222')};
+  border-top: 1px solid ${({theme}) => theme.bg.border};
+  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.abisko};
-      color: #fff;
+      background-color: ${({theme}) => theme.colors.purple};
+      color: ${({theme}) => theme.colors.white};
     }
     :hover ${RightChevron} {
-      fill: #fff;
+      fill: ${({theme}) => theme.colors.white};
     }
   }
 `;
@@ -306,17 +253,17 @@ const Status = styled.div`
   box-shadow: 
     0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  color: #fefefe;
-  background-color: ${({ status }) => {
+    color: ${({theme}) => theme.colors.white};
+  background-color: ${({ status, theme }) => {
     switch (status) {
       case 'pending':
-        return '#ffb54d';
+        return theme.colors.pending;
       case 'failed':
-        return '#ed5f74';
+        return theme.colors.error;
       case 'succeeded':
-        return '#00C851';
+        return theme.colors.success;
       default:
-        return '#aaaaaa';
+        return theme.colors.disabled;
     }
   }};
   border-radius: 0.25rem;

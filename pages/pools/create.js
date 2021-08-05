@@ -14,7 +14,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: rgb(255, 255, 255);
+  background-color: ${({theme}) => theme.bg.content};
   bottom: 0px;
   width: 100%;
   height: 100%;
@@ -38,7 +38,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -50,7 +50,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: #444;
+  color: ${({theme}) => theme.text.tertiary};
   font-size: 16px;
   margin-top: 10px;
 `;
@@ -66,8 +66,8 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.palette.dark.abisko};
+  color: ${({theme}) => theme.colors.white};
+  background-color: ${({theme}) => theme.colors.purple};
   padding: 0 10px;
   border-radius: 24px;
   font-weight: 600;
@@ -81,7 +81,7 @@ const Button = styled.div`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.skyGray};
+      background-color: ${({theme}) => theme.button.hover};
     }
     &:hover ${Popper} {
       transform: rotate(-10deg);
@@ -96,7 +96,7 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 
 const Label = styled.label`
@@ -104,7 +104,7 @@ const Label = styled.label`
   font-size: 15px;
   width: 100%;
   margin: 10px 0px;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
 `;
 
 const WrapInput = styled.div`
@@ -113,7 +113,7 @@ const WrapInput = styled.div`
   font-weight: 400;
   align-items: center;
   width: 100%;
-  background-color: #eeeeee;
+  background-color: ${({theme}) => theme.bg.border};
   padding: 13px 10px;
   margin: 10px 0;
   min-height: 1px;
@@ -123,7 +123,7 @@ const WrapInput = styled.div`
 const Search = styled(IconSearch)`
   width: 16px;
   height: 16px;
-  fill: #666;
+  fill: ${({theme}) => theme.text.quarternary};
 `;
 
 const Input = styled.input`
@@ -150,11 +150,11 @@ const Warning = styled(IconWarning)`
 const Chevron = styled(IconLeftChevron)`
   width: 24px;
   cursor: pointer;
-  fill: #222;
+  fill: ${({theme}) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${(props) => props.theme.palette.dark.abisko};
+      fill: ${({theme}) => theme.colors.purple};
     }
   }
 `;
@@ -193,7 +193,7 @@ const Loader = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: #fff;
+  stroke: ${({theme}) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -206,7 +206,7 @@ const Success = styled.div`
   justify-content: center;
   width: 100%;
   font-weight: 400;
-  color: ${({ theme }) => theme.palette.dark.monteverde};
+  color:${({theme}) => theme.colors.success};
   text-align: center;
   font-size: 14px;
   margin-top: 5px;
@@ -228,17 +228,17 @@ const Item = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: solid #ddd 1px;
+  border-bottom: solid 1px ${({theme}) => theme.bg.border};
   height: 50px;
   padding: 0 15px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: #eeeeee;
-  color: ${(props) => (props.checked ? '#fff' : '#222')};
+  background-color: ${({theme}) => theme.bg.border};
+  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.abisko};
-      color: #fff;
+      background-color: ${({theme}) => theme.colors.purple};
+      color: ${({theme}) => theme.colors.white};
     }
   }
 `;
@@ -262,7 +262,7 @@ const FullName = styled.div`
   align-items: center;
   font-weight: 600;
   font-size: 15px;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
 `;
 
 const Username = styled.div`
@@ -270,7 +270,7 @@ const Username = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: #666;
+  color: ${({theme}) => theme.text.quarternary};
 `;
 
 const WrapList = styled.div`
@@ -306,7 +306,7 @@ const Name = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: #555;
+  color: ${({theme}) => theme.text.quarternary};
   margin: 5px 0 0;
 `;
 
@@ -320,8 +320,8 @@ const WrapFooter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(255, 255, 255);
-  border-top: 1px solid rgb(221, 221, 221);
+  background-color: ${({theme}) => theme.bg.content};
+  border-top: 1px solid ${({theme}) => theme.bg.border};
   bottom: 0px;
   width: 100%;
   height: calc(80px + env(safe-area-inset-bottom));

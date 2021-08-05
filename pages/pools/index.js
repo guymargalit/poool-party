@@ -11,14 +11,14 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -37,20 +37,20 @@ const Chevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({ loading }) => (loading ? '#e2e2e2' : '#555')};
+  fill: ${({ loading, theme }) => (loading ? '#e2e2e2' : theme.text.quarternary)};
   transition: all 0.25s ease 0s;
 `;
 
 const Plus = styled(IconAdd)`
   display: block;
-  fill: #333;
+  fill: ${({theme}) => theme.text.tertiary};
   transition: all 0.25s ease 0s;
   width: 32px;
   height: 32px;
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${(props) => props.theme.palette.dark.abisko};
+      fill: ${({theme}) => theme.colors.purple};
     }
   }
 `;
@@ -65,15 +65,15 @@ const Item = styled.div`
   padding: 0 35px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-bottom: 1px solid #eeeeee;
-  color: ${(props) => (props.checked ? '#fff' : '#222')};
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.abisko};
-      color: #fff;
+      background-color: ${({theme}) => theme.colors.purple};
+      color: ${({theme}) => theme.colors.white};
     }
     :hover ${Chevron} {
-      fill: #fff;
+      fill: ${({theme}) => theme.colors.white};
     }
   }
 `;
@@ -117,7 +117,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {

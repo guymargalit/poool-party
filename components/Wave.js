@@ -26,7 +26,7 @@ const Svg = styled.svg`
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  fill: #54c0f9;
+  fill: ${({theme}) => theme.bg.wave};
   z-index: 2;
   position: absolute;
   /* animation: 1s ease-out 0s 1 ${slideUp}; */

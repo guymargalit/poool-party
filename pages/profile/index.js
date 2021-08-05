@@ -24,7 +24,7 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   user-select: none;
 `;
 
@@ -32,7 +32,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -51,7 +51,7 @@ const VenmoWrap = styled.div`
   padding: 0 15px;
   background-color: #0074de;
   user-select: none;
-  cursor: ${({link}) => link ? 'pointer':'inherit'};
+  cursor: ${({ link }) => (link ? 'pointer' : 'inherit')};
 `;
 
 const Info = styled.div`
@@ -75,7 +75,7 @@ const Avatar = styled.img`
 const Name = styled.div`
   display: flex;
   font-weight: 500;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   font-size: 20px;
 `;
 
@@ -83,7 +83,7 @@ const Label = styled.div`
   display: flex;
   font-weight: 700;
   font-size: 14px;
-  color: ${(props) => props.theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const Footer = styled.div`
@@ -106,8 +106,8 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.palette.dark.abisko};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.purple};
   padding: 0 10px;
   margin: 15px 0;
   border-radius: 24px;
@@ -122,7 +122,7 @@ const Button = styled.div`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.skyGray};
+      background-color: ${({ theme }) => theme.button.hover};
     }
     &:hover ${Popper} {
       transform: rotate(-10deg);
@@ -153,7 +153,7 @@ const VenmoButton = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 10px;
-  background-color: ${(props) => props.theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 24px;
   font-weight: 600;
   color: #0074de;
@@ -162,11 +162,11 @@ const VenmoButton = styled.div`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      color: ${(props) => props.theme.colors.white};
+      color: ${({ theme }) => theme.colors.white};
       background-color: #00d791;
     }
     &:hover ${VenmoIcon} {
-      fill: ${(props) => props.theme.colors.white};
+      fill: ${({ theme }) => theme.colors.white};
     }
   }
 `;
@@ -176,15 +176,14 @@ const VenmoLogo = styled(IconVenmoLogo)`
   margin-left: 10px;
 `;
 
-
 const Logout = styled(IconLogout)`
   width: 28px;
   cursor: pointer;
-  fill: #222;
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${(props) => props.theme.palette.dark.abisko};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -194,10 +193,10 @@ const handleLogout = (e) => {
   signOut({ callbackUrl: process.env.APP_URL });
 };
 
-const Profile = ({ user, setVenmo }) => {
+const Profile = ({ user, setVenmo, dark, setDark }) => {
   return (
     <Fragment>
-      <Header>
+      <Header onClick={setDark}>
         <Title>
           What's up,{' '}
           {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}

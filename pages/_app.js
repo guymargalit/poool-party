@@ -5,14 +5,15 @@ import Layout from '../components/Layout';
 import useSWR from 'swr';
 import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
+import { darkTheme, lightTheme } from '../theme';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100vh;
-    background: ${({ navigation }) =>
+    background: ${({ navigation, theme }) =>
       navigation
-        ? 'linear-gradient(to bottom, #8fd0fa 0%, #8fd0fa 80%, #FFFFFF 80%, #FFFFFF 100%)'
-        : 'linear-gradient(to bottom, #8fd0fa 0vh, #8fd0fa 50%, #54c0f9 50%, #54c0f9 100%)'};
+        ? `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 80%, ${theme.bg.content} 80%, ${theme.bg.content} 100%)`
+        : `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 50%, ${theme.bg.wave} 50%, ${theme.bg.wave} 100%)`};
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -30,46 +31,6 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 
-const theme = {
-  colors: {
-    primary: '#0a2540',
-    blue: '#54c0f9',
-    yellow: '#FEF7CB',
-    error: '#ed5f74',
-    success: '#00C851',
-    white: '#FFFFFF',
-  },
-  palette: {
-    light: {
-      skyBlueTint01: '#6d9feb',
-      skyBlueTint02: '#9dc0f2',
-      skyBlueTint03: '#cddff8',
-      glencoe: '#73cec6',
-      sagano: '#d0eeec',
-      erfoud: '#ffb54d',
-      bagan: '#ffebd0',
-      petra: '#ffab95',
-      nara: '#ffe7e0',
-      valensole: '#a59bc8',
-      tochigi: '#e1ddec',
-      hillier: '#e18b96',
-      harbour: '#f6dde1',
-    },
-    dark: {
-      skyBlue: '#0770e3',
-      skyBlueShade01: '#084eb2',
-      skyBlueShade02: '#042759',
-      skyBlueShade03: '#02122c',
-      monteverde: '#00a698',
-      kolkata: '#ff9400',
-      bunol: '#ff7b59',
-      abisko: '#5a489b',
-      panjin: '#d1435b',
-      skyGray: '#111236',
-    },
-  },
-};
-
 const fetcher = async (url) => {
   const r = await fetch(url);
   return await r.json();
@@ -79,6 +40,9 @@ export default function App({ Component, pageProps }) {
   const initialData = pageProps.user;
   const { data, error } = useSWR('/api/user', fetcher, { initialData });
   const [navigation, setNavigation] = useState(false);
+  const [dark, setDark] = useState(false);
+  const theme = dark ? darkTheme:lightTheme;
+
   return (
     <Provider session={pageProps.session}>
       <Head>
@@ -99,12 +63,13 @@ export default function App({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
-      <GlobalStyle navigation={navigation} />
+      <GlobalStyle theme={theme} navigation={navigation} />
       <ThemeProvider theme={theme}>
-        <SkeletonTheme color="#e2e2e2" highlightColor="#e9e9e9">
+        <SkeletonTheme color={theme.loader.color} highlightColor={theme.loader.highlight}>
           <Layout
             navigation={navigation}
             setNavigation={setNavigation}
+            setDark={() => setDark(!dark)}
             user={data}
             error={error}
             {...pageProps}

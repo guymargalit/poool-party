@@ -8,7 +8,7 @@ import useSWR from 'swr';
 const Title = styled.div`
   width: 100%;
   font-weight: 600;
-  color: #333;
+  color: ${({theme}) => theme.text.secondary};
   text-align: center;
   font-size: 24px;
   margin: 20px 0 5px;
@@ -17,7 +17,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 400;
-  color: #444;
+  color: ${({theme}) => theme.text.tertiary};
   text-align: center;
   font-size: 16px;
   max-width: 400px;
@@ -53,12 +53,12 @@ const Label = styled.label`
   text-transform: uppercase;
   width: 100%;
   margin: 10px 0px;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
 `;
 
 const Input = styled.input`
   width: 100%;
-  border: 1px solid #b0b0b0;
+  border: 1px solid ${({theme}) => theme.bg.input};
   outline: none;
   padding: 13px 10px;
   min-height: 1px;
@@ -102,7 +102,7 @@ const Loader = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: #fff;
+  stroke: ${({theme}) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -118,7 +118,7 @@ const VenmoLogo = styled(IconVenmoLogo)`
 `;
 
 const VenmoIcon = styled(IconVenmo)`
-  fill: ${(props) => props.theme.colors.white};
+  fill: ${({theme}) => theme.colors.white};
   width: 20px;
   height: 20px;
   display: inline-block;
@@ -162,13 +162,13 @@ const Caption = styled.div`
   text-transform: uppercase;
   width: 100%;
   margin: 10px 0px;
-  color: #888;
+  color: ${({theme}) => theme.text.quarternary};
   cursor: pointer;
   text-align: center;
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      color: ${({ theme }) => theme.palette.dark.skyGray};
+      color: ${({ theme }) => theme.text.hover};
     }
   }
 `;

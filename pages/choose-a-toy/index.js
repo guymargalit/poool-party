@@ -20,14 +20,14 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: #222;
+  color: ${({theme}) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -58,13 +58,13 @@ const Radio = styled.label`
   padding-left: 10px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: ${(props) =>
-    props.checked ? `${props.theme.palette.dark.abisko}` : 'transparent'};
-  color: ${(props) => (props.checked ? '#fff' : '#222')};
+  background-color: ${({theme, checked}) =>
+    checked ? `${theme.colors.purple}` : 'transparent'};
+  color: ${({checked, theme}) => (checked ? theme.colors.white : theme.text.primary)};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${(props) => props.theme.palette.dark.abisko};
-      color: #fff;
+      background-color: ${({theme}) => theme.colors.purple};
+      color:  ${({theme}) => theme.colors.white};
     }
   }
 `;
@@ -104,37 +104,6 @@ const Popper = styled.svg`
   transition: all 0.25s ease 0s;
 `;
 
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colors.white};
-  background-color: ${(props) => props.theme.colors.primary};
-  padding: 0 10px;
-  margin: 15px 0;
-  border-radius: 10px;
-  font-weight: 600;
-  text-align: center;
-  font-size: 16px;
-  text-transform: capitalize;
-  height: 50px;
-  width: 100%;
-  user-select: none;
-  cursor: pointer;
-  transition: all 0.25s ease 0s;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      background-color: ${(props) => props.theme.palette.dark.skyGray};
-    }
-    &:hover ${Popper} {
-      transform: rotate(-10deg);
-    }
-  }
-  @media (max-width: 675px) {
-    margin-top: 10px;
-  }
-`;
-
 const rotate = keyframes`
   100% {
     transform: rotate(360deg);
@@ -164,7 +133,7 @@ const Spinner = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: #fff;
+  stroke: ${({theme}) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -173,14 +142,14 @@ const Circle = styled.circle`
 
 const Confirm = styled.svg`
   display: block;
-  fill: #333;
+  fill: ${({theme}) => theme.text.secondary};
   transition: all 0.25s ease 0s;
   width: 32px;
   height: 32px;
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${(props) => props.theme.palette.dark.monteverde};
+      fill: ${({theme}) => theme.colors.success};
     }
   }
 `;
