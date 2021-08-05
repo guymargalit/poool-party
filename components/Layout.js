@@ -231,7 +231,8 @@ const Layout = (props) => {
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
 
-  const isLoading = typeof window !== 'undefined' && loading && !props.error && !props.user;
+  const isLoading =
+    typeof window !== 'undefined' && loading && !props.error && !props.user;
 
   useEffect(() => {
     setNavigation(
@@ -306,9 +307,9 @@ const Layout = (props) => {
         !(session && router.pathname === '/') &&
         !(!session && router.pathname !== '/') && (
           <>
-            {router.pathname === '/' ? (
+            {router.pathname === '/' && props?.error ? (
               <>{props.children}</>
-            ) : (
+            ) : router.pathname !== '/' && props?.user ? (
               <WrapContent>
                 <Content
                   background={background}
@@ -319,6 +320,8 @@ const Layout = (props) => {
                 </Content>
                 <Panel />
               </WrapContent>
+            ) : (
+              <></>
             )}
             <Navigation visible={isAuth && navigation}>
               <Bar>
