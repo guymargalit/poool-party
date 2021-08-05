@@ -58,7 +58,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  border: 1px solid ${({theme}) => theme.bg.input};
+  border: 1px solid ${({theme}) => theme.bg.border};
   outline: none;
   padding: 13px 10px;
   min-height: 1px;
