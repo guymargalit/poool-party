@@ -292,7 +292,10 @@ const Layout = (props) => {
       <Hero background={background}>
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : !isLoading && !session && router.pathname === '/' ? (
+        ) : !isLoading &&
+          !session &&
+          router.pathname === '/' &&
+          props?.error ? (
           <Toys>
             {toys.map((toy, i) => (
               <Toy key={i} {...toy} />
