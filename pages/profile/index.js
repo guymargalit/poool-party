@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { signOut, useSession } from 'next-auth/client';
 import { IconLogout, IconPopper, IconVenmo, IconVenmoLogo } from '../../icons';
 import Link from 'next/link';
@@ -188,6 +188,51 @@ const Logout = styled(IconLogout)`
   }
 `;
 
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
+const CheckBoxLabel = styled.label`
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 58px;
+  height: 30px;
+  border-radius: 15px;
+  background: ${({ theme }) => theme.bg.input};
+  cursor: pointer;
+  &::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 3px;
+    background: #ffffff;
+    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+  }
+`;
+const CheckBox = styled.input`
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 58px;
+  height: 30px;
+  &:checked + ${CheckBoxLabel} {
+    background: ${({ theme }) => theme.bg.wave};
+    &::after {
+      content: '';
+      display: block;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      margin-left: 30px;
+      transition: 0.2s;
+    }
+  }
+`;
+
 const handleLogout = (e) => {
   e.preventDefault();
   signOut({ callbackUrl: process.env.APP_URL });
@@ -201,7 +246,11 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
           What's up,{' '}
           {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}
         </Title>
-        <Logout onClick={handleLogout} />
+        {/* <Logout onClick={handleLogout} /> */}
+        <CheckBoxWrapper>
+          <CheckBox checked={darkMode} id="checkbox" type="checkbox" onClick={setDarkMode} />
+          <CheckBoxLabel htmlFor="checkbox" />
+        </CheckBoxWrapper>
       </Header>
       <Content>
         {user?.venmo ? (
@@ -232,9 +281,6 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
           <Button onClick={() => Router.push('/choose-a-toy')}>
             Choose a pool toy
             <Popper />
-          </Button>
-          <Button onClick={setDarkMode}>
-            {darkMode ? 'Switch to Light Mode':'Switch to Dark Mode'}
           </Button>
         </Footer>
       </Content>
