@@ -4,6 +4,8 @@ import Flamingo from './toys/Flamingo';
 import Unicorn from './toys/Unicorn';
 import Zebra from './toys/Zebra';
 import Tiger from './toys/Tiger';
+import Duck from './toys/Duck';
+import Swan from './toys/Swan';
 
 const Container = styled.div`
   position: absolute;
@@ -37,6 +39,8 @@ const toys = {
   unicorn: Unicorn,
   zebra: Zebra,
   tiger: Tiger,
+  duck: Duck,
+  swan: Swan,
 };
 
 const Toy = ({ type, position, spots }) => {

@@ -20,14 +20,14 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: ${({theme}) => theme.text.primary};
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -58,13 +58,14 @@ const Radio = styled.label`
   padding-left: 10px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: ${({theme, checked}) =>
+  background-color: ${({ theme, checked }) =>
     checked ? `${theme.colors.purple}` : 'transparent'};
-  color: ${({checked, theme}) => (checked ? theme.colors.white : theme.text.primary)};
+  color: ${({ checked, theme }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color:  ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
   }
 `;
@@ -133,7 +134,7 @@ const Spinner = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: ${({theme}) => theme.colors.white};
+  stroke: ${({ theme }) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -142,14 +143,14 @@ const Circle = styled.circle`
 
 const Confirm = styled.svg`
   display: block;
-  fill: ${({theme}) => theme.text.secondary};
+  fill: ${({ theme }) => theme.text.secondary};
   transition: all 0.25s ease 0s;
   width: 32px;
   height: 32px;
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({theme}) => theme.colors.success};
+      fill: ${({ theme }) => theme.colors.success};
     }
   }
 `;
@@ -179,7 +180,7 @@ const Profile = ({ user }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const response = await updatedUser?.json()
+      const response = await updatedUser?.json();
       await mutate(response);
       setSubmitting(false);
     } catch (error) {
@@ -188,7 +189,7 @@ const Profile = ({ user }) => {
     }
   };
 
-  const options = ['flamingo', 'unicorn', 'zebra', 'tiger'];
+  const options = ['flamingo', 'unicorn', 'duck', 'zebra', 'swan', 'tiger'];
 
   return (
     <Fragment>
