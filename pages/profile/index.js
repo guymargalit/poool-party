@@ -2,15 +2,20 @@ import React, { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { signOut, useSession } from 'next-auth/client';
-import { IconLogout, IconPopper, IconVenmo, IconVenmoLogo } from '../../icons';
+import {
+  IconLogout,
+  IconMoon,
+  IconPopper,
+  IconSun,
+  IconVenmo,
+  IconVenmoLogo,
+} from '../../icons';
 import Link from 'next/link';
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 75px - env(safe-area-inset-bottom));
+  overflow-y: auto;
   padding: 0 20px;
   @media (max-width: 675px) {
     padding: 0 10px;
@@ -47,7 +52,7 @@ const VenmoWrap = styled.div`
   width: 100%;
   margin: 15px 0 0;
   border-radius: 15px;
-  height: 80px;
+  min-height: 80px;
   padding: 0 15px;
   background-color: #0074de;
   user-select: none;
@@ -188,6 +193,20 @@ const Logout = styled(IconLogout)`
   }
 `;
 
+const WrapSunIcon = styled.div`
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+`;
+const WrapMoonIcon = styled.div`
+  position: absolute;
+  top: 4px;
+  left: 32px;
+  width: 22px;
+  height: 22px;
+`;
 const CheckBoxWrapper = styled.div`
   display: flex;
   position: relative;
@@ -199,7 +218,7 @@ const CheckBoxLabel = styled.label`
   width: 58px;
   height: 30px;
   border-radius: 15px;
-  background: ${({ theme }) => theme.bg.input};
+  background: #111236;
   cursor: pointer;
   &::after {
     content: '';
@@ -220,7 +239,7 @@ const CheckBox = styled.input`
   width: 58px;
   height: 30px;
   &:checked + ${CheckBoxLabel} {
-    background: ${({ theme }) => theme.bg.wave};
+    background: #8fd0fa;
     &::after {
       content: '';
       display: block;
@@ -243,13 +262,33 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
     <Fragment>
       <Header>
         <Title>
-          What's up,{' '}
+          What's up
+          {!user?.venmo?.displayName?.split(' ')[0] &&
+          !user?.name?.split(' ')[0]
+            ? '!'
+            : ','}{' '}
           {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}
         </Title>
         {/* <Logout onClick={handleLogout} /> */}
         <CheckBoxWrapper>
-          <CheckBox checked={darkMode} id="checkbox" type="checkbox" onClick={setDarkMode} />
-          <CheckBoxLabel htmlFor="checkbox" />
+          {/* <IconMoon /> */}
+          <CheckBox
+            checked={darkMode}
+            id="checkbox"
+            type="checkbox"
+            onClick={setDarkMode}
+          />
+          <CheckBoxLabel htmlFor="checkbox">
+            {darkMode ? (
+              <WrapSunIcon>
+                <IconSun />
+              </WrapSunIcon>
+            ) : (
+              <WrapMoonIcon>
+                <IconMoon />
+              </WrapMoonIcon>
+            )}
+          </CheckBoxLabel>
         </CheckBoxWrapper>
       </Header>
       <Content>
