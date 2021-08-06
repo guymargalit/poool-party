@@ -92,9 +92,6 @@ const Settings = styled(IconEmpty)`
   /* cursor: pointer; */
   fill: ${({theme}) => theme.text.primary};
   transition: all 0.25s ease 0s;
-  /* :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
-  } */
 `;
 
 const Plus = styled(IconPlus)`
@@ -104,26 +101,26 @@ const Plus = styled(IconPlus)`
   transition: all 0.25s ease 0s;
 `;
 
-const WrapPlus = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  border: 1px solid #555;
-  cursor: pointer;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      background: ${(props) => props.theme.palette.dark.abisko};
-      border: 2px solid ${(props) => props.theme.palette.dark.abisko};
-    }
-    :hover ${Plus} {
-      fill: #fff;
-    }
-  }
-  transition: all 0.25s ease 0s;
-`;
+// const WrapPlus = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 40px;
+//   border: 1px solid #555;
+//   cursor: pointer;
+//   @media (hover: hover) and (pointer: fine) {
+//     :hover {
+//       background: ${({theme}) => theme.colors.purple};
+//       border: 2px solid ${({theme}) => theme.colors.purple};
+//     }
+//     :hover ${Plus} {
+//       fill: ${({theme}) => theme.colors.white};
+//     }
+//   }
+//   transition: all 0.25s ease 0s;
+// `;
 
 const Section = styled.div`
   display: flex;

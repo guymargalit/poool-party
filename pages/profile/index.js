@@ -109,7 +109,7 @@ const Button = styled.div`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.purple};
   padding: 0 10px;
-  margin: 15px 0;
+  margin-top: 15px;
   border-radius: 24px;
   font-weight: 600;
   text-align: center;
@@ -193,10 +193,10 @@ const handleLogout = (e) => {
   signOut({ callbackUrl: process.env.APP_URL });
 };
 
-const Profile = ({ user, setVenmo, dark, setDark }) => {
+const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
   return (
     <Fragment>
-      <Header onClick={setDark}>
+      <Header>
         <Title>
           What's up,{' '}
           {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}
@@ -232,6 +232,9 @@ const Profile = ({ user, setVenmo, dark, setDark }) => {
           <Button onClick={() => Router.push('/choose-a-toy')}>
             Choose a pool toy
             <Popper />
+          </Button>
+          <Button onClick={setDarkMode}>
+            {darkMode ? 'Switch to Light Mode':'Switch to Dark Mode'}
           </Button>
         </Footer>
       </Content>

@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { darkTheme, lightTheme } from '../theme';
+import useDarkMode from 'use-dark-mode';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -40,8 +41,14 @@ export default function App({ Component, pageProps }) {
   const initialData = pageProps.user;
   const { data, error } = useSWR('/api/user', fetcher, { initialData });
   const [navigation, setNavigation] = useState(false);
-  const [dark, setDark] = useState(false);
-  const theme = dark ? darkTheme:lightTheme;
+  const { value, toggle } = useDarkMode(false, { });
+  const theme = value ? darkTheme : lightTheme;
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Provider session={pageProps.session}>
@@ -63,21 +70,30 @@ export default function App({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
       </Head>
-      <GlobalStyle theme={theme} navigation={navigation} />
-      <ThemeProvider theme={theme}>
-        <SkeletonTheme color={theme.loader.color} highlightColor={theme.loader.highlight}>
-          <Layout
-            navigation={navigation}
-            setNavigation={setNavigation}
-            setDark={() => setDark(!dark)}
-            user={data}
-            error={error}
-            {...pageProps}
-          >
-            <Component user={data} {...pageProps} />
-          </Layout>
-        </SkeletonTheme>
-      </ThemeProvider>
+      {mounted && (
+        <>
+          {' '}
+          <GlobalStyle theme={theme} navigation={navigation} />
+          <ThemeProvider theme={theme}>
+            <SkeletonTheme
+              color={theme.loader.color}
+              highlightColor={theme.loader.highlight}
+            >
+              <Layout
+                navigation={navigation}
+                setNavigation={setNavigation}
+                darkMode={value}
+                setDarkMode={toggle}
+                user={data}
+                error={error}
+                {...pageProps}
+              >
+                <Component user={data} {...pageProps} />
+              </Layout>
+            </SkeletonTheme>
+          </ThemeProvider>
+        </>
+      )}
     </Provider>
   );
 }

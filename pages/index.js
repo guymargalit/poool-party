@@ -73,11 +73,11 @@ const Button = styled.div`
   font-weight: 700;
   cursor: pointer;
   user-select: none;
-  background-color: ${({ theme }) => theme.palette.dark.kolkata};
+  background-color: #ff9400;
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({ theme }) => theme.palette.dark.bunol};
+      background-color: #ff7b59;
     }
   }
 `;
@@ -108,7 +108,7 @@ const Home = () => {
   const handleAddToHomescreenClick = () => {
     alert(`
       1. Open Share menu in Safari
-      2. Tap on "Add to Home Screen" button`);
+      2. Tap on "Add to Home Screen"`);
   };
 
   const isIos = () => {

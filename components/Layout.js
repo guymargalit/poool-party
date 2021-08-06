@@ -223,7 +223,7 @@ const toys = [
 const Layout = (props) => {
   const router = useRouter();
   const { navigation, setNavigation } = props;
-  const { setDark } = props;
+  const { darkMode, setDarkMode } = props;
   const [session, loading] = useSession();
   const [isAuth, setIsAuth] = useState(false);
   const [venmo, setVenmo] = useState(false);
@@ -320,7 +320,7 @@ const Layout = (props) => {
                   navigation={navigation}
                   height={height}
                 >
-                  {React.cloneElement(props.children, { setVenmo, setDark })}
+                  {React.cloneElement(props.children, { setVenmo, darkMode, setDarkMode })}
                 </Content>
                 <Panel />
               </WrapContent>

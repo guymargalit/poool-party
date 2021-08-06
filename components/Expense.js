@@ -225,7 +225,7 @@ const Success = styled.div`
   justify-content: center;
   width: 100%;
   font-weight: 400;
-  color: $ ${({ theme }) => theme.colors.purple};
+  color: ${({ theme }) => theme.colors.success};
   text-align: center;
   font-size: 14px;
   margin-top: 5px;

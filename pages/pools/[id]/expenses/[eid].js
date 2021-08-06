@@ -93,9 +93,6 @@ const Settings = styled(IconEmpty)`
   /* cursor: pointer; */
   fill: ${({theme}) => theme.text.primary};
   transition: all 0.25s ease 0s;
-  /* :hover {
-    fill: ${(props) => props.theme.palette.dark.abisko};
-  } */
 `;
 
 const Plus = styled(IconPlus)`
@@ -116,11 +113,11 @@ const WrapPlus = styled.div`
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background: ${(props) => props.theme.palette.dark.abisko};
-      border: 2px solid ${(props) => props.theme.palette.dark.abisko};
+      background: ${({theme}) => theme.colors.purple};
+      border: 2px solid ${({theme}) => theme.colors.purple};
     }
     :hover ${Plus} {
-      fill: #fff;
+      fill: ${({theme}) => theme.colors.white};
     }
   }
   transition: all 0.25s ease 0s;
