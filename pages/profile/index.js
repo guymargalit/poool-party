@@ -30,6 +30,7 @@ const Header = styled.div`
   padding: 0px 35px;
   height: 75px;
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
+  transition: all 0.5s ease 0s;
   user-select: none;
 `;
 

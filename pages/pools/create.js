@@ -96,6 +96,7 @@ const Header = styled.div`
   width: 100%;
   padding: 0px 35px;
   height: 75px;
+  transition: all 0.5s ease 0s;
   border-bottom: 1px solid ${({theme}) => theme.bg.border};
 `;
 

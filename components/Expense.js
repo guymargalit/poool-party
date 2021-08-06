@@ -64,6 +64,7 @@ const Header = styled.div`
     padding: 0 20px;
   }
   height: 75px;
+  transition: all 0.5s ease 0s;
   background-color: ${({ theme }) => theme.colors.purple};
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
