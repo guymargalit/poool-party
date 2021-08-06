@@ -168,7 +168,7 @@ const Profile = ({ user }) => {
       behavior: 'smooth',
       block: 'center',
     });
-  useEffect(() => executeScroll, []);
+  useEffect(() => executeScroll, [user?.toy]);
 
   const handleOptionChange = async (e) => {
     e.preventDefault();
@@ -190,7 +190,16 @@ const Profile = ({ user }) => {
     }
   };
 
-  const options = ['flamingo', 'unicorn', 'duck', 'zebra', 'swan', 'tiger', 'bunny'];
+  const options = [
+    'flamingo',
+    'unicorn',
+    'duck',
+    'turtle',
+    'zebra',
+    'swan',
+    'tiger',
+    'bunny',
+  ];
 
   return (
     <Fragment>
