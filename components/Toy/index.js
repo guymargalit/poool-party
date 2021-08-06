@@ -6,6 +6,7 @@ import Zebra from './toys/Zebra';
 import Tiger from './toys/Tiger';
 import Duck from './toys/Duck';
 import Swan from './toys/Swan';
+import Bunny from './toys/Bunny';
 
 const Container = styled.div`
   position: absolute;
@@ -41,6 +42,7 @@ const toys = {
   tiger: Tiger,
   duck: Duck,
   swan: Swan,
+  bunny: Bunny,
 };
 
 const Toy = ({ type, position, spots }) => {

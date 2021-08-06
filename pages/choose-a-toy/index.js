@@ -189,7 +189,7 @@ const Profile = ({ user }) => {
     }
   };
 
-  const options = ['flamingo', 'unicorn', 'duck', 'zebra', 'swan', 'tiger'];
+  const options = ['flamingo', 'unicorn', 'duck', 'zebra', 'swan', 'tiger', 'bunny'];
 
   return (
     <Fragment>
