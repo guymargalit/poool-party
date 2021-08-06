@@ -73,11 +73,11 @@ const Button = styled.div`
   font-weight: 700;
   cursor: pointer;
   user-select: none;
-  background-color: #ff9400;
+  background-color: #5a489b;
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: #ff7b59;
+      background-color: #111236;
     }
   }
 `;
