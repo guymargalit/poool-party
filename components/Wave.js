@@ -29,6 +29,7 @@ const Svg = styled.svg`
   fill: ${({theme}) => theme.bg.wave};
   z-index: 2;
   position: absolute;
+  bottom: -1px;
   /* animation: 1s ease-out 0s 1 ${slideUp}; */
 `;
 
