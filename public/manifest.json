@@ -6,14 +6,9 @@
   "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
-  "background_color": "#8fd0fa",
-  "theme_color": "#8fd0fa",
+  "background_color": "#54c0f9",
+  "theme_color": "#54c0f9",
   "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "36x36 48x48 57x57 60x60 72x72 76x76 96x96 114x114 120x120 128x128 144x144 152x152 180x180 192x192 256x256 384x384 512x512",
-      "type": "image/svg+xml"
-    },
     {
       "src": "favicon.png",
       "sizes": "167x167",
