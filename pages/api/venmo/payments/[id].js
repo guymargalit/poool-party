@@ -1,5 +1,6 @@
 import { getSession } from 'next-auth/client';
 import prisma from '../../../../lib/prisma';
+import { getToken } from '../../../../lib/utils';
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
     {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${user?.venmo?.accessToken}`,
+        Authorization: `Bearer ${getToken(user?.venmo?.accessToken)}`,
         'Content-Type': 'application/json',
       },
     }

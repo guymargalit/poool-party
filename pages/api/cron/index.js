@@ -1,5 +1,6 @@
 import prisma from '../../../lib/prisma';
 import moment from 'moment';
+import { getToken } from '../../../lib/utils';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
               const result = await fetch('https://api.venmo.com/v1/payments', {
                 method: 'POST',
                 headers: {
-                  Authorization: `Bearer ${expenseUser?.user?.venmo?.accessToken}`,
+                  Authorization: `Bearer ${getToken(expenseUser?.user?.venmo?.accessToken)}`,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({

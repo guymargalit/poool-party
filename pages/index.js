@@ -122,7 +122,7 @@ const Home = () => {
 
   return (
     <Content>
-      <Title>poool.party</Title>
+      <Title>Poool Party</Title>
       <Subtitle>Do stuff with Venmo, but easier</Subtitle>
       {typeof window !== 'undefined' && isIos() && !isInStandaloneMode() ? (
         <Button onClick={handleAddToHomescreenClick}>Install on iOS</Button>
