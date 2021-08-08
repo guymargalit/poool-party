@@ -31,7 +31,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: ${({theme}) => theme.text.primary};
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -43,7 +43,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: ${({theme}) => theme.text.tertiary};
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: 16px;
   margin: 10px 0;
   padding: 0 35px;
@@ -56,7 +56,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: ${({theme}) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {
@@ -72,18 +72,18 @@ const Header = styled.div`
   padding: 0px 35px;
   height: 75px;
   transition: all 0.5s ease 0s;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   user-select: none;
 `;
 
 const LeftChevron = styled(IconLeftChevron)`
   width: 28px;
   cursor: pointer;
-  fill: ${({theme}) => theme.text.primary};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({theme}) => theme.colors.purple};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -92,14 +92,14 @@ const Settings = styled(IconEmpty)`
   width: 28px;
   height: 28px;
   /* cursor: pointer; */
-  fill: ${({theme}) => theme.text.primary};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
 `;
 
 const Plus = styled(IconPlus)`
   width: 24px;
   height: 24px;
-  fill: ${({theme}) => theme.text.tertiary};
+  fill: ${({ theme }) => theme.text.tertiary};
   transition: all 0.25s ease 0s;
 `;
 
@@ -114,11 +114,11 @@ const WrapPlus = styled.div`
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background: ${({theme}) => theme.colors.purple};
-      border: 2px solid ${({theme}) => theme.colors.purple};
+      background: ${({ theme }) => theme.colors.purple};
+      border: 2px solid ${({ theme }) => theme.colors.purple};
     }
     :hover ${Plus} {
-      fill: ${({theme}) => theme.colors.white};
+      fill: ${({ theme }) => theme.colors.white};
     }
   }
   transition: all 0.25s ease 0s;
@@ -128,7 +128,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const List = styled.div`
@@ -181,7 +181,8 @@ const RightChevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({ loading, theme }) => (loading ? '#e2e2e2' : theme.text.quarternary)};
+  fill: ${({ loading, theme }) =>
+    loading ? '#e2e2e2' : theme.text.quarternary};
   transition: all 0.25s ease 0s;
 `;
 
@@ -199,15 +200,16 @@ const Item = styled.div`
   }
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-top: 1px solid ${({theme}) => theme.bg.border};
-  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
+  border-top: 1px solid ${({ theme }) => theme.bg.border};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color: ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
     :hover ${RightChevron} {
-      fill: ${({theme}) => theme.colors.white};
+      fill: ${({ theme }) => theme.colors.white};
     }
   }
 `;
@@ -248,10 +250,9 @@ const Status = styled.div`
   text-align: center;
   padding: 0 0.375rem;
   align-items: center;
-  box-shadow: 
-    0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    color: ${({theme}) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   background-color: ${({ status, theme }) => {
     switch (status) {
       case 'pending':
@@ -306,7 +307,7 @@ const PoolExpense = (props) => {
   const [loading, setLoading] = useState(true);
 
   const getPoolExpense = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await fetch(`/api/expenses/${eid}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -379,7 +380,9 @@ const PoolExpense = (props) => {
                       <Description>{formatter.format(u?.amount)}</Description>
                     </Left>
                     <Right>
-                      <Status status={r?.status}>{r?.status}</Status>
+                      <Status status={r?.status}>
+                        {r?.status === 'succeeded' ? 'paid' : r?.status}
+                      </Status>
                       <Date>{moment(r?.createdAt).format('M/D/YY h:mmA')}</Date>
                     </Right>
                   </Item>
