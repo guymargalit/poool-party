@@ -1,4 +1,4 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
@@ -59,7 +59,7 @@ export default function App({ Component, pageProps }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
-        <meta name="theme-color" content="#5a489b" />
+        <meta name="theme-color" content="#54c0f9" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-title" content="Poool Party" />
@@ -70,59 +70,58 @@ export default function App({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link
-          href="splashscreens/iphone5_splash.png"
+          href="/splashscreens/iphone5_splash.png"
           media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/iphone6_splash.png"
+          href="/splashscreens/iphone6_splash.png"
           media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/iphoneplus_splash.png"
+          href="/splashscreens/iphoneplus_splash.png"
           media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/iphonex_splash.png"
+          href="/splashscreens/iphonex_splash.png"
           media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/iphonexr_splash.png"
+          href="/splashscreens/iphonexr_splash.png"
           media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/iphonexsmax_splash.png"
+          href="/splashscreens/iphonexsmax_splash.png"
           media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/ipad_splash.png"
+          href="/splashscreens/ipad_splash.png"
           media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/ipadpro1_splash.png"
+          href="/splashscreens/ipadpro1_splash.png"
           media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/ipadpro3_splash.png"
+          href="/splashscreens/ipadpro3_splash.png"
           media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
         <link
-          href="splashscreens/ipadpro2_splash.png"
+          href="/splashscreens/ipadpro2_splash.png"
           media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
           rel="apple-touch-startup-image"
         />
       </Head>
       {mounted && (
         <>
-          {' '}
           <GlobalStyle theme={theme} navigation={navigation} />
           <ThemeProvider theme={theme}>
             <SkeletonTheme
