@@ -427,7 +427,6 @@ const PoolCreate = () => {
           Pool Name
           <WrapInput>
             <Input
-              autoFocus
               onChange={(e) => setName(e.target.value)}
               placeholder="What should we call it?"
               type="text"

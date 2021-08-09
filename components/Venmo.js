@@ -251,7 +251,6 @@ const Venmo = (props) => {
           <Label>
             ENTER CODE
             <Input
-              autoFocus
               onChange={(e) => setOTP(e.target.value)}
               placeholder=""
               type="text"
@@ -288,7 +287,6 @@ const Venmo = (props) => {
           <Label>
             EMAIL, MOBILE, OR USERNAME
             <Input
-              autoFocus
               onChange={(e) => setUsername(e.target.value)}
               placeholder="EMAIL, MOBILE, OR USERNAME"
               type="text"
