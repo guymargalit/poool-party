@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useRouter } from 'next/router';
-import { useSession, getSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import Router from 'next/router';
 import Toy from './Toy';
 import Wave from './Wave';
@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   min-height: 100%;
   z-index: 1;
-  background-color: ${({theme}) => theme.bg.wave};
+  background-color: ${({ theme }) => theme.bg.wave};
   overflow: hidden;
 `;
 
@@ -39,7 +39,7 @@ const Content = styled.div`
   align-items: center;
   flex: 1;
   width: 100%;
-  background-color:  ${({theme}) => theme.bg.content};
+  background-color: ${({ theme }) => theme.bg.content};
   border-radius: ${({ background }) => (background ? '38px' : '0px')};
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -62,7 +62,7 @@ const Content = styled.div`
 
 const Panel = styled.div`
   height: 65px;
-  background-color:  ${({theme}) => theme.bg.content};
+  background-color: ${({ theme }) => theme.bg.content};
   width: 100%;
   bottom: 0;
 `;
@@ -71,12 +71,17 @@ const Hero = styled.div`
   display: ${({ background }) => (background ? 'flex' : 'none')};
   flex-direction: column;
   justify-content: flex-end;
-  background-color:  ${({theme}) => theme.bg.sky};
+  background-color: ${({ theme }) => theme.bg.sky};
   overflow: hidden;
   position: relative;
-  height: 300px;
+  height: ${({ counter }) =>
+    counter <= 150 ? `calc(600px - ${2 * counter}px)` : '300px'};
   @media (max-width: 675px) {
-    height: calc(190px + env(safe-area-inset-top));
+    height: ${({ counter }) =>
+      counter <= 150
+        ? `calc(490px + env(safe-area-inset-top) - ${2 * counter}px)`
+        : 'calc(190px + env(safe-area-inset-top))'};
+    transition: all 1.5s ease 0s;
   }
 `;
 
@@ -87,7 +92,7 @@ const Toys = styled.div`
 
 const Navigation = styled.nav`
   align-items: center;
-  background-color:  ${({theme}) => theme.nav.bg};
+  background-color: ${({ theme }) => theme.nav.bg};
   border-top: ${({ visible, theme }) =>
     visible ? `1px solid ${theme.nav.border}` : '0px'};
   bottom: 0px;
@@ -133,22 +138,20 @@ const WrapItem = styled.div`
   outline: none;
   align-items: center;
   border-radius: 8px;
-  color: ${({active, theme}) =>
+  color: ${({ active, theme }) =>
     active ? theme.text.primary : theme.nav.text};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      color: ${({theme}) => theme.text.primary};
+      color: ${({ theme }) => theme.text.primary};
     }
   }
   ${Item} {
-    color: ${({active, theme}) =>
-      active
-        ? theme.colors.purple
-        : theme.nav.icon};
+    color: ${({ active, theme }) =>
+      active ? theme.colors.purple : theme.nav.icon};
   }
   @media (hover: hover) and (pointer: fine) {
     :hover ${Item} {
-      color: ${({theme}) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.purple};
     }
   }
   cursor: pointer;
@@ -192,7 +195,7 @@ const Modal = styled.div`
   align-items: center;
   z-index: 999;
   width: 100%;
-  background-color: ${({theme}) => theme.bg.content};
+  background-color: ${({ theme }) => theme.bg.content};
   border-radius: 18px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -278,6 +281,26 @@ const Layout = (props) => {
     router.pathname,
   ]);
 
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isLoading) {
+        setCounter((prevCount) => prevCount + 30);
+      } else {
+        setCounter(300);
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isLoading]);
+
+  {
+    console.log(counter);
+  }
   return (
     <Container>
       <WrapModal modal={venmo}>
@@ -290,7 +313,7 @@ const Layout = (props) => {
           />
         </Modal>
       </WrapModal>
-      <Hero background={background}>
+      <Hero counter={counter} background={background}>
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !isLoading &&
@@ -320,7 +343,11 @@ const Layout = (props) => {
                   navigation={navigation}
                   height={height}
                 >
-                  {React.cloneElement(props.children, { setVenmo, darkMode, setDarkMode })}
+                  {React.cloneElement(props.children, {
+                    setVenmo,
+                    darkMode,
+                    setDarkMode,
+                  })}
                 </Content>
                 <Panel />
               </WrapContent>
