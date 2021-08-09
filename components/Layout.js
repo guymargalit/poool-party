@@ -364,8 +364,4 @@ const Layout = (props) => {
   );
 };
 
-export async function getServerSideProps(ctx) {
-  return { session: await getSession(ctx) };
-}
-
 export default Layout;
