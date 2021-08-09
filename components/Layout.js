@@ -75,11 +75,11 @@ const Hero = styled.div`
   overflow: hidden;
   position: relative;
   height: ${({ counter }) =>
-    counter <= 150 ? `calc(600px - ${2 * counter}px)` : '300px'};
+    counter > 150 ? `calc(${2 * counter}px - 300px)` : '300px'};
   @media (max-width: 675px) {
     height: ${({ counter }) =>
-      counter <= 150
-        ? `calc(490px + env(safe-area-inset-top) - ${2 * counter}px)`
+      counter > 150
+        ? `calc(${2 * counter}px - env(safe-area-inset-top))`
         : 'calc(190px + env(safe-area-inset-top))'};
     transition: all 1.5s ease 0s;
   }
@@ -281,14 +281,14 @@ const Layout = (props) => {
     router.pathname,
   ]);
 
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(300);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (isLoading) {
-        setCounter((prevCount) => prevCount + 30);
+      if (isLoading && router.pathname !== '/') {
+        setCounter((prevCount) => prevCount - 30);
       } else {
-        setCounter(300);
+        setCounter(0);
         clearInterval(interval);
       }
     }, 100);
