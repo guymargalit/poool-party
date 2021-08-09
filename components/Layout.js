@@ -79,7 +79,7 @@ const Hero = styled.div`
   @media (max-width: 675px) {
     height: ${({ counter }) =>
       counter > 150
-        ? `calc(${2 * counter}px - env(safe-area-inset-top))`
+        ? `calc(${2 * counter}px - 410px - env(safe-area-inset-top))`
         : 'calc(190px + env(safe-area-inset-top))'};
     transition: all 1.5s ease 0s;
   }
