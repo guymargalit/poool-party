@@ -364,4 +364,8 @@ const Layout = (props) => {
   );
 };
 
+// export async function getStaticProps(ctx) {
+//   return { session: await getSession(ctx) };
+// }
+
 export default Layout;

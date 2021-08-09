@@ -147,7 +147,7 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-export async function getServerSideProps() {
-  const user = await fetcher('/api/user');
-  return { props: { user } };
-}
+// export async function getServerSideProps() {
+//   const user = await fetcher('/api/user');
+//   return { props: { user } };
+// }
