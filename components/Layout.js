@@ -297,10 +297,7 @@ const Layout = (props) => {
       clearInterval(interval);
     };
   }, [isLoading]);
-
-  {
-    console.log(counter);
-  }
+  
   return (
     <Container>
       <WrapModal modal={venmo}>
