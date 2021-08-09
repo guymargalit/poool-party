@@ -272,7 +272,6 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
         </Title>
         {/* <Logout onClick={handleLogout} /> */}
         <CheckBoxWrapper>
-          {/* <IconMoon /> */}
           <CheckBox
             checked={darkMode}
             id="checkbox"
