@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ navigation, theme }) =>
       navigation
         ? `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 80%, ${theme.bg.content} 80%, ${theme.bg.content} 100%)`
-        : `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 50%, ${theme.bg.wave} 50%, ${theme.bg.wave} 100%)`};
+        : `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 30%, ${theme.bg.wave} 30%, ${theme.bg.wave} 100%)`};
     padding: 0;
     margin: 0;
     overflow: hidden;
