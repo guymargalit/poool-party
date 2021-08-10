@@ -74,14 +74,9 @@ const Hero = styled.div`
   background-color: ${({ theme }) => theme.bg.sky};
   overflow: hidden;
   position: relative;
-  height: ${({ counter }) =>
-    counter > 150 ? `calc(${2 * counter}px - 300px)` : '300px'};
+  height: 300px;
   @media (max-width: 675px) {
-    height: ${({ counter }) =>
-      counter > 150
-        ? `calc(${2 * counter}px - 410px - env(safe-area-inset-top))`
-        : 'calc(190px + env(safe-area-inset-top))'};
-    transition: all 1.5s ease 0s;
+    height: calc(190px + env(safe-area-inset-top));
   }
 `;
 
@@ -280,23 +275,6 @@ const Layout = (props) => {
     session,
     router.pathname,
   ]);
-
-  const [counter, setCounter] = useState(300);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isLoading && router.pathname !== '/') {
-        setCounter((prevCount) => prevCount - 30);
-      } else {
-        setCounter(0);
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isLoading]);
   
   return (
     <Container>
@@ -310,7 +288,7 @@ const Layout = (props) => {
           />
         </Modal>
       </WrapModal>
-      <Hero counter={counter} background={background}>
+      <Hero background={background}>
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !isLoading &&
