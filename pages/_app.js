@@ -38,8 +38,7 @@ const fetcher = async (url) => {
 };
 
 export default function App({ Component, pageProps }) {
-  const initialData = pageProps.user;
-  const { data, error } = useSWR('/api/user', fetcher, { initialData });
+  const { data, error } = useSWR('/api/user', fetcher);
   const [navigation, setNavigation] = useState(false);
   const { value, toggle } = useDarkMode(false, {});
   const theme = value ? darkTheme : lightTheme;

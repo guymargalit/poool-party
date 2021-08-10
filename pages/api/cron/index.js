@@ -1,6 +1,7 @@
 import prisma from '../../../lib/prisma';
 import moment from 'moment';
 import { getToken } from '../../../lib/utils';
+import redis from '../../../lib/redis';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
               userId: true,
               user: {
                 select: {
-                  venmo: { select: { id: true, accessToken: true } },
+                  venmo: { select: { id: true, userId: true, accessToken: true } },
                 },
               },
             },
@@ -83,6 +84,7 @@ export default async function handler(req, res) {
                   data: { expiredAt: new Date() },
                   where: { id: expenseUser?.user?.venmo?.id },
                 });
+                redis.del(`user-${expenseUser?.user?.venmo?.userId}`);
               }
               status = response?.data?.payment?.status || 'failed';
               paymentId = response?.data?.payment?.id;

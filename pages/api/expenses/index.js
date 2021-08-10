@@ -1,5 +1,6 @@
 import { getSession } from 'next-auth/client';
 import prisma from '../../../lib/prisma';
+import redis from '../../../lib/redis';
 import { getToken } from '../../../lib/utils';
 
 export default async function handler(req, res) {
@@ -118,6 +119,7 @@ export default async function handler(req, res) {
                 data: { expiredAt: new Date() },
                 where: { id: user?.venmo?.id },
               });
+              redis.del(`user-${user?.id}`);
             }
 
             status = response?.data?.payment?.status || 'failed';
