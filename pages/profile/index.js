@@ -276,7 +276,7 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
             checked={darkMode}
             id="checkbox"
             type="checkbox"
-            onClick={setDarkMode}
+            onChange={setDarkMode}
           />
           <CheckBoxLabel htmlFor="checkbox">
             {darkMode ? (
