@@ -246,11 +246,11 @@ const Layout = (props) => {
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
-    if (!props.isAuth && router.pathname !== '/') {
+    if (!isLoading && props?.error && router.pathname !== '/') {
       Router.push('/');
     }
     // Auth-user redirected from homepage to dashboard
-    else if (props.isAuth && router.pathname === '/') {
+    else if (!isLoading && session && router.pathname === '/') {
       Router.push('/dashboard');
     } else {
       if (
@@ -290,8 +290,10 @@ const Layout = (props) => {
       <Hero background={background}>
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : ((!isLoading && !session) || !props.isAuth) &&
-          router.pathname === '/' ? (
+        ) : !isLoading &&
+          !session &&
+          router.pathname === '/' &&
+          props?.error ? (
           <Toys>
             {toys.map((toy, i) => (
               <Toy key={i} {...toy} />
@@ -302,57 +304,64 @@ const Layout = (props) => {
         )}
         <Wave />
       </Hero>
-      {router.pathname === '/' && !props.isAuth ? (
-        <>{props.children}</>
-      ) : !isLoading && router.pathname !== '/' && props?.user ? (
-        <WrapContent>
-          <Content
-            background={background}
-            navigation={navigation}
-            height={height}
-          >
-            {React.cloneElement(props.children, {
-              setVenmo,
-              darkMode,
-              setDarkMode,
-            })}
-          </Content>
-          <Panel />
-        </WrapContent>
-      ) : (
-        <></>
-      )}
-      <Navigation visible={isAuth && navigation}>
-        <Bar>
-          <WrapItem
-            active={router.pathname === '/dashboard'}
-            onClick={() => Router.push('/dashboard')}
-          >
-            <Item>
-              <IconDashboard />
-            </Item>
-            <Label>Dashboard</Label>
-          </WrapItem>
-          <WrapItem
-            active={router.pathname.includes('/pools')}
-            onClick={() => Router.push('/pools')}
-          >
-            <Item>
-              <IconPools />
-            </Item>
-            <Label>Pools</Label>
-          </WrapItem>
-          <WrapItem
-            active={router.pathname.includes('/profile')}
-            onClick={() => Router.push('/profile')}
-          >
-            <Item>
-              <IconProfile />
-            </Item>
-            <Label>Profile</Label>
-          </WrapItem>
-        </Bar>
-      </Navigation>
+      {console.log(props.isAuth)}
+      {!isLoading &&
+        !(session && router.pathname === '/') &&
+        !(!session && router.pathname !== '/') && (
+          <>
+            {router.pathname === '/' && props?.error ? (
+              <>{props.children}</>
+            ) : router.pathname !== '/' && props?.user ? (
+              <WrapContent>
+                <Content
+                  background={background}
+                  navigation={navigation}
+                  height={height}
+                >
+                  {React.cloneElement(props.children, {
+                    setVenmo,
+                    darkMode,
+                    setDarkMode,
+                  })}
+                </Content>
+                <Panel />
+              </WrapContent>
+            ) : (
+              <></>
+            )}
+            <Navigation visible={isAuth && navigation}>
+              <Bar>
+                <WrapItem
+                  active={router.pathname === '/dashboard'}
+                  onClick={() => Router.push('/dashboard')}
+                >
+                  <Item>
+                    <IconDashboard />
+                  </Item>
+                  <Label>Dashboard</Label>
+                </WrapItem>
+                <WrapItem
+                  active={router.pathname.includes('/pools')}
+                  onClick={() => Router.push('/pools')}
+                >
+                  <Item>
+                    <IconPools />
+                  </Item>
+                  <Label>Pools</Label>
+                </WrapItem>
+                <WrapItem
+                  active={router.pathname.includes('/profile')}
+                  onClick={() => Router.push('/profile')}
+                >
+                  <Item>
+                    <IconProfile />
+                  </Item>
+                  <Label>Profile</Label>
+                </WrapItem>
+              </Bar>
+            </Navigation>
+          </>
+        )}
     </Container>
   );
 };
