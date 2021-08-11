@@ -31,7 +31,6 @@ export default async function handler(req, res) {
     redis.set(`user-${session?.user?.id}`, JSON.stringify(updateUser));
     res.json(updateUser);
   } else if (req.method === 'GET') {
-    await prisma.$connect()
     const session = await getSession({ req });
     if (!session) {
       return res.status(403).end();

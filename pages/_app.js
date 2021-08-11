@@ -7,6 +7,8 @@ import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { darkTheme, lightTheme } from '../theme';
 import useDarkMode from 'use-dark-mode';
+import App from 'next/app';
+import cookie from 'cookie';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -32,12 +34,9 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 
-const fetcher = async (url) => {
-  const r = await fetch(url);
-  return await r.json();
-};
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
-export default function App({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }) {
   const { data, error } = useSWR('/api/user', fetcher);
   const [navigation, setNavigation] = useState(false);
   const { value, toggle } = useDarkMode(false, {});
@@ -76,12 +75,36 @@ export default function App({ Component, pageProps }) {
 
         <meta name="mobile-web-app-capable" content="yes" />
 
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 320px)" rel="apple-touch-startup-image" />
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image" />
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image" />
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-        <link href="/splashscreens/ipad_splash.png" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 320px)"
+          rel="apple-touch-startup-image"
+        />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"
+        />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 768px) and (orientation: portrait)"
+          rel="apple-touch-startup-image"
+        />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 768px) and (orientation: landscape)"
+          rel="apple-touch-startup-image"
+        />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"
+        />
+        <link
+          href="/splashscreens/ipad_splash.png"
+          media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image"
+        />
       </Head>
       {mounted && (
         <>
@@ -110,7 +133,14 @@ export default function App({ Component, pageProps }) {
   );
 }
 
-// export async function getServerSideProps() {
-//   const user = await fetcher('/api/user');
-//   return { props: { user } };
-// }
+MyApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext);
+  const request = appContext.ctx.req;
+  if (request) {
+    const cookies = cookie.parse(request.headers.cookie || '');
+    appProps.pageProps = {
+      isAuth: !!cookies['next-auth.session-token'],
+    };
+  }
+  return appProps;
+};
