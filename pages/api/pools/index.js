@@ -67,16 +67,12 @@ export default async function handler(req, res) {
       return res.status(403).end();
     }
 
-    if(!session?.user?.venmoId) {
-      return res.json([]);
-    }
-
     const result = await prisma.pool.findMany({
       where: {
         users: {
           some: {
-            venmoId: {
-              contains: session?.user?.venmoId,
+            venmo: {
+              userId: session?.user?.id,
             },
           },
         },
@@ -86,8 +82,7 @@ export default async function handler(req, res) {
         name: true,
         users: {
           select: {
-            venmoId: true,
-            venmo: { select: { image: true, username: true } },
+            venmo: { select: { userId: true, image: true, username: true } },
           },
         },
       },

@@ -246,7 +246,7 @@ const Layout = (props) => {
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
-    if (!isLoading && !session && router.pathname !== '/') {
+    if (!isLoading && props?.error && router.pathname !== '/') {
       Router.push('/');
     }
     // Auth-user redirected from homepage to dashboard
@@ -275,7 +275,6 @@ const Layout = (props) => {
     session,
     router.pathname,
   ]);
-  
   return (
     <Container>
       <WrapModal modal={venmo}>

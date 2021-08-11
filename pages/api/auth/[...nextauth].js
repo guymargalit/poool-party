@@ -20,18 +20,6 @@ const options = {
     async session(session, token) {
       // Add property to session
       session.user.id = token.id;
-      const user = await prisma.user.findUnique({
-        where: { id: token?.id },
-        select: {
-          id: true,
-          venmo: {
-            select: {
-              id: true
-            },
-          },
-        },
-      });
-      session.user.venmoId = user?.venmo?.id;
       return session;
     },
   },
