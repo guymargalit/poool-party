@@ -304,7 +304,6 @@ const Layout = (props) => {
         )}
         <Wave />
       </Hero>
-      {console.log(props.isAuth)}
       {!isLoading &&
         !(session && router.pathname === '/') &&
         !(!session && router.pathname !== '/') && (

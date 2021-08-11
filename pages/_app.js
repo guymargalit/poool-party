@@ -2,7 +2,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { darkTheme, lightTheme } from '../theme';
@@ -36,16 +36,32 @@ const GlobalStyle = createGlobalStyle`
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const key = '/api/user';
+
+function useUser() {
+  return useSWR(key, fetcher, {
+    onFailure() {
+      localStorage.removeItem(key);
+    },
+    onSuccess(user) {
+      localStorage.setItem(key, JSON.stringify(user));
+    },
+  });
+}
+
 export default function MyApp({ Component, pageProps }) {
-  const { data, error } = useSWR('/api/user', fetcher);
+  const { data, error } = useUser('/api/user', fetcher);
   const [navigation, setNavigation] = useState(false);
-  const [isAuth] = useState(pageProps.isAuth);
   const { value, toggle } = useDarkMode(false, {});
   const theme = value ? darkTheme : lightTheme;
 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const data = localStorage.getItem(key);
+      if (data) mutate(key, JSON.parse(data), false);
+    }
     setMounted(true);
   }, []);
 
@@ -122,7 +138,6 @@ export default function MyApp({ Component, pageProps }) {
                 setDarkMode={toggle}
                 user={data}
                 error={error}
-                isAuth={isAuth}
                 {...pageProps}
               >
                 <Component user={data} {...pageProps} />
@@ -134,15 +149,3 @@ export default function MyApp({ Component, pageProps }) {
     </Provider>
   );
 }
-
-MyApp.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  const request = appContext.ctx.req;
-  if (request) {
-    const cookies = cookie.parse(request.headers.cookie || '');
-    appProps.pageProps = {
-      isAuth: !!cookies['next-auth.session-token'],
-    };
-  }
-  return appProps;
-};
