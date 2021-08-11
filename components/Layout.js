@@ -250,7 +250,7 @@ const Layout = (props) => {
       Router.push('/');
     }
     // Auth-user redirected from homepage to dashboard
-    else if (!isLoading && session && router.pathname === '/') {
+    else if (props.isAuth && router.pathname === '/') {
       Router.push('/dashboard');
     } else {
       if (

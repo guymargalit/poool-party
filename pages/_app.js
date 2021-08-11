@@ -39,6 +39,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 export default function MyApp({ Component, pageProps }) {
   const { data, error } = useSWR('/api/user', fetcher);
   const [navigation, setNavigation] = useState(false);
+  const [isAuth] = useState(pageProps.isAuth);
   const { value, toggle } = useDarkMode(false, {});
   const theme = value ? darkTheme : lightTheme;
 
@@ -121,6 +122,7 @@ export default function MyApp({ Component, pageProps }) {
                 setDarkMode={toggle}
                 user={data}
                 error={error}
+                isAuth={isAuth}
                 {...pageProps}
               >
                 <Component user={data} {...pageProps} />
