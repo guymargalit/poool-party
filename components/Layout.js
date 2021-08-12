@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
 import Router from 'next/router';
 import Toy from './Toy';
 import Wave from './Wave';
@@ -28,8 +27,6 @@ const WrapContent = styled.div`
   justify-content: flex-end;
   z-index: 4;
   position: sticky;
-  visibility: ${({ isLoading }) => (isLoading ? 'hidden' : 'visible')};
-  opacity: ${({ isLoading }) => (isLoading ? 0 : 1)};
   transition: all 0.5s ease-in;
 `;
 
@@ -205,12 +202,12 @@ const toys = [
     position: { x: '80%', y: '8%', z: 4 },
   },
   {
-    type: 'tiger',
-    position: { x: '10%', y: '6%', z: 4 },
+    type: 'turtle',
+    position: { x: '10%', y: '9%', z: 3 },
   },
   {
     type: 'flamingo',
-    position: { x: '18%', y: '2%', z: 7 },
+    position: { x: '18%', y: '4%', z: 6 },
   },
   {
     type: 'unicorn',
@@ -222,26 +219,21 @@ const Layout = (props) => {
   const router = useRouter();
   const { navigation, setNavigation } = props;
   const { darkMode, setDarkMode } = props;
-  const [session, loading] = useSession();
-  const [isAuth, setIsAuth] = useState(false);
   const [venmo, setVenmo] = useState(false);
   const [hideVenmo, setHideVenmo] = useState(false);
 
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
 
-  const isLoading =
-    typeof window !== 'undefined' && loading && !props.error && !props.user;
-
   useEffect(() => {
     setNavigation(
-      isLoading || !session || !props?.user?.id
+      !props?.user
         ? false
         : routes[router.pathname]?.navigation
     );
     setHeight(routes[router.pathname]?.height);
     setBackground(
-      isLoading || !session || !props?.user?.id
+      !props?.user
         ? true
         : routes[router.pathname]?.background
     );
@@ -262,7 +254,6 @@ const Layout = (props) => {
           setVenmo(true);
         }
       } else if (props?.user?.id && (props?.user?.venmo || hideVenmo)) {
-        setIsAuth(true);
         setVenmo(false);
       }
     }
@@ -271,8 +262,6 @@ const Layout = (props) => {
     props?.user?.venmo,
     props?.error,
     hideVenmo,
-    isLoading,
-    session,
     router.pathname,
   ]);
   return (
@@ -360,9 +349,5 @@ const Layout = (props) => {
     </Container>
   );
 };
-
-// export async function getStaticProps(ctx) {
-//   return { session: await getSession(ctx) };
-// }
 
 export default Layout;
