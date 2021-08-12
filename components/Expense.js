@@ -9,6 +9,7 @@ import {
   IconVenmo,
   IconLock,
   IconUnlock,
+  IconShare,
 } from '../icons';
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
@@ -18,7 +19,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   padding-top: env(safe-area-inset-top);
-  background-color: ${({ theme }) => theme.colors.purple};
+  background-color: ${({ theme }) => theme.bg.content};
 `;
 
 const WrapContent = styled.div`
@@ -57,31 +58,36 @@ const Subtitle = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
-  padding: 0px 35px;
-  @media (max-width: 675px) {
-    padding: 0 20px;
-  }
-  height: 75px;
+  padding: 0px 18px;
+  height: 45px;
   transition: all 0.5s ease 0s;
-  background-color: ${({ theme }) => theme.colors.purple};
-  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
-const Empty = styled(IconEmpty)`
-  width: 28px;
-`;
-
-const Close = styled(IconClose)`
-  width: 28px;
-  height: 28px;
+const Share = styled(IconShare)`
+  margin-top: 15px;
+  width: 25px;
+  height: 25px;
   cursor: pointer;
-  fill: ${({ theme }) => theme.colors.white};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.button.hover};
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+`;
+
+const Close = styled(IconClose)`
+  margin-top: 15px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  fill: ${({ theme }) => theme.text.primary};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -621,9 +627,8 @@ const Expense = (props) => {
   return (
     <Container>
       <Header>
-        <Empty />
-        <Title>New Expense</Title>
         <Close onClick={() => props.close()} />
+        <Share />
       </Header>
       <WrapContent>
         <Content>

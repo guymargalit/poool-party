@@ -30,7 +30,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: ${({theme}) => theme.text.primary};
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -42,7 +42,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: ${({theme}) => theme.text.tertiary};
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: 16px;
   margin: 10px 0;
   padding: 0 35px;
@@ -55,7 +55,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: ${({theme}) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {
@@ -71,18 +71,18 @@ const Header = styled.div`
   padding: 0px 35px;
   height: 75px;
   transition: all 0.5s ease 0s;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   user-select: none;
 `;
 
 const LeftChevron = styled(IconLeftChevron)`
   width: 28px;
   cursor: pointer;
-  fill: ${({theme}) => theme.text.primary};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({theme}) => theme.colors.purple};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -91,14 +91,14 @@ const Settings = styled(IconEmpty)`
   width: 28px;
   height: 28px;
   /* cursor: pointer; */
-  fill: ${({theme}) => theme.text.primary};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
 `;
 
 const Plus = styled(IconPlus)`
   width: 24px;
   height: 24px;
-  fill: ${({theme}) => theme.text.tertiary};
+  fill: ${({ theme }) => theme.text.tertiary};
   transition: all 0.25s ease 0s;
 `;
 
@@ -127,7 +127,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const List = styled.div`
@@ -153,7 +153,7 @@ const Name = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: ${({theme}) => theme.text.tertiary};
+  color: ${({ theme }) => theme.text.tertiary};
   margin: 5px 0 0;
 `;
 
@@ -167,7 +167,7 @@ const Panel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({theme}) => theme.bg.content};
+  background-color: ${({ theme }) => theme.bg.content};
   bottom: 0px;
   width: 100%;
   height: ${({ panel }) => (panel ? '100%' : '80px')};
@@ -184,8 +184,8 @@ const Footer = styled.div`
   }
   flex: 1;
   justify-content: center;
-  border-top: 1px solid ${({theme}) => theme.bg.border};
-  background-color: ${({theme}) => theme.bg.content};
+  border-top: 1px solid ${({ theme }) => theme.bg.border};
+  background-color: ${({ theme }) => theme.bg.content};
 `;
 
 const Popper = styled(IconPopper)`
@@ -199,8 +199,10 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({theme}) => theme.colors.white};
-  background-color: ${({theme}) => theme.colors.purple};
+  color: ${({ theme }) => theme.colors.white};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? '#aaa' : theme.colors.purple};
   padding: 0 10px;
   margin: 15px 0;
   border-radius: 24px;
@@ -211,12 +213,12 @@ const Button = styled.div`
   height: 50px;
   width: 100%;
   user-select: none;
-  cursor: pointer;
   transition: all 0.25s ease 0s;
   max-width: 1040px;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.button.hover};
+      background-color: ${({ disabled, theme }) =>
+        !disabled && theme.button.hover};
     }
     &:hover ${Popper} {
       transform: rotate(-10deg);
@@ -234,7 +236,8 @@ const RightChevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({ loading, theme }) => (loading ? '#e2e2e2' : theme.text.quarternary)};
+  fill: ${({ loading, theme }) =>
+    loading ? '#e2e2e2' : theme.text.quarternary};
   transition: all 0.25s ease 0s;
 `;
 
@@ -251,15 +254,16 @@ const Item = styled.div`
   }
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-top: 1px solid ${({theme}) => theme.bg.border};
-  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
+  border-top: 1px solid ${({ theme }) => theme.bg.border};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color: ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
     :hover ${RightChevron} {
-      fill: ${({theme}) => theme.colors.white};
+      fill: ${({ theme }) => theme.colors.white};
     }
   }
 `;
@@ -317,8 +321,9 @@ const Badge = styled.div`
   align-items: center;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  color: ${({theme}) => theme.colors.white};
-  background-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.disabled)};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.success : theme.colors.disabled};
   border-radius: 0.25rem;
   margin-left: 10px;
   line-height: 1rem;
@@ -354,7 +359,7 @@ const Pool = (props) => {
   };
   useEffect(() => {
     getPool();
-  }, []);
+  }, [id]);
 
   return (
     <Fragment>
@@ -425,9 +430,10 @@ const Pool = (props) => {
                     <Description>
                       <Total>{formatter.format(expense?.total)}</Total>
                       {expense?.interval && (
-                        <Badge active={expense?.active}>{intervalOptions[expense?.interval]}</Badge>
+                        <Badge active={expense?.active}>
+                          {intervalOptions[expense?.interval]}
+                        </Badge>
                       )}
-                     
                     </Description>
                   </Info>
                   <RightChevron />
@@ -457,7 +463,7 @@ const Pool = (props) => {
             />
           ) : (
             <Footer>
-              <Button onClick={() => setPanel(true)}>
+              <Button disabled={loading} onClick={() => pool && setPanel(true)}>
                 New Expense
                 <Popper />
               </Button>
