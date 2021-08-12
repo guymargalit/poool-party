@@ -424,11 +424,8 @@ const Pool = (props) => {
                     <Label>{expense?.name}</Label>
                     <Description>
                       <Total>{formatter.format(expense?.total)}</Total>
-                      {expense?.interval && expense?.active && (
-                        <Badge active>Active</Badge>
-                      )}
                       {expense?.interval && (
-                        <Badge>{intervalOptions[expense?.interval]}</Badge>
+                        <Badge active={expense?.active}>{intervalOptions[expense?.interval]}</Badge>
                       )}
                      
                     </Description>
