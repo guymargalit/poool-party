@@ -246,11 +246,11 @@ const Layout = (props) => {
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
-    if (!isLoading && props?.error && router.pathname !== '/') {
+    if (!props?.user && router.pathname !== '/') {
       Router.push('/');
     }
     // Auth-user redirected from homepage to dashboard
-    else if (!isLoading && session && router.pathname === '/') {
+    else if (props?.user && router.pathname === '/') {
       Router.push('/dashboard');
     } else {
       if (
@@ -290,10 +290,7 @@ const Layout = (props) => {
       <Hero background={background}>
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : !isLoading &&
-          !session &&
-          router.pathname === '/' &&
-          props?.error ? (
+        ) : !props?.user && router.pathname === '/' ? (
           <Toys>
             {toys.map((toy, i) => (
               <Toy key={i} {...toy} />
@@ -304,11 +301,10 @@ const Layout = (props) => {
         )}
         <Wave />
       </Hero>
-      {!isLoading &&
-        !(session && router.pathname === '/') &&
-        !(!session && router.pathname !== '/') && (
+      {!(props?.user && router.pathname === '/') &&
+        !(!props?.user && router.pathname !== '/') && (
           <>
-            {router.pathname === '/' && props?.error ? (
+            {router.pathname === '/' && !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' && props?.user ? (
               <WrapContent>

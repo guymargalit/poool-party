@@ -39,7 +39,6 @@ export default async function handler(req, res) {
     let cache = await redis.get(`user-${session?.user?.id}`);
     cache = JSON.parse(cache);
     if (cache) {
-      console.log('Latency cache: ',Date.now() - start);
       return res.status(200).json(cache);
     } else {
       const user = await prisma.user.findUnique({
@@ -59,7 +58,6 @@ export default async function handler(req, res) {
           },
         },
       });
-      console.log('Latency db: ', Date.now() - start);
       redis.set(`user-${session?.user?.id}`, JSON.stringify(user));
       return res.status(200).json(user);
     }
