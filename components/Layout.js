@@ -260,7 +260,6 @@ const Layout = (props) => {
   }, [
     props?.user?.id,
     props?.user?.venmo,
-    props?.error,
     hideVenmo,
     router.pathname,
   ]);

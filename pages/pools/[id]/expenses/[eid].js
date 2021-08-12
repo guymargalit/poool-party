@@ -28,16 +28,18 @@ const Content = styled.div`
 `;
 
 const Title = styled.div`
-  display: flex;
-  align-items: center;
   font-weight: 700;
-  color: ${({ theme }) => theme.text.primary};
   text-align: center;
+  color: ${({ theme }) => theme.text.primary};
   font-size: 24px;
-  height: 50px;
+  line-height: 24px;
+  width: 50%;
   @media (max-width: 675px) {
     font-size: 20px;
   }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Subtitle = styled.div`
@@ -186,6 +188,23 @@ const RightChevron = styled(IconRightChevron)`
   transition: all 0.25s ease 0s;
 `;
 
+const Card = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1px 0;
+  height: 70px;
+  width: 100%;
+  padding: 0 35px;
+  @media (max-width: 675px) {
+    padding: 0 20px;
+  }
+  transition: all 0.25s ease 0s;
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
+`;
+
 const Item = styled.div`
   display: flex;
   flex-direction: row;
@@ -295,6 +314,51 @@ const Area = styled.div`
   user-select: none;
 `;
 
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
+const CheckBoxLabel = styled.label`
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 58px;
+  height: 30px;
+  border-radius: 15px;
+  background: ${({ theme }) => theme.bg.input};
+  cursor: pointer;
+  &::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 3px;
+    background: #ffffff;
+    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+  }
+`;
+const CheckBox = styled.input`
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 58px;
+  height: 30px;
+  &:checked + ${CheckBoxLabel} {
+    background: ${({ theme }) => theme.colors.success};
+    &::after {
+      content: '';
+      display: block;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      margin-left: 30px;
+      transition: 0.2s;
+    }
+  }
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -304,6 +368,7 @@ const PoolExpense = (props) => {
   const router = useRouter();
   const { id, eid } = router.query;
   const [expense, setExpense] = useState(props?.expense);
+  const [active, setActive] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const getPoolExpense = async () => {
@@ -315,9 +380,26 @@ const PoolExpense = (props) => {
     setExpense(await response.json());
     setLoading(false);
   };
+
   useEffect(() => {
     getPoolExpense();
   }, []);
+
+  useEffect(() => {
+    setActive(expense?.active);
+  }, [expense?.active]);
+
+  const toggleActive = async () => {
+    setActive(!active);
+    const body = {
+      active: !active,
+    };
+    await fetch(`/api/expenses/${eid}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  };
 
   return (
     <Fragment>
@@ -328,14 +410,25 @@ const PoolExpense = (props) => {
         ) : (
           <Title>{expense?.name}</Title>
         )}
-        <Settings />
+        {expense?.interval ? (
+          <CheckBoxWrapper>
+            <CheckBox
+              checked={active}
+              id="checkbox"
+              type="checkbox"
+              onChange={toggleActive}
+            />
+            <CheckBoxLabel htmlFor="checkbox"></CheckBoxLabel>
+          </CheckBoxWrapper>
+        ) : (
+          <Settings />
+        )}
       </Header>
       <WrapContent>
         <Content>
           <Section>
-            <Subtitle>Expense</Subtitle>
             {loading ? (
-              <Item>
+              <Card>
                 <Left>
                   <Label>
                     <Skeleton width={120} />
@@ -344,14 +437,14 @@ const PoolExpense = (props) => {
                     <Skeleton width={40} />
                   </Description>
                 </Left>
-              </Item>
+              </Card>
             ) : (
-              <Item key={expense?.id}>
+              <Card key={expense?.id}>
                 <Left>
                   <Label>{expense?.name}</Label>
                   <Description>{formatter.format(expense?.total)}</Description>
                 </Left>
-              </Item>
+              </Card>
             )}
           </Section>
           <Subtitle>Requests</Subtitle>

@@ -318,7 +318,7 @@ const Badge = styled.div`
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
   color: ${({theme}) => theme.colors.white};
-  background-color: ${({ paid, theme }) => (paid ? theme.colors.success : theme.colors.disabled)};
+  background-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.disabled)};
   border-radius: 0.25rem;
   margin-left: 10px;
   line-height: 1rem;
@@ -424,12 +424,13 @@ const Pool = (props) => {
                     <Label>{expense?.name}</Label>
                     <Description>
                       <Total>{formatter.format(expense?.total)}</Total>
+                      {expense?.interval && expense?.active && (
+                        <Badge active>Active</Badge>
+                      )}
                       {expense?.interval && (
                         <Badge>{intervalOptions[expense?.interval]}</Badge>
                       )}
-                      {expense?.paid && (
-                        <Badge paid>Paid</Badge>
-                      )}
+                     
                     </Description>
                   </Info>
                   <RightChevron />
