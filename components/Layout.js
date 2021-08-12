@@ -324,7 +324,7 @@ const Layout = (props) => {
             ) : (
               <></>
             )}
-            <Navigation visible={isAuth && navigation}>
+            <Navigation visible={props?.user && navigation}>
               <Bar>
                 <WrapItem
                   active={router.pathname === '/dashboard'}
