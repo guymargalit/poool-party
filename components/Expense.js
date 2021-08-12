@@ -356,13 +356,8 @@ const Venmo = styled(IconVenmo)`
 const Lock = styled(IconLock)`
   width: 20px;
   margin-left: 5px;
-  fill: ${({ theme }) => theme.text.secondary};
+  fill: ${({ theme }) => theme.colors.purple};
   cursor: pointer;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      fill: ${({ theme }) => theme.colors.purple};
-    }
-  }
 `;
 
 const Unlock = styled(IconUnlock)`
@@ -621,6 +616,8 @@ const Expense = (props) => {
     }
   };
 
+  const handleFocus = (event) => event.target.select();
+
   return (
     <Container>
       <Header>
@@ -675,6 +672,7 @@ const Expense = (props) => {
                       value={u?.amount || ''}
                       onValueChange={(v) => updateAmount(u, v)}
                       disabled={u?.locked}
+                      onFocus={handleFocus}
                     />
                   </WrapAmount>
                   {u?.locked ? (
