@@ -409,7 +409,7 @@ const Pool = (props) => {
                         <Skeleton width={40} />
                       </Description>
                     </Info>
-                    <RightChevron loading={loading} />
+                    <RightChevron loading={loading?.toString()} />
                   </Item>
                 ))
             ) : pool?.expenses?.length > 0 ? (

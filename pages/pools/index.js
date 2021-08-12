@@ -12,20 +12,21 @@ const Header = styled.div`
   padding: 0px 35px;
   height: 75px;
   transition: all 0.5s ease 0s;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: ${({theme}) => theme.text.primary};
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
   @media (max-width: 675px) {
     font-size: 20px;
   }
+  user-select: none;
 `;
 
 const Content = styled.div`
@@ -38,20 +39,21 @@ const Chevron = styled(IconRightChevron)`
   height: 18px;
   width: 18px;
   display: block;
-  fill: ${({ loading, theme }) => (loading ? '#e2e2e2' : theme.text.quarternary)};
+  fill: ${({ loading, theme }) =>
+    loading ? '#e2e2e2' : theme.text.quarternary};
   transition: all 0.25s ease 0s;
 `;
 
 const Plus = styled(IconAdd)`
   display: block;
-  fill: ${({theme}) => theme.text.tertiary};
+  fill: ${({ theme }) => theme.text.tertiary};
   transition: all 0.25s ease 0s;
   width: 32px;
   height: 32px;
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({theme}) => theme.colors.purple};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -66,26 +68,28 @@ const Item = styled.div`
   padding: 0 35px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
-  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color: ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
     :hover ${Chevron} {
-      fill: ${({theme}) => theme.colors.white};
+      fill: ${({ theme }) => theme.colors.white};
     }
   }
 `;
 
 const Label = styled.div`
-  display: flex;
-  align-items: center;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
   font-size: 16px;
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Info = styled.div`
@@ -118,7 +122,7 @@ const Text = styled.div`
   width: 100%;
   text-align: center;
   font-weight: 500;
-  color: ${({theme}) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.secondary};
   font-size: 18px;
   margin-top: 5px;
   @media (max-width: 675px) {

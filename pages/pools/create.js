@@ -431,6 +431,7 @@ const PoolCreate = () => {
               placeholder="What should we call it?"
               type="text"
               value={name}
+              maxLength={25}
             />
           </WrapInput>
         </Label>
