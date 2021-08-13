@@ -50,7 +50,7 @@ const Subtitle = styled.div`
   font-size: 20px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
-  margin: 5px 0 10px;
+  margin: 5px 15px 10px;
 `;
 
 const Caption = styled.div`
