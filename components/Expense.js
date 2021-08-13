@@ -543,6 +543,7 @@ const Expense = (props) => {
   const [modal, setModal] = useState(false);
   const [imagePath, setImagePath] = useState('');
   const [processing, setProcessing] = useState({});
+  const [test, setTest] = useState('');
 
   const lockedTotal = users?.reduce(
     (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
@@ -658,6 +659,7 @@ const Expense = (props) => {
   const handleScan = async (event) => {
     const heic2any = require('heic2any');
     if (typeof window !== 'undefined') {
+      setTest(event.target.files[0]?.name)
       //if HEIC file
       if (
         event.target.files[0] &&
@@ -677,6 +679,8 @@ const Expense = (props) => {
 
         // convert to blob url
         setImagePath(URL.createObjectURL(conversionResult));
+      } else {
+        setImagePath(URL.createObjectURL(event.target.files[0]));
       }
     }
   };
@@ -754,7 +758,7 @@ const Expense = (props) => {
               </WrapCamera>
             </WrapInput>
             <Progress progress={processing?.progress || 1} />
-            <Status>{processing?.status}</Status>
+            <Status>{test}{processing?.status}</Status>
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
