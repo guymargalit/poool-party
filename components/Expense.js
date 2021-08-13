@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import styled, { keyframes } from 'styled-components';
 import {
   IconClose,
@@ -16,7 +15,6 @@ import {
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
-import Tesseract from 'tesseract.js';
 
 const Container = styled.div`
   width: 100%;
@@ -185,7 +183,7 @@ const Button = styled.div`
     }
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  :disabled {
+  ƒ :disabled {
     cursor: not-allowed;
     pointer-events: all !important;
   }
@@ -292,15 +290,6 @@ const Label = styled.div`
   flex: 6;
 `;
 
-const Status = styled.div`
-  display: flex;
-  margin-left: 5px;
-  margin-bottom: 10px;
-  font-weight: 400;
-  font-size: 10px;
-  color: ${({ theme }) => theme.text.tertiary};
-`;
-
 const WrapInput = styled.div`
   display: flex;
   font-size: 16px;
@@ -310,19 +299,10 @@ const WrapInput = styled.div`
   color: ${({ theme }) => theme.text.secondary};
   background-color: ${({ theme }) => theme.bg.border};
   padding: 13px 10px;
-  margin-top: 10px;
+  margin: 10px 0;
   min-height: 1px;
   border-radius: 8px;
   overflow: hidden;
-`;
-
-const Progress = styled.div`
-  width: ${({ progress }) => `calc(${progress * 100}%)`};
-  height: 2px;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.purple};
-  margin-bottom: 2px;
-  transition: all 0.25s ease 0s;
 `;
 
 const Input = styled.input`
@@ -541,9 +521,6 @@ const Expense = (props) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
-  const [imagePath, setImagePath] = useState('');
-  const [processing, setProcessing] = useState({});
-  const [test, setTest] = useState('');
 
   const lockedTotal = users?.reduce(
     (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
@@ -652,63 +629,6 @@ const Expense = (props) => {
     }
   };
 
-  // const handleScan = async (event) => {
-  //   setImagePath(URL.createObjectURL(event.target.files[0]));
-  // };
-
-  const handleScan = async (event) => {
-    const heic2any = require('heic2any');
-    if (typeof window !== 'undefined') {
-      setTest(event.target.files[0]?.name)
-      //if HEIC file
-      if (
-        event.target.files[0] &&
-        event.target.files[0].name.includes('.HEIC')
-      ) {
-        // get image as blob url
-        let blobURL = URL.createObjectURL(event.target.files[0]);
-
-        // convert "fetch" the new blob url
-        let blobRes = await fetch(blobURL);
-
-        // convert response to blob
-        let blob = await blobRes.blob();
-
-        // convert to PNG - response is blob
-        let conversionResult = await heic2any({ blob });
-
-        // convert to blob url
-        setImagePath(URL.createObjectURL(conversionResult));
-      } else {
-        setImagePath(URL.createObjectURL(event.target.files[0]));
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (imagePath) {
-      Tesseract.recognize(imagePath, 'eng', {
-        logger: (m) =>
-          setProcessing({ status: m?.status, progress: m?.progress }),
-      })
-        .catch((err) => {
-          console.error(err);
-        })
-        .then((result) => {
-          for (const line of result?.data?.lines) {
-            if (line?.text?.includes('TOTAL:')) {
-              let total = line?.text?.split('TOTAL:')[1]?.replace(/,/g, '.');
-              total = total?.replace(/ /g, '');
-              if (!isNaN(parseFloat(total))) {
-                setTotal(parseFloat(total));
-              }
-            }
-          }
-          setProcessing({});
-        });
-    }
-  }, [imagePath]);
-
   const handleFocus = (event) => event.target.select();
 
   return (
@@ -748,17 +668,15 @@ const Expense = (props) => {
                 onValueChange={(v) => updateTotal(v)}
               />
               <CameraInput
+                accept="image/*"
                 id="icon-button-file"
                 type="file"
                 capture="environment"
-                onChange={handleScan}
               />
               <WrapCamera htmlFor="icon-button-file">
                 <Camera />
               </WrapCamera>
             </WrapInput>
-            <Progress progress={processing?.progress || 1} />
-            <Status>{test}:{processing?.status}</Status>
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
