@@ -758,7 +758,7 @@ const Expense = (props) => {
               </WrapCamera>
             </WrapInput>
             <Progress progress={processing?.progress || 1} />
-            <Status>{test}: {processing?.status}</Status>
+            <Status>{test}:{processing?.status}</Status>
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
