@@ -10,6 +10,7 @@ import {
   IconLock,
   IconUnlock,
   IconShare,
+  IconCamera,
 } from '../icons';
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
@@ -62,6 +63,25 @@ const Header = styled.div`
   padding: 0px 18px;
   height: 45px;
   transition: all 0.5s ease 0s;
+`;
+
+const WrapCamera = styled.label``;
+
+const Camera = styled(IconCamera)`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  fill: ${({ theme }) => theme.text.primary};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+`;
+
+const CameraInput = styled.input`
+  display: none;
 `;
 
 const Share = styled(IconShare)`
@@ -660,6 +680,15 @@ const Expense = (props) => {
                 value={total}
                 onValueChange={(v) => updateTotal(v)}
               />
+              <CameraInput
+                accept="image/*"
+                id="icon-button-file"
+                type="file"
+                capture="environment"
+              />
+              <WrapCamera htmlFor="icon-button-file">
+                <Camera />
+              </WrapCamera>
             </WrapInput>
             <WrapSplit>
               {users?.map((u, i) => (

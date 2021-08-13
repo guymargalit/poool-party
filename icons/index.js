@@ -179,6 +179,12 @@ export const IconShare = (props) => (
   </Svg>
 );
 
+export const IconCamera = (props) => (
+  <Svg {...props} viewBox="0 0 24 24">
+    <path d="M19 6h-.763a3 3 0 0 1-2.426-1.235l-.385-.53A3 3 0 0 0 13 3h-2.181a3 3 0 0 0-2.427 1.235l-.684.941A2 2 0 0 1 6.091 6H5a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3zm-7 12a5 5 0 1 1 5-5 5 5 0 0 1-5 5zm3-5a3 3 0 1 1-3-3 3 3 0 0 1 3 3z"></path>
+  </Svg>
+);
+
 export const IconLogout = (props) => (
   <Svg {...props} viewBox="0 0 24 24">
     <path d="M15.293 17.707a1 1 0 0 0 1.414 0l5-5a1 1 0 0 0 0-1.414l-5-5a1 1 0 1 0-1.438 1.39l.024.024L18.586 11H9.997a1 1 0 0 0 0 2h8.59l-3.294 3.293a1 1 0 0 0 0 1.414z"></path>
