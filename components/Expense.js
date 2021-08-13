@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import styled, { keyframes } from 'styled-components';
 import {
   IconClose,
@@ -650,8 +651,34 @@ const Expense = (props) => {
     }
   };
 
+  // const handleScan = async (event) => {
+  //   setImagePath(URL.createObjectURL(event.target.files[0]));
+  // };
+
   const handleScan = async (event) => {
-    setImagePath(URL.createObjectURL(event.target.files[0]));
+    const heic2any = require('heic2any');
+    if (typeof window !== 'undefined') {
+      //if HEIC file
+      if (
+        event.target.files[0] &&
+        event.target.files[0].name.includes('.HEIC')
+      ) {
+        // get image as blob url
+        let blobURL = URL.createObjectURL(event.target.files[0]);
+
+        // convert "fetch" the new blob url
+        let blobRes = await fetch(blobURL);
+
+        // convert response to blob
+        let blob = await blobRes.blob();
+
+        // convert to PNG - response is blob
+        let conversionResult = await heic2any({ blob });
+
+        // convert to blob url
+        setImagePath(URL.createObjectURL(conversionResult));
+      }
+    }
   };
 
   useEffect(() => {
@@ -673,7 +700,7 @@ const Expense = (props) => {
               }
             }
           }
-          setProcessing({})
+          setProcessing({});
         });
     }
   }, [imagePath]);
@@ -717,7 +744,6 @@ const Expense = (props) => {
                 onValueChange={(v) => updateTotal(v)}
               />
               <CameraInput
-                accept="image/*"
                 id="icon-button-file"
                 type="file"
                 capture="environment"
