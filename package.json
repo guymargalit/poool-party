@@ -28,6 +28,7 @@
     "react-loading-skeleton": "^2.2.0",
     "styled-components": "^5.3.0",
     "swr": "^0.5.6",
+    "tesseract.js": "^2.1.5",
     "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {

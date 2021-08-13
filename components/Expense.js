@@ -15,6 +15,7 @@ import {
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
+import Tesseract from 'tesseract.js';
 
 const Container = styled.div`
   width: 100%;
@@ -31,21 +32,8 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 155px - env(safe-area-inset-top));
+  height: calc(100% - 125px - env(safe-area-inset-top));
   overflow-y: auto;
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.white};
-  text-align: center;
-  font-size: 24px;
-  height: 50px;
-  @media (max-width: 675px) {
-    font-size: 20px;
-  }
 `;
 
 const Subtitle = styled.div`
@@ -196,7 +184,7 @@ const Button = styled.div`
     }
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  ƒ :disabled {
+  :disabled {
     cursor: not-allowed;
     pointer-events: all !important;
   }
@@ -303,6 +291,15 @@ const Label = styled.div`
   flex: 6;
 `;
 
+const Status = styled.div`
+  display: flex;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 10px;
+  color: ${({ theme }) => theme.text.tertiary};
+`;
+
 const WrapInput = styled.div`
   display: flex;
   font-size: 16px;
@@ -312,10 +309,19 @@ const WrapInput = styled.div`
   color: ${({ theme }) => theme.text.secondary};
   background-color: ${({ theme }) => theme.bg.border};
   padding: 13px 10px;
-  margin: 10px 0;
+  margin-top: 10px;
   min-height: 1px;
   border-radius: 8px;
   overflow: hidden;
+`;
+
+const Progress = styled.div`
+  width: ${({ progress }) => `calc(${progress * 100}%)`};
+  height: 2px;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.purple};
+  margin-bottom: 2px;
+  transition: all 0.25s ease 0s;
 `;
 
 const Input = styled.input`
@@ -534,6 +540,8 @@ const Expense = (props) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
+  const [imagePath, setImagePath] = useState('');
+  const [processing, setProcessing] = useState({});
 
   const lockedTotal = users?.reduce(
     (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
@@ -642,6 +650,34 @@ const Expense = (props) => {
     }
   };
 
+  const handleScan = async (event) => {
+    setImagePath(URL.createObjectURL(event.target.files[0]));
+  };
+
+  useEffect(() => {
+    if (imagePath) {
+      Tesseract.recognize(imagePath, 'eng', {
+        logger: (m) =>
+          setProcessing({ status: m?.status, progress: m?.progress }),
+      })
+        .catch((err) => {
+          console.error(err);
+        })
+        .then((result) => {
+          for (const line of result?.data?.lines) {
+            if (line?.text?.includes('TOTAL:')) {
+              let total = line?.text?.split('TOTAL:')[1]?.replace(/,/g, '.');
+              total = total?.replace(/ /g, '');
+              if (!isNaN(parseFloat(total))) {
+                setTotal(parseFloat(total));
+              }
+            }
+          }
+          setProcessing({})
+        });
+    }
+  }, [imagePath]);
+
   const handleFocus = (event) => event.target.select();
 
   return (
@@ -685,11 +721,14 @@ const Expense = (props) => {
                 id="icon-button-file"
                 type="file"
                 capture="environment"
+                onChange={handleScan}
               />
               <WrapCamera htmlFor="icon-button-file">
                 <Camera />
               </WrapCamera>
             </WrapInput>
+            <Progress progress={processing?.progress || 1} />
+            <Status>{processing?.status}</Status>
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
