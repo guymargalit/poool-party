@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { IconPartyFace, IconPopper } from '../../icons';
+import { IconLogout, IconPartyFace, IconPopper } from '../../icons';
+import { signOut } from 'next-auth/client';
 
 const Content = styled.div`
   width: 100%;
@@ -76,6 +77,24 @@ const WrapPopper = styled.div`
   transition: all 0.25s ease 0s;
 `;
 
+const Logout = styled(IconLogout)`
+  width: 28px;
+  cursor: pointer;
+  fill: ${({ theme }) => theme.text.primary};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+`;
+
+const handleLogout = (e) => {
+  e.preventDefault();
+  localStorage.clear();
+  signOut({ callbackUrl: process.env.APP_URL });
+};
+
 const Dashboard = ({ user }) => {
   // const [requests, setRequests] = useState([]);
   // useEffect(() => {
@@ -92,6 +111,7 @@ const Dashboard = ({ user }) => {
     <Fragment>
       <Header>
         <Title>Dashboard</Title>
+        <Logout onClick={handleLogout} />
       </Header>
       <Content>
         <Area>

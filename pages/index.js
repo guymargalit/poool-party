@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { signIn, useSession } from 'next-auth/client';
 import Router from 'next/router';
+import { IconApple, IconEmpty, IconGoogle } from '../icons';
 
 const Content = styled.div`
   display: flex;
@@ -11,9 +12,6 @@ const Content = styled.div`
   flex: 1;
   z-index: 4;
   overflow: hidden;
-  @media (max-width: 675px) {
-    justify-content: center;
-  }
 `;
 
 const rotate = keyframes`
@@ -38,15 +36,29 @@ const dash = keyframes`
 `;
 
 const Title = styled.div`
+  text-align: center;
   font-size: 50px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.white};
+  @media (max-width: 675px) {
+    margin-top: 10%;
+  }
 `;
 
 const Subtitle = styled.div`
+  text-align: center;
   font-size: 20px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
+  margin: 5px 0 10px;
+`;
+
+const Caption = styled.div`
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.white};
+  margin: 20px 0 50px;
 `;
 
 const slide = keyframes`
@@ -69,10 +81,13 @@ const Button = styled.div`
   color: ${({ theme }) => theme.colors.white};
   border-radius: 1.5rem;
   margin-top: 20px;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   user-select: none;
+  justify-content: space-between;
+  max-width: 500px;
+  width: calc(100% - 40px);
   background-color: #5a489b;
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
@@ -84,9 +99,8 @@ const Button = styled.div`
 
 const Svg = styled.svg`
   animation: ${rotate} 2s linear infinite;
-  width: 25px;
-  height: 25px;
-  margin-left: 10px;
+  width: 20px;
+  height: 20px;
 `;
 
 const Circle = styled.circle`
@@ -97,12 +111,42 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
+const AppleIcon = styled(IconApple)`
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  user-select: none;
+  transition: all 0.25s ease 0s;
+`;
+
+const GoogleIcon = styled(IconGoogle)`
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  user-select: none;
+  transition: all 0.25s ease 0s;
+`;
+
+const Empty = styled(IconEmpty)`
+  width: 20px;
+`;
+
 const Home = () => {
-  const [loggingIn, setLoggingIn] = useState(false);
-  const handleLogin = (e) => {
+  const [apple, setApple] = useState(false);
+  const [google, setGoogle] = useState(false);
+  const handleApple = (e) => {
     e.preventDefault();
-    setLoggingIn(true);
+    setApple(true);
     signIn('apple', { callbackUrl: 'https://poool.party/dashboard' });
+  };
+  const handleGoogle = (e) => {
+    e.preventDefault();
+    setGoogle(true);
+    signIn('google', { callbackUrl: 'https://poool.party/dashboard' });
   };
 
   const handleAddToHomescreenClick = () => {
@@ -123,18 +167,38 @@ const Home = () => {
   return (
     <Content>
       <Title>Poool Party</Title>
-      <Subtitle>Do stuff with Venmo, but easier</Subtitle>
+      <Subtitle>Recurring and easy splitting with Venmo*</Subtitle>
+      <Caption>*but like actually</Caption>
       {typeof window !== 'undefined' && isIos() && !isInStandaloneMode() ? (
-        <Button onClick={handleAddToHomescreenClick}>Install on iOS</Button>
-      ) : (
-        <Button onClick={handleLogin}>
-          Get Started{' '}
-          {loggingIn && (
-            <Svg viewBox="0 0 50 50">
-              <Circle cx="25" cy="25" r="20"></Circle>
-            </Svg>
-          )}
+        <Button onClick={handleAddToHomescreenClick}>
+          <AppleIcon />
+          Get the App <Empty />
         </Button>
+      ) : (
+        <>
+          <Button onClick={handleApple}>
+            <AppleIcon />
+            Continue with Apple
+            {apple ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
+          <Button onClick={handleGoogle}>
+            <GoogleIcon />
+            Continue with Google
+            {google ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
+        </>
       )}
     </Content>
   );

@@ -182,18 +182,6 @@ const VenmoLogo = styled(IconVenmoLogo)`
   margin-left: 10px;
 `;
 
-const Logout = styled(IconLogout)`
-  width: 28px;
-  cursor: pointer;
-  fill: ${({ theme }) => theme.text.primary};
-  transition: all 0.25s ease 0s;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      fill: ${({ theme }) => theme.colors.purple};
-    }
-  }
-`;
-
 const WrapSunIcon = styled.div`
   position: absolute;
   top: 3px;
@@ -253,11 +241,6 @@ const CheckBox = styled.input`
   }
 `;
 
-const handleLogout = (e) => {
-  e.preventDefault();
-  signOut({ callbackUrl: process.env.APP_URL });
-};
-
 const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
   return (
     <Fragment>
@@ -270,7 +253,6 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
             : ','}{' '}
           {user?.venmo?.displayName?.split(' ')[0] || user?.name?.split(' ')[0]}
         </Title>
-        {/* <Logout onClick={handleLogout} /> */}
         <CheckBoxWrapper>
           <CheckBox
             checked={darkMode}
