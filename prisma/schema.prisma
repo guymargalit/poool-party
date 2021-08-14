@@ -17,10 +17,20 @@ enum Interval {
   year
 }
 
+model Receipt {
+  id        String   @id @default(cuid())
+  expense   Expense  @relation("expense_receipt", fields: [expenseId], references: [id])
+  expenseId Int      @map(name: "expense_id")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "receipts")
+}
+
 model Expense {
   id            Int       @id @default(autoincrement())
-  name          String
-  total         Float
+  name          String?
+  total         Float?
   creator       PoolUser  @relation("expenses_created", fields: [creatorId], references: [id])
   creatorId     Int       @map(name: "creator_id")
   pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
@@ -29,12 +39,16 @@ model Expense {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   interval      Interval?
   intervalCount Int?      @map(name: "interval_count")
-  startDate     DateTime  @default(now()) @map(name: "start_date")
-  lastRequest   DateTime? @default(now()) @map(name: "last_request")
-  active        Boolean   @default(true)
-  images        Json?
+  startDate     DateTime? @map(name: "start_date")
+  lastRequest   DateTime? @map(name: "last_request")
+  active        Boolean   @default(false)
+  draft         Boolean   @default(true)
+  image         String?
+  metadata      Json?
 
-  users ExpenseUser[] @relation(name: "expense_users")
+  receipt        Receipt?      @relation("expense_receipt")
+  currentExpense PoolUser?     @relation("current_expense")
+  users          ExpenseUser[] @relation(name: "expense_users")
 
   @@map(name: "expenses")
 }
@@ -89,11 +103,13 @@ model Pool {
 }
 
 model PoolUser {
-  id      Int     @id @default(autoincrement())
-  pool    Pool    @relation("users", fields: [poolId], references: [id])
-  poolId  Int     @map(name: "pool_id")
-  venmo   Venmo?  @relation("venmos", fields: [venmoId], references: [id])
-  venmoId String? @map(name: "venmo_id")
+  id      Int      @id @default(autoincrement())
+  pool    Pool     @relation("users", fields: [poolId], references: [id])
+  poolId  Int      @map(name: "pool_id")
+  venmo   Venmo?   @relation("venmos", fields: [venmoId], references: [id])
+  venmoId String?  @map(name: "venmo_id")
+  draft   Expense? @relation("current_expense", fields: [draftId], references: [id])
+  draftId Int?     @map(name: "draft_id")
 
   expenses        ExpenseUser[] @relation(name: "expenses")
   expensesCreated Expense[]     @relation(name: "expenses_created")

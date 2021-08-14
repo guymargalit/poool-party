@@ -8,6 +8,7 @@ import {
   IconSearch,
   IconWarning,
 } from '../../icons';
+import { debounce } from '../../lib/utils';
 
 const Container = styled.div`
   display: flex;
@@ -340,20 +341,6 @@ const Footer = styled.div`
   max-width: 1040px;
   justify-content: center;
 `;
-
-const debounce = (fn, delay) => {
-  let timer;
-  return (...args) => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    timer = setTimeout(() => {
-      timer = null;
-      fn(...args);
-    }, delay);
-  };
-};
 
 const PoolCreate = () => {
   const [name, setName] = useState('');

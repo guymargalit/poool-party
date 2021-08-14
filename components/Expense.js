@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 import {
   IconClose,
@@ -18,6 +18,7 @@ import currency from 'currency.js';
 import RadioForm from './RadioForm';
 import { useS3Upload } from 'next-s3-upload';
 import imageCompression from 'browser-image-compression';
+import { debounce } from '../lib/utils';
 
 const Container = styled.div`
   width: 100%;
@@ -525,21 +526,56 @@ const intervalOptions = {
   [null]: 'One Time',
 };
 
-const Expense = (props) => {
-  const { pool } = props;
-  const [name, setName] = useState('');
-  const [frequency, setFrequency] = useState(intervalOptions[null]);
-  const [date, setDate] = useState(new Date().toISOString().substr(0, 10));
-  const [users, setUsers] = useState([...pool?.users]);
-  const [total, setTotal] = useState('');
+const Expense = ({ pool, expense, setExpense, close }) => {
+  const [name, setName] = useState(expense?.metadata?.name || '');
+  const [frequency, setFrequency] = useState(
+    expense?.metadata?.interval
+      ? intervalOptions[expense?.metadata?.interval]
+      : intervalOptions[null]
+  );
+  const [date, setDate] = useState(
+    expense?.metadata?.startDate
+      ? new Date(expense?.metadata?.startDate).toISOString().substr(0, 10)
+      : new Date().toISOString().substr(0, 10)
+  );
+  const [users, setUsers] = useState(
+    expense?.metadata?.users ? [...expense?.metadata?.users] : [...pool?.users]
+  );
+  const [total, setTotal] = useState(expense?.metadata?.total || '');
   const [user, updatingUser] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
+  const [image, setImage] = useState(expense?.metadata?.image || '');
   const { uploadToS3 } = useS3Upload();
+
+  const handleSave = async (body) => {
+    if (expense?.id) {
+      const response = await fetch(`/api/expenses/${expense?.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      setExpense(await response.json());
+    }
+  };
+
+  const changeHandler = async (e) => {
+    setSaving(true);
+    await handleSave(e);
+    setSaving(false);
+  };
+
+  const changeInterval = useMemo(() => debounce(changeHandler, 500), []);
+
+  const changeUsers = useMemo(() => debounce(changeHandler, 500), []);
+
+  const changeName = useMemo(() => debounce(changeHandler, 500), []);
+
+  const changeDate = useMemo(() => debounce(changeHandler, 500), []);
 
   const handleFileChange = async ({ target }) => {
     const options = {
@@ -556,7 +592,10 @@ const Expense = (props) => {
         const compressedFile = await imageCompression(file, options);
         const { url } = await uploadToS3(compressedFile);
         setUploading(false);
-        setImageUrl(url);
+        setImage(url);
+        handleSave({
+          image: url,
+        });
         urls.push(url);
       } catch (error) {
         console.log(error);
@@ -580,7 +619,7 @@ const Expense = (props) => {
             )
           : [];
       let i = 0;
-      setUsers([
+      const updatedUsers = [
         ...users?.map((u) => ({
           ...u,
           amount: u?.locked
@@ -593,7 +632,11 @@ const Expense = (props) => {
             ? amounts[i++]
             : 0,
         })),
-      ]);
+      ];
+      setUsers(updatedUsers);
+      changeUsers({
+        users: updatedUsers,
+      });
       updatingUser(null);
     }
   }, [user]);
@@ -601,9 +644,17 @@ const Expense = (props) => {
   const selectUser = (usr) => {
     const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
     if (index !== -1) {
-      setUsers([...users.slice(0, index), ...users.slice(index + 1)]);
+      let updatedUsers = [...users.slice(0, index), ...users.slice(index + 1)];
+      setUsers(updatedUsers);
+      changeUsers({
+        users: updatedUsers,
+      });
     } else {
-      setUsers([...users, usr]);
+      let updatedUsers = [...users, usr];
+      setUsers(updatedUsers);
+      changeUsers({
+        users: updatedUsers,
+      });
     }
     updatingUser(usr);
   };
@@ -611,64 +662,81 @@ const Expense = (props) => {
   const updateTotal = (t) => {
     setTotal(t);
     const amounts = currency(t)?.distribute(users?.length);
-    setUsers([...users?.map((u, i) => ({ ...u, amount: amounts[i] }))]);
+    let updatedUsers = [
+      ...users?.map((u, i) => ({ ...u, amount: amounts[i] })),
+    ];
+    setUsers(updatedUsers);
+    changeUsers({
+      total: t,
+      users: updatedUsers,
+    });
   };
 
   const updateAmount = (usr, amt) => {
     if (unlockedUsers > 1) {
       const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
-      setUsers([
+      let updatedUsers = [
         ...users.slice(0, index),
         { ...users[index], amount: amt },
         ...users.slice(index + 1),
-      ]);
+      ];
+      setUsers(updatedUsers);
+      changeUsers({
+        users: updatedUsers,
+      });
       updatingUser({ ...usr, amount: amt });
     }
   };
 
   const updateLock = (usr) => {
     const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
-    setUsers([
+    let updatedUsers = [
       ...users.slice(0, index),
       { ...users[index], locked: !users[index]?.locked },
       ...users.slice(index + 1),
-    ]);
+    ];
+    setUsers(updatedUsers);
+    changeUsers({
+      users: updatedUsers,
+    });
   };
 
   const submitData = async () => {
-    setSubmitting(true);
-    try {
-      const body = {
-        poolId: pool?.id,
-        name,
-        ...(frequency !== 'One Time' && {
-          interval: Object.keys(intervalOptions).find(
-            (key) => intervalOptions[key] === frequency
-          ),
-        }),
-        ...(frequency !== 'One Time' && {
-          date: date,
-        }),
-        users: users.map((u) => ({
-          id: u?.id,
-          venmoId: u?.venmo?.id,
-          amount: u?.amount,
-        })),
-        total,
-      };
-      const response = await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (!response?.ok) {
-        setError(await response.text());
-      } else {
-        props.close();
+    if (expense?.id) {
+      setSubmitting(true);
+      try {
+        const body = {
+          poolId: pool?.id,
+          name,
+          ...(frequency !== 'One Time' && {
+            interval: Object.keys(intervalOptions).find(
+              (key) => intervalOptions[key] === frequency
+            ),
+          }),
+          ...(frequency !== 'One Time' && {
+            date: date,
+          }),
+          users: users.map((u) => ({
+            id: u?.id,
+            venmoId: u?.venmo?.id,
+            amount: u?.amount,
+          })),
+          total,
+        };
+        const response = await fetch(`/api/expenses/${expense?.id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!response?.ok) {
+          setError(await response.text());
+        } else {
+          close();
+        }
+        setSubmitting(false);
+      } catch (err) {
+        setSubmitting(false);
       }
-      setSubmitting(false);
-    } catch (err) {
-      setSubmitting(false);
     }
   };
 
@@ -677,7 +745,7 @@ const Expense = (props) => {
   return (
     <Container>
       <Header>
-        <Close onClick={() => props.close()} />
+        <Close onClick={() => close()} />
         <Share />
       </Header>
       <WrapContent>
@@ -722,7 +790,7 @@ const Expense = (props) => {
                 <Loader viewBox="0 0 50 50">
                   <Circle cx="25" cy="25" r="20"></Circle>
                 </Loader>
-              ) : imageUrl ? (
+              ) : image ? (
                 <WrapCamera htmlFor="icon-button-file">
                   <Picture />
                 </WrapCamera>
@@ -764,7 +832,10 @@ const Expense = (props) => {
             <Subtitle>What is it?</Subtitle>
             <WrapInput>
               <Input
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  changeName({ name: e.target.value });
+                  setName(e.target.value);
+                }}
                 placeholder="Name of the expense..."
                 type="text"
                 value={name}
@@ -782,11 +853,16 @@ const Expense = (props) => {
                 <DateInput
                   type="date"
                   value={date}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    changeDate({
+                      startDate: new Date(e.target.value)
+                        .toISOString()
+                        .substr(0, 10),
+                    });
                     setDate(
                       new Date(e.target.value).toISOString().substr(0, 10)
-                    )
-                  }
+                    );
+                  }}
                 />
               </WrapDate>
             </Section>
@@ -797,6 +873,11 @@ const Expense = (props) => {
               <RadioForm
                 handleOptionChange={(e) => {
                   setFrequency(e?.target?.value);
+                  changeInterval({
+                    interval: Object.keys(intervalOptions).find(
+                      (key) => intervalOptions[key] === e.target.value
+                    ),
+                  });
                   setModal(false);
                 }}
                 selected={frequency}
@@ -814,13 +895,16 @@ const Expense = (props) => {
               !total ||
               name === '' ||
               (frequency !== 'One Time' && !date) ||
-              submitting
+              submitting ||
+              saving
             }
             onClick={() =>
-              !total || name === '' || submitting ? null : submitData()
+              !total || name === '' || submitting || saving
+                ? null
+                : submitData()
             }
           >
-            {submitting ? (
+            {submitting || saving ? (
               <Loader viewBox="0 0 50 50">
                 <Circle cx="25" cy="25" r="20"></Circle>
               </Loader>

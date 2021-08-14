@@ -330,6 +330,43 @@ const Badge = styled.div`
   font-weight: 700;
 `;
 
+const rotate = keyframes`
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const dash = keyframes`
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+`;
+
+const Loader = styled.svg`
+  animation: ${rotate} 2s linear infinite;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  margin-bottom: 2px;
+`;
+
+const Circle = styled.circle`
+  stroke: ${({ theme }) => theme.colors.white};
+  stroke-linecap: round;
+  animation: ${dash} 1.5s ease-in-out infinite;
+  fill: none;
+  stroke-width: 8px;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -345,8 +382,10 @@ const Pool = (props) => {
   const router = useRouter();
   const { id } = router.query;
   const [pool, setPool] = useState(props?.pool);
-  const [loading, setLoading] = useState(true);
   const [panel, setPanel] = useState(false);
+  const [expense, setExpense] = useState();
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   const getPool = async () => {
     setLoading(true);
@@ -357,9 +396,31 @@ const Pool = (props) => {
     setPool(await response.json());
     setLoading(false);
   };
+
   useEffect(() => {
-    getPool();
+    if (id) {
+      getPool();
+    }
   }, [id]);
+
+  const handleExpense = async () => {
+    if (pool?.draft) {
+      setExpense(pool?.draft);
+      setPanel(true);
+    } else {
+      setSubmitting(true);
+      const body = { poolId: id };
+      const response = await fetch(`/api/expenses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      setExpense(await response.json());
+      setSubmitting(false);
+      setPanel(true);
+      await getPool();
+    }
+  };
 
   return (
     <Fragment>
@@ -418,20 +479,20 @@ const Pool = (props) => {
                   </Item>
                 ))
             ) : pool?.expenses?.length > 0 ? (
-              pool?.expenses?.map((expense) => (
+              pool?.expenses?.map((e) => (
                 <Item
                   onClick={() =>
-                    Router.push(`/pools/${pool?.id}/expenses/${expense?.id}`)
+                    Router.push(`/pools/${pool?.id}/expenses/${e?.id}`)
                   }
-                  key={expense?.id}
+                  key={e?.id}
                 >
                   <Info>
-                    <Label>{expense?.name}</Label>
+                    <Label>{e?.name}</Label>
                     <Description>
-                      <Total>{formatter.format(expense?.total)}</Total>
-                      {expense?.interval && (
-                        <Badge active={expense?.active}>
-                          {intervalOptions[expense?.interval]}
+                      <Total>{formatter.format(e?.total)}</Total>
+                      {e?.interval && (
+                        <Badge active={e?.active}>
+                          {intervalOptions[e?.interval]}
                         </Badge>
                       )}
                     </Description>
@@ -455,17 +516,30 @@ const Pool = (props) => {
           {panel ? (
             <Expense
               pool={pool}
+              expense={expense}
+              setExpense={setExpense}
               {...props}
               close={() => {
-                setPanel(false);
+                setPanel();
                 getPool();
               }}
             />
           ) : (
             <Footer>
-              <Button disabled={loading} onClick={() => pool && setPanel(true)}>
-                New Expense
-                <Popper />
+              <Button
+                disabled={loading || submitting}
+                onClick={() => pool && !submitting && handleExpense()}
+              >
+                {submitting ? (
+                  <Loader viewBox="0 0 50 50">
+                    <Circle cx="25" cy="25" r="20"></Circle>
+                  </Loader>
+                ) : (
+                  <>
+                    {pool?.draft ? 'Update ' : 'New '}Expense
+                    <Popper />
+                  </>
+                )}
               </Button>
             </Footer>
           )}
