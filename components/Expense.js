@@ -17,6 +17,7 @@ import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
 import { useS3Upload } from 'next-s3-upload';
+import imageCompression from 'browser-image-compression';
 
 const Container = styled.div`
   width: 100%;
@@ -541,15 +542,26 @@ const Expense = (props) => {
   const { uploadToS3 } = useS3Upload();
 
   const handleFileChange = async ({ target }) => {
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 1020,
+      useWebWorker: true,
+    };
     const urls = [];
     const files = Array.from(target.files);
     setUploading(true);
     for (let index = 0; index < files.length; index++) {
-      const file = files[index];
-      const { url } = await uploadToS3(file);
-      setUploading(false);
-      setImageUrl(url);
-      urls.push(url);
+      try {
+        const file = files[index];
+        const compressedFile = await imageCompression(file, options);
+        const { url } = await uploadToS3(compressedFile);
+        setUploading(false);
+        setImageUrl(url);
+        urls.push(url);
+      } catch (error) {
+        console.log(error);
+        setUploading(false);
+      }
     }
   };
 
