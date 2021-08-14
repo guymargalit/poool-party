@@ -11,12 +11,12 @@ import {
   IconUnlock,
   IconShare,
   IconCamera,
+  IconPicture,
 } from '../icons';
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
 import { useS3Upload } from 'next-s3-upload';
-import Image from 'next/image';
 
 const Container = styled.div`
   width: 100%;
@@ -57,6 +57,19 @@ const Header = styled.div`
 const WrapCamera = styled.label``;
 
 const Camera = styled(IconCamera)`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  fill: ${({ theme }) => theme.text.primary};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+`;
+
+const Picture = styled(IconPicture)`
   width: 25px;
   height: 25px;
   cursor: pointer;
@@ -523,21 +536,19 @@ const Expense = (props) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
-  const [height, setHeight] = useState();
-  const [width, setWidth] = useState();
   const { uploadToS3 } = useS3Upload();
 
   const handleFileChange = async ({ target }) => {
     const urls = [];
     const files = Array.from(target.files);
-
+    setUploading(true);
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const { url } = await uploadToS3(file);
       const { height, width } = await getImageData(file);
-      setWidth(width);
-      setHeight(height);
+      setUploading(false);
       setImageUrl(url);
       urls.push(url);
     }
@@ -696,11 +707,20 @@ const Expense = (props) => {
                 onChange={handleFileChange}
                 multiple
               />
-              <WrapCamera htmlFor="icon-button-file">
-                <Camera />
-              </WrapCamera>
+              {uploading ? (
+                <Loader viewBox="0 0 50 50">
+                  <Circle cx="25" cy="25" r="20"></Circle>
+                </Loader>
+              ) : imageUrl ? (
+                <WrapCamera htmlFor="icon-button-file">
+                  <Picture />
+                </WrapCamera>
+              ) : (
+                <WrapCamera htmlFor="icon-button-file">
+                  <Camera />
+                </WrapCamera>
+              )}
             </WrapInput>
-            {imageUrl && <Image alt="image" src={imageUrl} width={width} height={height} />}
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
