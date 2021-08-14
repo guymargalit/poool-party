@@ -32,8 +32,7 @@ model Expense {
   startDate     DateTime  @default(now()) @map(name: "start_date")
   lastRequest   DateTime? @default(now()) @map(name: "last_request")
   active        Boolean   @default(true)
-  amount        Float?
-  paid          Boolean   @default(false)
+  images        Json?
 
   users ExpenseUser[] @relation(name: "expense_users")
 

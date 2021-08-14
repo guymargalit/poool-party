@@ -15,6 +15,7 @@ import {
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
+import { useS3Upload } from 'next-s3-upload';
 
 const Container = styled.div`
   width: 100%;
@@ -521,6 +522,18 @@ const Expense = (props) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
+  const { uploadToS3 } = useS3Upload();
+
+  const handleFileChange = async ({ target }) => {
+    const urls = [];
+    const files = Array.from(target.files);
+
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      const { url } = await uploadToS3(file);
+      urls.push(url);
+    }
+  };
 
   const lockedTotal = users?.reduce(
     (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
@@ -672,6 +685,8 @@ const Expense = (props) => {
                 id="icon-button-file"
                 type="file"
                 capture="environment"
+                onChange={handleFileChange}
+                multiple
               />
               <WrapCamera htmlFor="icon-button-file">
                 <Camera />

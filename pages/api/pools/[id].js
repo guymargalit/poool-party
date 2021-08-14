@@ -45,7 +45,6 @@ export default async function handler(req, res) {
           id: true,
           name: true,
           active: true,
-          paid: true,
           createdAt: true,
           interval: true,
           total: true,
