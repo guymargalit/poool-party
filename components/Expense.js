@@ -16,6 +16,7 @@ import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
 import RadioForm from './RadioForm';
 import { useS3Upload } from 'next-s3-upload';
+import Image from 'next/image';
 
 const Container = styled.div`
   width: 100%;
@@ -184,7 +185,7 @@ const Button = styled.div`
     }
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  ƒ :disabled {
+  :disabled {
     cursor: not-allowed;
     pointer-events: all !important;
   }
@@ -522,6 +523,9 @@ const Expense = (props) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
+  const [height, setHeight] = useState();
+  const [width, setWidth] = useState();
   const { uploadToS3 } = useS3Upload();
 
   const handleFileChange = async ({ target }) => {
@@ -531,6 +535,10 @@ const Expense = (props) => {
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const { url } = await uploadToS3(file);
+      const { height, width } = await getImageData(file);
+      setWidth(width);
+      setHeight(height);
+      setImageUrl(url);
       urls.push(url);
     }
   };
@@ -692,6 +700,7 @@ const Expense = (props) => {
                 <Camera />
               </WrapCamera>
             </WrapInput>
+            {imageUrl && <Image alt="image" src={imageUrl} width={width} height={height} />}
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
