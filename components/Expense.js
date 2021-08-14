@@ -547,7 +547,6 @@ const Expense = (props) => {
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const { url } = await uploadToS3(file);
-      const { height, width } = await getImageData(file);
       setUploading(false);
       setImageUrl(url);
       urls.push(url);
