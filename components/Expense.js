@@ -20,6 +20,8 @@ import { useS3Upload } from 'next-s3-upload';
 import imageCompression from 'browser-image-compression';
 import { debounce } from '../lib/utils';
 
+const FileType = require('file-type/browser');
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -590,6 +592,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       try {
         const file = files[index];
         const compressedFile = await imageCompression(file, options);
+        const type = await FileType.fromBlob(compressedFile);
+        compressedFile.name = `expense-${expense?.id}.${type?.ext}`;
         const { url } = await uploadToS3(compressedFile);
         setUploading(false);
         setImage(url);
@@ -713,6 +717,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
               (key) => intervalOptions[key] === frequency
             ),
           }),
+          image: image,
           ...(frequency !== 'One Time' && {
             date: date,
           }),

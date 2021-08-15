@@ -535,10 +535,12 @@ const Pool = (props) => {
                     <Circle cx="25" cy="25" r="20"></Circle>
                   </Loader>
                 ) : (
-                  <>
-                    {pool?.draft ? 'Update ' : 'New '}Expense
-                    <Popper />
-                  </>
+                  !loading && (
+                    <>
+                      {pool?.draft ? 'Update ' : 'New '}Expense
+                      <Popper />
+                    </>
+                  )
                 )}
               </Button>
             </Footer>

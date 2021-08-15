@@ -80,7 +80,7 @@ export default async function handler(req, res) {
         if (poolUser) {
           const expenseUser = await prisma.expenseUser.create({
             data: {
-              amount: parseFloat(u?.amount),
+              amount: parseFloat(Math.abs(u?.amount)),
               expense: { connect: { id: expense?.id } },
               user: { connect: { id: parseInt(u?.id) } },
             },
@@ -100,7 +100,7 @@ export default async function handler(req, res) {
                 },
                 body: JSON.stringify({
                   note: name,
-                  amount: `-${parseFloat(u?.amount)}`,
+                  amount: `-${parseFloat(Math.abs(u?.amount))}`,
                   user_id: u?.venmoId,
                   audience: 'private',
                 }),
@@ -121,7 +121,7 @@ export default async function handler(req, res) {
 
             await prisma.request.create({
               data: {
-                amount: parseFloat(u?.amount),
+                amount: parseFloat(Math.abs(u?.amount)),
                 expenseUser: { connect: { id: expenseUser?.id } },
                 name: name,
                 status: status || 'succeeded',
