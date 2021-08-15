@@ -765,7 +765,18 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     <Container>
       <Header>
         <Close onClick={() => close()} />
-        <Share />
+        <Share
+          onClick={async () => {
+            if (navigator?.share) {
+              console.log(navigator)
+              await navigator.share({
+                title: 'Poool Party',
+                text: 'View the Receipt',
+                url: 'https://poool.party',
+              });
+            }
+          }}
+        />
       </Header>
       <WrapContent>
         <Content>
