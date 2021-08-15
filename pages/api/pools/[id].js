@@ -76,7 +76,11 @@ export default async function handler(req, res) {
     select: {
       poolId: true,
       venmoId: true,
-      draft: true,
+      draft: {
+        include: {
+          receipt: true,
+        }
+      },
     },
   });
 

@@ -234,11 +234,11 @@ const Layout = (props) => {
     setHeight(routes[router.pathname]?.height);
     setBackground(
       !props?.user
-        ? true
+        ? router.pathname === '/' ? true:false
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
-    if (!props?.user && router.pathname !== '/') {
+    if (!props?.user && !routes[router.pathname]?.public) {
       Router.push('/');
     }
     // Auth-user redirected from homepage to dashboard
@@ -290,11 +290,11 @@ const Layout = (props) => {
         <Wave />
       </Hero>
       {!(props?.user && router.pathname === '/') &&
-        !(!props?.user && router.pathname !== '/') && (
+        !(!props?.user && !routes[router.pathname]?.public) && (
           <>
             {router.pathname === '/' && !props?.user ? (
               <>{props.children}</>
-            ) : router.pathname !== '/' && props?.user ? (
+            ) : router.pathname !== '/' && (props?.user || routes[router.pathname]?.public) ? (
               <WrapContent>
                 <Content
                   background={background}
