@@ -134,14 +134,14 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 20px 10px;
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const List = styled.div`
   display: flex;
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0 0;
   overflow-x: auto;
 `;
 
@@ -319,7 +319,7 @@ const WrapInput = styled.div`
   color: ${({ theme }) => theme.text.secondary};
   background-color: ${({ theme }) => theme.bg.border};
   padding: 13px 10px;
-  margin: 10px 0;
+  margin: 10px 0 0;
   min-height: 1px;
   border-radius: 8px;
   overflow: hidden;
@@ -343,7 +343,7 @@ const WrapSplit = styled.div`
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin: 10px 0 0;
 `;
 
 const Split = styled.div`
@@ -416,7 +416,7 @@ const WrapSelect = styled.div`
   transition: all 0.25s ease 0s;
   font-weight: 500;
   font-size: 16px;
-  margin: 10px 0;
+  margin: 10px 0 0;
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
@@ -523,8 +523,8 @@ const WrapImage = styled.div`
   justify-content: center;
   position: relative;
   margin: 0 auto;
-  width: 70%;
-  height:100%;
+  width: 80%;
+  height: 100%;
   visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
   transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
 `;
@@ -819,9 +819,11 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 </WrapCamera>
               )}
             </WrapInput>
-            <WrapSelect onClick={() => setViewImage(true)}>
-              View Receipt
-            </WrapSelect>
+            {image && (
+              <WrapSelect onClick={() => setViewImage(true)}>
+                View Receipt
+              </WrapSelect>
+            )}
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
