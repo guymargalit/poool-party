@@ -77,14 +77,7 @@ const Camera = styled(IconCamera)`
 const Picture = styled(IconPicture)`
   width: 25px;
   height: 25px;
-  cursor: pointer;
-  fill: ${({ theme }) => theme.text.primary};
-  transition: all 0.25s ease 0s;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      fill: ${({ theme }) => theme.colors.purple};
-    }
-  }
+  margin-right: 8px;
 `;
 
 const CameraInput = styled.input`
@@ -769,8 +762,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           onClick={async () => {
             if (navigator?.share) {
               await navigator.share({
-                title: 'Poool Party',
-                text: 'View the Receipt',
                 url: `https://poool.party/receipts/${expense?.receipt?.id}`,
               });
             }
@@ -819,10 +810,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 <Loader viewBox="0 0 50 50">
                   <Circle cx="25" cy="25" r="20"></Circle>
                 </Loader>
-              ) : image ? (
-                <WrapCamera htmlFor="icon-button-file">
-                  <Picture />
-                </WrapCamera>
               ) : (
                 <WrapCamera htmlFor="icon-button-file">
                   <Camera />
@@ -831,7 +818,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
             </WrapInput>
             {image && (
               <WrapSelect onClick={() => setViewImage(true)}>
-                View Receipt
+                <Picture />
+                View Image
               </WrapSelect>
             )}
             <WrapSplit>
