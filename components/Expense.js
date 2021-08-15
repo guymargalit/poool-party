@@ -19,6 +19,7 @@ import RadioForm from './RadioForm';
 import { useS3Upload } from 'next-s3-upload';
 import imageCompression from 'browser-image-compression';
 import { debounce } from '../lib/utils';
+import Image from 'next/image';
 
 const FileType = require('file-type/browser');
 
@@ -515,6 +516,19 @@ const Modal = styled.div`
   height: ${({ modal }) => (modal ? '210px' : '0px')};
 `;
 
+const WrapImage = styled.div`
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  width: 70%;
+  height:100%;
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
+`;
+
 const Tab = styled.div`
   background-color: #e2e2e2;
   width: 60px;
@@ -550,6 +564,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
+  const [viewImage, setViewImage] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(expense?.metadata?.image || '');
   const { uploadToS3 } = useS3Upload();
@@ -581,7 +596,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
   const handleFileChange = async ({ target }) => {
     const options = {
-      maxSizeMB: 0.1,
+      maxSizeMB: 0.2,
       maxWidthOrHeight: 1020,
       useWebWorker: true,
     };
@@ -602,7 +617,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         });
         urls.push(url);
       } catch (error) {
-        console.log(error);
         setUploading(false);
       }
     }
@@ -805,6 +819,9 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 </WrapCamera>
               )}
             </WrapInput>
+            <WrapSelect onClick={() => setViewImage(true)}>
+              View Receipt
+            </WrapSelect>
             <WrapSplit>
               {users?.map((u, i) => (
                 <Split key={i}>
@@ -872,6 +889,16 @@ const Expense = ({ pool, expense, setExpense, close }) => {
               </WrapDate>
             </Section>
           )}
+          <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
+            <WrapImage modal={viewImage}>
+              <Image
+                alt="receipt"
+                src={image}
+                layout="fill"
+                objectFit="contain"
+              />
+            </WrapImage>
+          </WrapModal>
           <WrapModal onClick={() => setModal(false)} modal={modal}>
             <Modal modal={modal}>
               <Tab />
