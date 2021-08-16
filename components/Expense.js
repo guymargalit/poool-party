@@ -20,6 +20,7 @@ import { useS3Upload } from 'next-s3-upload';
 import imageCompression from 'browser-image-compression';
 import { debounce } from '../lib/utils';
 import Image from 'next/image';
+import Pusher from 'pusher-js';
 
 const FileType = require('file-type/browser');
 
@@ -562,6 +563,14 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   const [image, setImage] = useState(expense?.metadata?.image || '');
   const { uploadToS3 } = useS3Upload();
 
+  useEffect(() => {
+    if (!expense?.metadata?.users) {
+      changeUsers({
+        users: pool?.users,
+      });
+    }
+  }, [expense?.id]);
+
   const handleSave = async (body) => {
     if (expense?.id) {
       const response = await fetch(`/api/expenses/${expense?.id}`, {
@@ -569,7 +578,9 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      setExpense(await response.json());
+      const result = await response.json();
+      setExpense(result);
+      setUsers(result?.metadata?.users);
     }
   };
 
@@ -754,19 +765,66 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
   const handleFocus = (event) => event.target.select();
 
+  useEffect(() => {
+    if (expense?.id) {
+      // Initialize Channels client
+      const channels = new Pusher('abfb154d0b50e40e4d64', {
+        cluster: 'mt1',
+      });
+
+      // Subscribe to the appropriate channel
+      const channel = channels.subscribe(`expense-${expense?.id}`);
+
+      // Bind a callback function to an event within the subscribed channel
+      channel.bind('update', async (response) => {
+        setExpense(response);
+        let users = response?.metadata?.users;
+        const lockedTotal = users?.reduce(
+          (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
+          0
+        );
+        const unlockedUsers = users?.reduce(
+          (a, b) => a + (b['locked'] ? 0 : 1),
+          0
+        );
+
+        const amounts =
+          unlockedUsers > 1
+            ? currency(total - lockedTotal)?.distribute(unlockedUsers - 1)
+            : [];
+        let i = 0;
+        const updatedUsers = [
+          ...users.map((u) => ({
+            ...u,
+            amount: u?.locked
+              ? u?.amount || 0
+              : unlockedUsers === 1
+              ? currency(total - lockedTotal)
+              : amounts?.length > 0
+              ? amounts[i++]
+              : 0,
+          })),
+        ];
+        setUsers(updatedUsers);
+      });
+    }
+  }, [expense?.id]);
+
   return (
     <Container>
       <Header>
         <Close onClick={() => close()} />
-        <Share
-          onClick={async () => {
-            if (navigator?.share) {
-              await navigator.share({
-                url: `https://poool.party/receipts/${expense?.receipt?.id}`,
-              });
-            }
-          }}
-        />
+        {navigator?.share && (
+          <Share
+            onClick={async () => {
+              if (navigator?.share) {
+                await navigator.share({
+                  url: `https://poool.party/receipts/${pool?.draft?.receipt?.id}`,
+                });
+              }
+            }}
+          />
+        )}
       </Header>
       <WrapContent>
         <Content>
@@ -891,12 +949,14 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           )}
           <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
             <WrapImage modal={viewImage}>
-              <Image
-                alt="receipt"
-                src={image}
-                layout="fill"
-                objectFit="contain"
-              />
+              {image && (
+                <Image
+                  alt="receipt"
+                  src={image}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              )}
             </WrapImage>
           </WrapModal>
           <WrapModal onClick={() => setModal(false)} modal={modal}>

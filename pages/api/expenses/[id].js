@@ -1,6 +1,7 @@
 import { getSession } from 'next-auth/client';
 import prisma from '../../../lib/prisma';
 import { getToken, pick } from '../../../lib/utils';
+const Pusher = require('pusher');
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
       select: {
         id: true,
         poolId: true,
-        creator: {select: {id: true, venmoId: true}},
+        creator: { select: { id: true, venmoId: true } },
       },
     });
 
@@ -147,7 +148,7 @@ export default async function handler(req, res) {
         },
       },
       data: {
-        draftId: null
+        draftId: null,
       },
     });
 
@@ -226,6 +227,7 @@ export default async function handler(req, res) {
         total: true,
         active: true,
         interval: true,
+        metadata: true,
         users: {
           select: {
             id: true,
@@ -255,7 +257,7 @@ export default async function handler(req, res) {
         },
       },
     });
-    res.json(expense);
+    return res.json(expense);
   } else if (req.method === 'PUT') {
     const session = await getSession({ req });
 
@@ -263,16 +265,24 @@ export default async function handler(req, res) {
       return res.status(403).end();
     }
 
+    const channels = new Pusher({
+      appId: process.env.PUSHER_APP_ID,
+      key: process.env.PUSHER_APP_KEY,
+      secret: process.env.PUSHER_APP_SECRET,
+      cluster: process.env.PUSHER_APP_CLUSTER,
+    });
+
     const expense = await prisma.expense.findUnique({
       where: {
         id: Number(req?.query?.id) || -1,
       },
       select: {
+        id: true,
         metadata: true,
       },
     });
 
-    if(!expense) {
+    if (!expense) {
       return res.status(404).end();
     }
 
@@ -293,6 +303,10 @@ export default async function handler(req, res) {
       },
       data: { metadata: { ...expense.metadata, ...data } },
     });
-    res.json(updateExpense);
+
+    channels.trigger(`expense-${expense?.id}`, 'update', updateExpense, () => {
+      res.json(updateExpense);
+    });
+    return res.json(updateExpense);
   }
 }

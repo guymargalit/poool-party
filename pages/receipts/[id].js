@@ -4,12 +4,16 @@ import styled, { keyframes } from 'styled-components';
 import {
   IconCheckmark,
   IconLock,
+  IconPartyFace,
   IconPicture,
   IconPopper,
   IconWarning,
 } from '../../icons';
 import CurrencyInput from 'react-currency-input-field';
 import Image from 'next/image';
+import Skeleton from 'react-loading-skeleton';
+import Head from 'next/head';
+import Pusher from 'pusher-js';
 
 const Container = styled.div`
   display: flex;
@@ -30,6 +34,7 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  padding-top: 10px;
 `;
 
 const Header = styled.div`
@@ -105,14 +110,14 @@ const Name = styled.div`
 `;
 
 const Avatar = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: 80px;
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
 `;
 
 const Checkmark = styled(IconCheckmark)`
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   transform: ${({ visible }) => (visible ? 'scale(1)' : 'scale(0)')};
   fill: ${({ theme }) => theme.colors.success};
   position: absolute;
@@ -122,14 +127,10 @@ const Checkmark = styled(IconCheckmark)`
 `;
 
 const Lock = styled(IconLock)`
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  right: -5px;
+  width: 25px;
+  height: 25px;
   transition: all 0.25s ease 0s;
   fill: ${({ theme }) => theme.colors.purple};
-  background-color: ${({ theme }) => theme.colors.disabled};
-  border-radius: 32px;
 `;
 
 const WrapInput = styled.div`
@@ -218,7 +219,7 @@ const WrapImage = styled.div`
 
 const Popper = styled(IconPopper)`
   width: 20px;
-  margin-left: 6px;
+  margin-left: 8px;
   margin-bottom: 2px;
   transition: all 0.25s ease 0s;
 `;
@@ -349,6 +350,21 @@ const Footer = styled.div`
   justify-content: center;
 `;
 
+const WrapPartyFace = styled.div`
+  min-width: 35px;
+  max-width: 55px;
+  width: 10%;
+`;
+
+const Area = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -367,152 +383,216 @@ const Receipt = () => {
   const [viewImage, setViewImage] = useState(false);
   useEffect(() => {
     const getReceipt = async () => {
-      const response = await fetch(`/api/receipts/${id}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      setReceipt(await response.json());
+      if (id) {
+        const response = await fetch(`/api/receipts/${id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const result = await response?.json();
+        setReceipt(result?.expense);
+        setLoading(false);
+      }
     };
     getReceipt();
   }, [id]);
 
+  useEffect(() => {
+    if (receipt?.id) {
+      // Initialize Channels client
+      const channels = new Pusher('abfb154d0b50e40e4d64', {
+        cluster: 'mt1',
+      });
+
+      // Subscribe to the appropriate channel
+      const channel = channels.subscribe(`expense-${receipt?.id}`);
+
+      // Bind a callback function to an event within the subscribed channel
+      channel.bind('update', (response) => {
+        setReceipt(response);
+      });
+    }
+  }, [receipt?.id]);
+
   const submitData = async () => {
-    setError("Feature isn't ready yet lol")
-    // if (expense?.id) {
-    //   setSubmitting(true);
-    //   try {
-    //     const body = {
-    //       poolId: pool?.id,
-    //       name,
-    //       ...(frequency !== 'One Time' && {
-    //         interval: Object.keys(intervalOptions).find(
-    //           (key) => intervalOptions[key] === frequency
-    //         ),
-    //       }),
-    //       image: image,
-    //       ...(frequency !== 'One Time' && {
-    //         date: date,
-    //       }),
-    //       users: users.map((u) => ({
-    //         id: u?.id,
-    //         venmoId: u?.venmo?.id,
-    //         amount: u?.amount,
-    //       })),
-    //       total,
-    //     };
-    //     const response = await fetch(`/api/expenses/${expense?.id}`, {
-    //       method: 'POST',
-    //       headers: { 'Content-Type': 'application/json' },
-    //       body: JSON.stringify(body),
-    //     });
-    //     if (!response?.ok) {
-    //       setError(await response.text());
-    //     } else {
-    //       close();
-    //     }
-    //     setSubmitting(false);
-    //   } catch (err) {
-    //     setSubmitting(false);
-    //   }
-    // }
+    if (receipt?.id) {
+      setSubmitting(true);
+      const index = receipt?.metadata?.users.findIndex(
+        (u) => u?.venmo?.id === user?.venmo?.id
+      );
+      const updatedUsers = [
+        ...receipt?.metadata?.users?.slice(0, index),
+        {
+          ...receipt?.metadata?.users[index],
+          amount: parseFloat(amount),
+          locked: true,
+        },
+        ...receipt?.metadata?.users?.slice(index + 1),
+      ];
+      try {
+        const body = {
+          users: updatedUsers,
+        };
+        const response = await fetch(`/api/expenses/${receipt?.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!response?.ok) {
+          setError(await response.text());
+        } else {
+          setSuccess("Cool, we're done!");
+        }
+        setSubmitting(false);
+      } catch (err) {
+        setSubmitting(false);
+      }
+    }
   };
   return (
     <Container>
-      <Content>
-        <Section>
-          <Subtitle>Who are you?</Subtitle>
-          <List>
-            {receipt?.expense?.metadata?.users?.map((usr, i) => (
-              <WrapAvatar
-                key={i}
-                onClick={() => {
-                  setUser(usr);
-                  setAmount(usr?.amount);
-                }}
-              >
-                <Checkmark visible={usr?.id === user?.id} />
-
-                <Avatar src={usr?.venmo?.image} />
-                <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
-              </WrapAvatar>
-            ))}
-          </List>
-        </Section>
-        <Section>
-          <Title>
-            The total is {formatter.format(receipt?.expense?.metadata?.total)}
-          </Title>
-        </Section>
-        <Section>
-          {receipt?.expense?.metadata?.image && (
-            <WrapSelect onClick={() => setViewImage(true)}>
-              <Picture />
-              View Receipt
-            </WrapSelect>
-          )}
-        </Section>
-        <Section>
-          <Subtitle>How much are you paying?</Subtitle>
-          <WrapInput>
-            <Amount
-              intlConfig={{ locale: 'en-US', currency: 'USD' }}
-              prefix="$"
-              placeholder="$0"
-              allowNegativeValue={false}
-              decimalsLimit={2}
-              value={amount}
-              onValueChange={(v) => setAmount(v)}
-            />
-          </WrapInput>
-        </Section>
-        <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
-          <WrapImage modal={viewImage}>
-            {receipt?.expense?.metadata?.image && (
-              <Image
-                alt="receipt"
-                src={receipt?.expense?.metadata?.image}
-                layout="fill"
-                objectFit="contain"
-              />
-            )}
-          </WrapImage>
-        </WrapModal>
-        <WrapFooter>
-          <Footer>
-            <Button
-              disabled={!amount || !user || !receipt?.expense?.metadata?.total}
-              onClick={() =>
-                !amount ||
-                !user ||
-                !receipt?.expense?.metadata?.total ||
-                submitting
-                  ? null
-                  : submitData()
-              }
-            >
-              {submitting ? (
-                <Loader viewBox="0 0 50 50">
-                  <Circle cx="25" cy="25" r="20"></Circle>
-                </Loader>
-              ) : (
-                <>
-                  Let's do it <Popper />
-                </>
-              )}
-            </Button>
-            {success ? (
-              <Success>{success}</Success>
-            ) : error ? (
-              <Error>
-                <Warning />
-                {error}
-              </Error>
+      <Head>
+        <title>Receipt · Poool Party</title>
+        <link rel="icon" href="/favicon.png" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
+        <link href="/favicon.png" rel="apple-touch-icon" />
+      </Head>
+      {!loading &&
+      !receipt &&
+      (!receipt?.metadata?.users || !receipt?.metadata?.total) ? (
+        <Content>
+          <Area>
+            <WrapPartyFace>
+              <IconPartyFace />
+            </WrapPartyFace>
+            <Text>Looks like we're waiting on some info... </Text>
+            <Text>Come back soon!</Text>
+          </Area>
+        </Content>
+      ) : (
+        <Content>
+          <Section>
+            {receipt?.metadata?.users ? (
+              <Subtitle>Who are you?</Subtitle>
             ) : (
-              <></>
+              !loading && (
+                <Subtitle>Looks like we're waiting on some info...</Subtitle>
+              )
             )}
-          </Footer>
-        </WrapFooter>
-      </Content>
+            <List>
+              {loading
+                ? Array(3)
+                    .fill(0)
+                    .map((u, i) => (
+                      <WrapAvatar key={i}>
+                        <Skeleton circle={true} height={60} width={60} />
+                        <Name>
+                          <Skeleton width={40} />
+                        </Name>
+                      </WrapAvatar>
+                    ))
+                : receipt?.metadata?.users?.map((usr, i) => (
+                    <WrapAvatar
+                      key={i}
+                      onClick={() => {
+                        setUser(usr);
+                        setAmount(usr?.amount);
+                      }}
+                    >
+                      <Checkmark visible={usr?.id === user?.id} />
+
+                      <Avatar src={usr?.venmo?.image} />
+                      <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
+                    </WrapAvatar>
+                  ))}
+            </List>
+          </Section>
+          <Section>
+            {loading ? (
+              <Title>
+                <Skeleton width={220} />
+              </Title>
+            ) : (
+              <Title>
+                The total is
+                {!receipt?.metadata?.total
+                  ? "n't there yet..."
+                  : ` ${formatter.format(receipt?.metadata?.total)}`}
+              </Title>
+            )}
+          </Section>
+          {receipt?.metadata?.image && (
+            <Section>
+              <WrapSelect onClick={() => setViewImage(true)}>
+                <Picture />
+                View Receipt
+              </WrapSelect>
+            </Section>
+          )}
+          {receipt?.metadata?.total && (
+            <Section>
+              <Subtitle>How much are you paying?</Subtitle>
+              <WrapInput>
+                <Amount
+                  intlConfig={{ locale: 'en-US', currency: 'USD' }}
+                  prefix="$"
+                  placeholder="$0"
+                  allowNegativeValue={false}
+                  decimalsLimit={2}
+                  value={amount}
+                  onValueChange={(v) => setAmount(v)}
+                />
+              </WrapInput>
+            </Section>
+          )}
+          <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
+            <WrapImage modal={viewImage}>
+              {receipt?.metadata?.image && (
+                <Image
+                  alt="receipt"
+                  src={receipt?.metadata?.image}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              )}
+            </WrapImage>
+          </WrapModal>
+          <WrapFooter>
+            <Footer>
+              <Button
+                disabled={!amount || !user || !receipt?.metadata?.total}
+                onClick={() =>
+                  !amount || !user || !receipt?.metadata?.total || submitting
+                    ? null
+                    : submitData()
+                }
+              >
+                {submitting || loading ? (
+                  <Loader viewBox="0 0 50 50">
+                    <Circle cx="25" cy="25" r="20"></Circle>
+                  </Loader>
+                ) : (
+                  <>
+                    Done <Popper />
+                  </>
+                )}
+              </Button>
+              {success ? (
+                <Success>{success}</Success>
+              ) : error ? (
+                <Error>
+                  <Warning />
+                  {error}
+                </Error>
+              ) : (
+                <></>
+              )}
+            </Footer>
+          </WrapFooter>
+        </Content>
+      )}
     </Container>
   );
 };

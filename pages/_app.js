@@ -76,6 +76,7 @@ export default function MyApp({ Component, pageProps }) {
         />
         <meta name="theme-color" content="#54c0f9" />
         <link rel="manifest" href="/manifest.json" />
+        <meta name="application-name" content="Poool Party"></meta>
         <link href="/favicon.png" rel="apple-touch-icon" />
         <link href="/favicon.png" rel="apple-touch-icon" sizes="152x152" />
         <link href="/favicon.png" rel="apple-touch-icon" sizes="167x167" />

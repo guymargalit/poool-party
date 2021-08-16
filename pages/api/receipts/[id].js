@@ -10,6 +10,6 @@ export default async function handler(req, res) {
         expense: true,
       },
     });
-    res.json(receipt);
+    return res.json(receipt);
   }
 }
