@@ -295,6 +295,7 @@ export default async function handler(req, res) {
       'active',
       'image',
       'users',
+      'locked',
     ]);
 
     const updateExpense = await prisma.expense.update({
@@ -304,9 +305,14 @@ export default async function handler(req, res) {
       data: { metadata: { ...expense.metadata, ...data } },
     });
 
-    channels.trigger(`expense-${expense?.id}`, 'update', updateExpense, () => {
-      res.json(updateExpense);
-    });
+    channels.trigger(
+      `expense-${expense?.id}`,
+      req.body.locked ? 'locked' : 'update',
+      updateExpense,
+      () => {
+        res.json(updateExpense);
+      }
+    );
     return res.json(updateExpense);
   }
 }

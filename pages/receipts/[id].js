@@ -415,37 +415,35 @@ const Receipt = () => {
 
   const submitData = async () => {
     if (receipt?.id) {
-      setSubmitting(true);
-      const index = receipt?.metadata?.users.findIndex(
-        (u) => u?.venmo?.id === user?.venmo?.id
-      );
-      const updatedUsers = [
-        ...receipt?.metadata?.users?.slice(0, index),
-        {
-          ...receipt?.metadata?.users[index],
-          amount: parseFloat(amount),
-          locked: true,
-        },
-        ...receipt?.metadata?.users?.slice(index + 1),
-      ];
-      try {
-        const body = {
-          users: updatedUsers,
-        };
-        const response = await fetch(`/api/expenses/${receipt?.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-        if (!response?.ok) {
-          setError(await response.text());
-        } else {
-          setSuccess("Cool, we're done!");
-        }
-        setSubmitting(false);
-      } catch (err) {
-        setSubmitting(false);
-      }
+      setError('Feature is not ready yet lol')
+      // setSubmitting(true);
+      // const u = { ...user, amount: parseFloat(amount) };
+      // const index = receipt?.metadata?.locked?.findIndex(
+      //   (u) => u?.venmo?.id === user?.venmo?.id
+      // );
+      // let updatedLocked = [
+      //   ...(receipt?.metadata?.locked?.slice(0, index) || []),
+      //   { ...u },
+      //   ...(receipt?.metadata?.locked?.slice(index + 1) || []),
+      // ];
+      // try {
+      //   const body = {
+      //     locked: updatedLocked,
+      //   };
+      //   const response = await fetch(`/api/expenses/${receipt?.id}`, {
+      //     method: 'PUT',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify(body),
+      //   });
+      //   if (!response?.ok) {
+      //     setError(await response.text());
+      //   } else {
+      //     setSuccess("Cool, we're done!");
+      //   }
+      //   setSubmitting(false);
+      // } catch (err) {
+      //   setSubmitting(false);
+      // }
     }
   };
   return (

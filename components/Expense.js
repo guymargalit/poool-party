@@ -579,8 +579,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         body: JSON.stringify(body),
       });
       const result = await response.json();
-      setExpense(result);
-      setUsers(result?.metadata?.users);
     }
   };
 
@@ -636,20 +634,20 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     if (total !== '' && user) {
       const amounts =
         unlockedUsers > 1
-          ? currency(total - (user?.amount || 0) - lockedTotal)?.distribute(
-              unlockedUsers - 1
-            )
+          ? currency(
+              total - (parseFloat(user?.amount) || 0) - lockedTotal
+            )?.distribute(unlockedUsers - 1)
           : [];
       let i = 0;
       const updatedUsers = [
         ...users?.map((u) => ({
           ...u,
           amount: u?.locked
-            ? u?.amount || 0
+            ? parseFloat(u?.amount) || 0
             : unlockedUsers === 1
             ? currency(total - lockedTotal)
             : u?.venmo?.id === user?.venmo?.id
-            ? user?.amount || 0
+            ? parseFloat(user?.amount) || 0
             : amounts?.length > 0
             ? amounts[i++]
             : 0,
@@ -694,19 +692,27 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     });
   };
 
-  const updateAmount = (usr, amt) => {
+  const updateAmount = (usr, amt, lock) => {
     if (unlockedUsers > 1) {
       const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
       let updatedUsers = [
         ...users.slice(0, index),
-        { ...users[index], amount: amt },
+        {
+          ...users[index],
+          amount: parseFloat(amt),
+          locked: lock ? true : false,
+        },
         ...users.slice(index + 1),
       ];
       setUsers(updatedUsers);
       changeUsers({
         users: updatedUsers,
       });
-      updatingUser({ ...usr, amount: amt });
+      updatingUser({
+        ...usr,
+        amount: parseFloat(amt),
+        locked: lock ? true : false,
+      });
     }
   };
 
@@ -742,7 +748,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           users: users.map((u) => ({
             id: u?.id,
             venmoId: u?.venmo?.id,
-            amount: u?.amount,
+            amount: parseInt(u?.amount),
           })),
           total,
         };
@@ -776,36 +782,14 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       const channel = channels.subscribe(`expense-${expense?.id}`);
 
       // Bind a callback function to an event within the subscribed channel
-      channel.bind('update', async (response) => {
-        setExpense(response);
-        let users = response?.metadata?.users;
-        const lockedTotal = users?.reduce(
-          (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
-          0
-        );
-        const unlockedUsers = users?.reduce(
-          (a, b) => a + (b['locked'] ? 0 : 1),
-          0
-        );
+      channel.bind('locked', async (response) => {
+        // let lockedUsers = response?.metadata?.locked;
 
-        const amounts =
-          unlockedUsers > 1
-            ? currency(total - lockedTotal)?.distribute(unlockedUsers - 1)
-            : [];
-        let i = 0;
-        const updatedUsers = [
-          ...users.map((u) => ({
-            ...u,
-            amount: u?.locked
-              ? u?.amount || 0
-              : unlockedUsers === 1
-              ? currency(total - lockedTotal)
-              : amounts?.length > 0
-              ? amounts[i++]
-              : 0,
-          })),
-        ];
-        setUsers(updatedUsers);
+        // for (const u of lockedUsers) {
+        //   updateAmount(u, u?.amount, true);
+        // }
+        // console.log(users);
+        // setUsers(updatedUsers);
       });
     }
   }, [expense?.id]);
@@ -885,7 +869,10 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 <Split key={i}>
                   <Label>@{u?.venmo?.username}</Label>
                   <WrapAmount
-                    error={u?.amount < 0 || u?.amount > parseFloat(total)}
+                    error={
+                      parseFloat(u?.amount) < 0 ||
+                      parseFloat(u?.amount) > parseFloat(total)
+                    }
                   >
                     <Amount
                       intlConfig={{ locale: 'en-US', currency: 'USD' }}
