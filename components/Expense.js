@@ -1044,10 +1044,25 @@ const Expense = ({ pool, expense, setExpense, close }) => {
               name === '' ||
               (frequency !== 'One Time' && !date) ||
               submitting ||
-              saving
+              saving ||
+              total < 0 ||
+              currentTotal < 0 ||
+              currentTotal > total ||
+              currentTotal < total ||
+              users?.some((u) => u.amount < 0) ||
+              users?.some((u) => u.amount > total)
             }
             onClick={() =>
-              !total || name === '' || submitting || saving
+              !total ||
+              name === '' ||
+              submitting ||
+              saving ||
+              total < 0 ||
+              currentTotal < 0 ||
+              currentTotal > total ||
+              currentTotal < total ||
+              users?.some((u) => u.amount < 0) ||
+              users?.some((u) => u.amount > total)
                 ? null
                 : submitData()
             }
