@@ -32,6 +32,28 @@ const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
 }
+
+/* Scroll bar stylings */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
 `;
 
 const fetcher = (url) => fetch(url).then((res) => res.json());

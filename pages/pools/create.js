@@ -2,9 +2,11 @@ import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Router from 'next/router';
 import {
+  IconCheckmark,
   IconEmpty,
   IconLeftChevron,
   IconPopper,
+  IconRemove,
   IconSearch,
   IconWarning,
 } from '../../icons';
@@ -15,7 +17,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-color: ${({theme}) => theme.bg.content};
+  background-color: ${({ theme }) => theme.bg.content};
   bottom: 0px;
   width: 100%;
   height: 100%;
@@ -39,7 +41,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
-  color: ${({theme}) => theme.text.primary};
+  color: ${({ theme }) => theme.text.primary};
   text-align: center;
   font-size: 24px;
   height: 50px;
@@ -51,7 +53,7 @@ const Title = styled.div`
 const Subtitle = styled.div`
   width: 100%;
   font-weight: 500;
-  color: ${({theme}) => theme.text.tertiary};
+  color: ${({ theme }) => theme.text.tertiary};
   font-size: 16px;
   margin-top: 10px;
 `;
@@ -67,8 +69,8 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({theme}) => theme.colors.white};
-  background-color: ${({theme}) => theme.colors.purple};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.purple};
   padding: 0 10px;
   border-radius: 24px;
   font-weight: 600;
@@ -82,7 +84,7 @@ const Button = styled.div`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.button.hover};
+      background-color: ${({ theme }) => theme.button.hover};
     }
     &:hover ${Popper} {
       transform: rotate(-10deg);
@@ -98,7 +100,7 @@ const Header = styled.div`
   padding: 0px 35px;
   height: 75px;
   transition: all 0.5s ease 0s;
-  border-bottom: 1px solid ${({theme}) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const Label = styled.label`
@@ -106,7 +108,7 @@ const Label = styled.label`
   font-size: 15px;
   width: 100%;
   margin: 10px 0px;
-  color: ${({theme}) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.secondary};
 `;
 
 const WrapInput = styled.div`
@@ -115,7 +117,7 @@ const WrapInput = styled.div`
   font-weight: 400;
   align-items: center;
   width: 100%;
-  background-color: ${({theme}) => theme.bg.border};
+  background-color: ${({ theme }) => theme.bg.border};
   padding: 13px 10px;
   margin: 10px 0;
   min-height: 1px;
@@ -125,7 +127,7 @@ const WrapInput = styled.div`
 const Search = styled(IconSearch)`
   width: 16px;
   height: 16px;
-  fill: ${({theme}) => theme.text.quarternary};
+  fill: ${({ theme }) => theme.text.quarternary};
 `;
 
 const Input = styled.input`
@@ -152,11 +154,11 @@ const Warning = styled(IconWarning)`
 const Chevron = styled(IconLeftChevron)`
   width: 24px;
   cursor: pointer;
-  fill: ${({theme}) => theme.text.primary};
+  fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({theme}) => theme.colors.purple};
+      fill: ${({ theme }) => theme.colors.purple};
     }
   }
 `;
@@ -195,7 +197,7 @@ const Loader = styled.svg`
 `;
 
 const Circle = styled.circle`
-  stroke: ${({theme}) => theme.colors.white};
+  stroke: ${({ theme }) => theme.colors.white};
   stroke-linecap: round;
   animation: ${dash} 1.5s ease-in-out infinite;
   fill: none;
@@ -208,7 +210,7 @@ const Success = styled.div`
   justify-content: center;
   width: 100%;
   font-weight: 400;
-  color:${({theme}) => theme.colors.success};
+  color: ${({ theme }) => theme.colors.success};
   text-align: center;
   font-size: 14px;
   margin-top: 5px;
@@ -230,17 +232,18 @@ const Item = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: solid 1px ${({theme}) => theme.bg.border};
+  border-bottom: solid 1px ${({ theme }) => theme.bg.border};
   height: 50px;
   padding: 0 15px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: ${({theme}) => theme.bg.border};
-  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
+  background-color: ${({ theme }) => theme.bg.border};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color: ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
   }
 `;
@@ -264,7 +267,7 @@ const FullName = styled.div`
   align-items: center;
   font-weight: 600;
   font-size: 15px;
-  color: ${({theme}) => theme.text.secondary};
+  color: ${({ theme }) => theme.text.secondary};
 `;
 
 const Username = styled.div`
@@ -272,7 +275,7 @@ const Username = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: ${({theme}) => theme.text.quarternary};
+  color: ${({ theme }) => theme.text.quarternary};
 `;
 
 const WrapList = styled.div`
@@ -287,17 +290,20 @@ const List = styled.div`
   max-height: 150px;
   width: 100%;
   overflow-y: auto;
+  padding-right: 5px;
 `;
 
 const PartyList = styled.div`
   display: flex;
   width: 100%;
   margin: 10px 0 0;
+  padding-bottom: 10px;
   overflow-x: auto;
 `;
 
 const WrapAvatar = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   margin-right: 15px;
@@ -308,7 +314,7 @@ const Name = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 12px;
-  color: ${({theme}) => theme.text.quarternary};
+  color: ${({ theme }) => theme.text.quarternary};
   margin: 5px 0 0;
 `;
 
@@ -318,12 +324,22 @@ const Avatar = styled.img`
   border-radius: 60px;
 `;
 
+const Remove = styled(IconRemove)`
+  width: 20px;
+  height: 20px;
+  fill: ${({ theme }) => theme.colors.error};
+  position: absolute;
+  right: -5px;
+  transition: all 0.25s ease 0s;
+  cursor: pointer;
+`;
+
 const WrapFooter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({theme}) => theme.bg.content};
-  border-top: 1px solid ${({theme}) => theme.bg.border};
+  background-color: ${({ theme }) => theme.bg.content};
+  border-top: 1px solid ${({ theme }) => theme.bg.border};
   bottom: 0px;
   width: 100%;
   height: calc(80px + env(safe-area-inset-bottom));
@@ -373,7 +389,7 @@ const PoolCreate = () => {
       if (!response?.ok) {
         setError(await response.text());
       } else {
-        Router.push('/pools')
+        Router.push('/pools');
       }
       setSubmitting(false);
     } catch (err) {
@@ -397,6 +413,19 @@ const PoolCreate = () => {
   const addUser = (user) => {
     if (user.id) {
       setUsers([...users, user]);
+      setQuery('');
+      setResult([]);
+    }
+  };
+
+  const removeUser = (user) => {
+    if (user.id) {
+      const index = users.findIndex((u) => u?.id === user?.id);
+      const updatedUsers = [
+        ...users.slice(0, index),
+        ...users.slice(index + 1),
+      ];
+      setUsers(updatedUsers);
       setQuery('');
       setResult([]);
     }
@@ -454,6 +483,7 @@ const PoolCreate = () => {
         <PartyList>
           {users.map((u) => (
             <WrapAvatar key={u?.id}>
+              <Remove onClick={() => removeUser(u)} />
               <Avatar src={u?.profile_picture_url} />
               <Name>{u?.first_name}</Name>
             </WrapAvatar>

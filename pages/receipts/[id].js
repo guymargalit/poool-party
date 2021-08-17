@@ -378,7 +378,7 @@ const Receipt = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState();
   const [amount, setAmount] = useState('');
   const [viewImage, setViewImage] = useState(false);
   useEffect(() => {
@@ -415,35 +415,35 @@ const Receipt = () => {
 
   const submitData = async () => {
     if (receipt?.id) {
-      setError('Feature is not ready yet lol')
-      // setSubmitting(true);
-      // const u = { ...user, amount: parseFloat(amount) };
-      // const index = receipt?.metadata?.locked?.findIndex(
-      //   (u) => u?.venmo?.id === user?.venmo?.id
-      // );
-      // let updatedLocked = [
-      //   ...(receipt?.metadata?.locked?.slice(0, index) || []),
-      //   { ...u },
-      //   ...(receipt?.metadata?.locked?.slice(index + 1) || []),
-      // ];
-      // try {
-      //   const body = {
-      //     locked: updatedLocked,
-      //   };
-      //   const response = await fetch(`/api/expenses/${receipt?.id}`, {
-      //     method: 'PUT',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(body),
-      //   });
-      //   if (!response?.ok) {
-      //     setError(await response.text());
-      //   } else {
-      //     setSuccess("Cool, we're done!");
-      //   }
-      //   setSubmitting(false);
-      // } catch (err) {
-      //   setSubmitting(false);
-      // }
+      setSubmitting(true);
+      const u = { ...user, amount: parseFloat(amount) };
+      const index = receipt?.metadata?.locked?.findIndex(
+        (u) => u?.venmo?.id === user?.venmo?.id
+      );
+      let updatedLocked = [
+        ...(receipt?.metadata?.locked?.slice(0, index) || []),
+        { ...u },
+        ...(receipt?.metadata?.locked?.slice(index + 1) || []),
+      ];
+      try {
+        const body = {
+          locked: updatedLocked,
+          lockedUser: true
+        };
+        const response = await fetch(`/api/expenses/${receipt?.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!response?.ok) {
+          setError(await response.text());
+        } else {
+          setSuccess("Cool, we're done!");
+        }
+        setSubmitting(false);
+      } catch (err) {
+        setSubmitting(false);
+      }
     }
   };
   return (

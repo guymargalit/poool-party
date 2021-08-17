@@ -126,7 +126,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  toy           String?
+  toy           String?   @default("flamingo")
   settings      Json?
 
   venmo Venmo? @relation(name: "venmo")

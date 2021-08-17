@@ -259,12 +259,6 @@ export default async function handler(req, res) {
     });
     return res.json(expense);
   } else if (req.method === 'PUT') {
-    const session = await getSession({ req });
-
-    if (!session) {
-      return res.status(403).end();
-    }
-
     const channels = new Pusher({
       appId: process.env.PUSHER_APP_ID,
       key: process.env.PUSHER_APP_KEY,
@@ -307,7 +301,7 @@ export default async function handler(req, res) {
 
     channels.trigger(
       `expense-${expense?.id}`,
-      req.body.locked ? 'locked' : 'update',
+      req.body.lockedUser ? 'locked' : 'update',
       updateExpense,
       () => {
         res.json(updateExpense);

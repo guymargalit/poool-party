@@ -317,6 +317,9 @@ const WrapInput = styled.div`
   min-height: 1px;
   border-radius: 8px;
   overflow: hidden;
+  transition: all 0.25s ease 0s;
+  border: ${({ error, theme }) =>
+    error ? `2px solid ${theme.colors.error}` : '2px solid transparent'};
 `;
 
 const Input = styled.input`
@@ -568,6 +571,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       changeUsers({
         users: pool?.users,
       });
+    } else if (expense?.metadata?.locked) {
+      updateLockedAmount(expense?.metadata?.locked);
     }
   }, [expense?.id]);
 
@@ -578,7 +583,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const result = await response.json();
+      await response.json();
     }
   };
 
@@ -595,6 +600,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   const changeName = useMemo(() => debounce(changeHandler, 500), []);
 
   const changeDate = useMemo(() => debounce(changeHandler, 500), []);
+
+  const changeLocked = useMemo(() => debounce(changeHandler, 500), []);
 
   const handleFileChange = async ({ target }) => {
     const options = {
@@ -624,6 +631,10 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     }
   };
 
+  const currentTotal = users?.reduce(
+    (a, b) => a + (parseFloat(b['amount']) || 0),
+    0
+  );
   const lockedTotal = users?.reduce(
     (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
     0
@@ -645,11 +656,11 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           amount: u?.locked
             ? parseFloat(u?.amount) || 0
             : unlockedUsers === 1
-            ? currency(total - lockedTotal)
+            ? parseFloat(total - lockedTotal)
             : u?.venmo?.id === user?.venmo?.id
             ? parseFloat(user?.amount) || 0
             : amounts?.length > 0
-            ? amounts[i++]
+            ? parseFloat(amounts[i++]?.value)
             : 0,
         })),
       ];
@@ -681,9 +692,17 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
   const updateTotal = (t) => {
     setTotal(t);
-    const amounts = currency(t)?.distribute(users?.length);
+    const amounts = currency(t - lockedTotal)?.distribute(unlockedUsers);
+    let i = 0;
     let updatedUsers = [
-      ...users?.map((u, i) => ({ ...u, amount: amounts[i] })),
+      ...users?.map((u) => ({
+        ...u,
+        amount: u?.locked
+          ? parseFloat(u?.amount) || 0
+          : amounts?.length > 0
+          ? parseFloat(amounts[i++]?.value)
+          : 0,
+      })),
     ];
     setUsers(updatedUsers);
     changeUsers({
@@ -692,7 +711,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     });
   };
 
-  const updateAmount = (usr, amt, lock) => {
+  const updateAmount = (usr, amt) => {
     if (unlockedUsers > 1) {
       const index = users.findIndex((u) => u?.venmo?.id === usr?.venmo?.id);
       let updatedUsers = [
@@ -700,9 +719,20 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         {
           ...users[index],
           amount: parseFloat(amt),
-          locked: lock ? true : false,
         },
         ...users.slice(index + 1),
+      ];
+      const amounts = currency(total - lockedTotal)?.distribute(unlockedUsers);
+      let i = 0;
+      updatedUsers = [
+        ...updatedUsers?.map((u) => ({
+          ...u,
+          amount: u?.locked
+            ? parseFloat(u?.amount) || 0
+            : amounts?.length > 0
+            ? parseFloat(amounts[i++]?.value)
+            : 0,
+        })),
       ];
       setUsers(updatedUsers);
       changeUsers({
@@ -711,7 +741,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       updatingUser({
         ...usr,
         amount: parseFloat(amt),
-        locked: lock ? true : false,
       });
     }
   };
@@ -722,6 +751,45 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       ...users.slice(0, index),
       { ...users[index], locked: !users[index]?.locked },
       ...users.slice(index + 1),
+    ];
+    const lockedUsers = updatedUsers.filter((u) => u.locked);
+    updateLockedAmount(updatedUsers);
+    changeLocked({ locked: lockedUsers });
+  };
+
+  const updateLockedAmount = (lockedUsers) => {
+    let updatedUsers = [];
+    for (const usr of users) {
+      const index = lockedUsers.findIndex(
+        (u) => u?.venmo?.id === usr?.venmo?.id
+      );
+      if (index > -1) {
+        updatedUsers.push(lockedUsers[index]);
+      } else {
+        updatedUsers.push({ ...usr, locked: false });
+      }
+    }
+    const currentLockedTotal = updatedUsers?.reduce(
+      (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
+      0
+    );
+    const currentUnlockedUsers = updatedUsers?.reduce(
+      (a, b) => a + (b['locked'] ? 0 : 1),
+      0
+    );
+    const amounts = currency(total - currentLockedTotal)?.distribute(
+      currentUnlockedUsers
+    );
+    let i = 0;
+    updatedUsers = [
+      ...updatedUsers?.map((u) => ({
+        ...u,
+        amount: u?.locked
+          ? parseFloat(u?.amount) || 0
+          : amounts?.length > 0
+          ? parseFloat(amounts[i++]?.value)
+          : 0,
+      })),
     ];
     setUsers(updatedUsers);
     changeUsers({
@@ -783,13 +851,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
       // Bind a callback function to an event within the subscribed channel
       channel.bind('locked', async (response) => {
-        // let lockedUsers = response?.metadata?.locked;
-
-        // for (const u of lockedUsers) {
-        //   updateAmount(u, u?.amount, true);
-        // }
-        // console.log(users);
-        // setUsers(updatedUsers);
+        updateLockedAmount(response?.metadata?.locked);
       });
     }
   }, [expense?.id]);
@@ -830,7 +892,14 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           </Section>
           <Section>
             <Subtitle>How Much?</Subtitle>
-            <WrapInput>
+            <WrapInput
+              error={
+                total < 0 ||
+                currentTotal < 0 ||
+                currentTotal > total ||
+                currentTotal < total
+              }
+            >
               <Amount
                 intlConfig={{ locale: 'en-US', currency: 'USD' }}
                 prefix="$"
