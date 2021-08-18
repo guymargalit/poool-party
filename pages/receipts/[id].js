@@ -422,7 +422,7 @@ const Receipt = () => {
       );
       let updatedLocked = [
         ...(receipt?.metadata?.locked?.slice(0, index) || []),
-        { ...u },
+        { ...u, locked: true },
         ...(receipt?.metadata?.locked?.slice(index + 1) || []),
       ];
       try {

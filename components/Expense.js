@@ -691,8 +691,10 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   };
 
   const updateTotal = (t) => {
-    setTotal(t);
-    const amounts = currency(t - lockedTotal)?.distribute(unlockedUsers);
+    setTotal(parseFloat(t));
+    const amounts = currency(parseFloat(t) - lockedTotal)?.distribute(
+      unlockedUsers
+    );
     let i = 0;
     let updatedUsers = [
       ...users?.map((u) => ({
@@ -706,7 +708,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     ];
     setUsers(updatedUsers);
     changeUsers({
-      total: t,
+      total: parseFloat(t),
       users: updatedUsers,
     });
   };
@@ -754,6 +756,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     ];
     const lockedUsers = updatedUsers.filter((u) => u.locked === true);
     updateLockedAmount(updatedUsers);
+    console.log(lockedUsers);
     changeLocked({ locked: lockedUsers });
   };
 
@@ -761,7 +764,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     let updatedUsers = [];
     for (const usr of users) {
       const index = lockedUsers.findIndex(
-        (u) => u?.venmo?.id === usr?.venmo?.id
+        (u) => u?.venmo?.id === usr?.venmo?.id && u?.locked === true
       );
       if (index > -1) {
         updatedUsers.push(lockedUsers[index]);
@@ -769,6 +772,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         updatedUsers.push({ ...usr, locked: false });
       }
     }
+    console.log(updatedUsers);
     const currentLockedTotal = updatedUsers?.reduce(
       (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
       0
@@ -791,6 +795,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           : 0,
       })),
     ];
+    console.log(updatedUsers)
     setUsers(updatedUsers);
     changeUsers({
       users: updatedUsers,
