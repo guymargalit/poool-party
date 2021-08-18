@@ -752,7 +752,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       { ...users[index], locked: !users[index]?.locked },
       ...users.slice(index + 1),
     ];
-    const lockedUsers = updatedUsers.filter((u) => u.locked);
+    const lockedUsers = updatedUsers.filter((u) => u.locked === true);
     updateLockedAmount(updatedUsers);
     changeLocked({ locked: lockedUsers });
   };
