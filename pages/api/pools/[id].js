@@ -46,11 +46,18 @@ export default async function handler(req, res) {
         },
       },
       expenses: {
+        orderBy: [
+          { active: 'desc' },
+          {
+            updatedAt: 'desc',
+          },
+        ],
         select: {
           id: true,
           name: true,
           active: true,
           createdAt: true,
+          updatedAt: true,
           interval: true,
           total: true,
           draft: true,
@@ -79,7 +86,7 @@ export default async function handler(req, res) {
       draft: {
         include: {
           receipt: true,
-        }
+        },
       },
     },
   });

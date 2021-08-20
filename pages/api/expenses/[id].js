@@ -295,7 +295,6 @@ export default async function handler(req, res) {
       'startDate',
       'metadata',
       'interval',
-      'active',
       'image',
       'users',
       'locked',
@@ -305,7 +304,10 @@ export default async function handler(req, res) {
       where: {
         id: Number(req?.query?.id) || -1,
       },
-      data: { metadata: { ...expense.metadata, ...data } },
+      data: {
+        ...(req?.body?.active !== undefined && { active: req.body.active }),
+        metadata: { ...expense.metadata, ...data },
+      },
     });
 
     channels.trigger(

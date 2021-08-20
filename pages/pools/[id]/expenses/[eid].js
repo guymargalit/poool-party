@@ -239,7 +239,6 @@ const Label = styled.div`
   font-weight: 600;
   text-align: center;
   font-size: 16px;
-  text-transform: capitalize;
 `;
 
 const Left = styled.div`
@@ -382,8 +381,10 @@ const PoolExpense = (props) => {
   };
 
   useEffect(() => {
-    getPoolExpense();
-  }, []);
+    if (id && eid) {
+      getPoolExpense();
+    }
+  }, [id, eid]);
 
   useEffect(() => {
     setActive(expense?.active);

@@ -86,7 +86,6 @@ const Label = styled.div`
   font-weight: 600;
   text-align: left;
   font-size: 16px;
-  text-transform: capitalize;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

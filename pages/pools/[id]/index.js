@@ -274,7 +274,6 @@ const Label = styled.div`
   font-weight: 600;
   text-align: center;
   font-size: 16px;
-  text-transform: capitalize;
 `;
 
 const Info = styled.div`

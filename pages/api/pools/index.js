@@ -68,6 +68,11 @@ export default async function handler(req, res) {
     }
 
     const result = await prisma.pool.findMany({
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+      ],
       where: {
         users: {
           some: {
@@ -80,6 +85,7 @@ export default async function handler(req, res) {
       select: {
         id: true,
         name: true,
+        updatedAt: true,
         users: {
           select: {
             venmo: { select: { userId: true, image: true, username: true } },
