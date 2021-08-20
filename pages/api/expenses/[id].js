@@ -1,5 +1,6 @@
 import { getSession } from 'next-auth/client';
 import prisma from '../../../lib/prisma';
+import redis from '../../../lib/redis';
 import { getToken, pick } from '../../../lib/utils';
 const Pusher = require('pusher');
 
