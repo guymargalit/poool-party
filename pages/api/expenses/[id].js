@@ -209,10 +209,14 @@ export default async function handler(req, res) {
           const response = await result.json();
 
           if (response?.data?.status) {
+            let status = response?.data?.status;
+            if (status === 'settled') {
+              status = 'succeeded';
+            }
             await prisma.request.update({
               where: { id: request?.id },
               data: {
-                status: response?.data?.status,
+                status: status,
               },
             });
           }
