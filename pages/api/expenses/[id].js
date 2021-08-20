@@ -195,25 +195,29 @@ export default async function handler(req, res) {
 
     for (const expenseUser of expenseUsers) {
       for (const request of expenseUser?.requests || []) {
-        const result = await fetch(
-          `https://api.venmo.com/v1/payments/${request?.paymentId}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${getToken(user?.venmo?.accessToken)}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        const response = await result.json();
+        try {
+          const result = await fetch(
+            `https://api.venmo.com/v1/payments/${request?.paymentId}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getToken(user?.venmo?.accessToken)}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          const response = await result.json();
 
-        if (response?.data?.status) {
-          await prisma.request.update({
-            where: { id: request?.id },
-            data: {
-              status: response?.data?.status,
-            },
-          });
+          if (response?.data?.status) {
+            await prisma.request.update({
+              where: { id: request?.id },
+              data: {
+                status: response?.data?.status,
+              },
+            });
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
     }
