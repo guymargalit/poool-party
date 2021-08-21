@@ -100,6 +100,11 @@ const Settings = styled(IconSettings)`
   }
 `;
 
+const Empty = styled(IconEmpty)`
+  width: 28px;
+  height: 28px;
+`;
+
 const Plus = styled(IconPlus)`
   width: 24px;
   height: 24px;
@@ -515,7 +520,11 @@ const Pool = (props) => {
         ) : (
           <Title>{pool?.name}</Title>
         )}
-        <Settings onClick={() => setModal(true)} />
+        {!loading && pool?.venmoId === pool?.venmo?.id ? (
+          <Settings onClick={() => setModal(true)} />
+        ) : (
+          <Empty />
+        )}
       </Header>
       <WrapContent>
         <Content>

@@ -32,6 +32,7 @@ export default async function handler(req, res) {
       select: {
         id: true,
         name: true,
+        venmo: { select: { id: true } },
         users: {
           select: {
             id: true,
@@ -92,7 +93,7 @@ export default async function handler(req, res) {
       },
     });
 
-    res.json(Object.assign({}, pool, pick(poolUser, ['draft'])));
+    res.json(Object.assign({}, pool, pick(poolUser, ['venmoId', 'draft'])));
   } else if (req.method === 'DELETE') {
     const session = await getSession({ req });
     if (!session) {
