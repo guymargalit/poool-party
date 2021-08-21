@@ -308,7 +308,7 @@ const Home = () => {
 
   return (
     <Content>
-      {(typeof window !== 'undefined' && isIos() && !isInStandaloneMode()) ||
+      {(typeof window !== 'undefined' && isIos() && !isInStandaloneMode()) &&
         (banner && (
           <Banner>
             <Left>
