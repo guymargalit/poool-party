@@ -308,7 +308,7 @@ const Home = () => {
               <Icon src={'/favicon.png'} />
               <Info>
                 <AppTitle>Poool Party</AppTitle>
-                <AppDescription>Add to homescreen</AppDescription>
+                <AppDescription>Add to Home Screen</AppDescription>
               </Info>
             </Left>
             <Right>
