@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { signIn, useSession } from 'next-auth/client';
-import Router from 'next/router';
+import { signIn } from 'next-auth/client';
 import {
   IconApple,
   IconClose,
   IconEmpty,
   IconGoogle,
-  IconShare,
+  IconAppleShare,
 } from '../icons';
 
 const Content = styled.div`
@@ -94,9 +93,8 @@ const Icon = styled.img`
   width: 40px;
 `;
 
-const Share = styled(IconShare)`
-  width: 20px;
-  margin: 0 5px;
+const Share = styled(IconAppleShare)`
+  width: 25px;
 `;
 
 const Close = styled(IconClose)`
@@ -264,10 +262,10 @@ const Modal = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   z-index: 999;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
+  max-width: 340px;
+  margin-bottom: 150px;
   background-color: ${({ theme }) => theme.bg.content};
   border-radius: 18px;
   transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
@@ -289,12 +287,6 @@ const Home = () => {
     e.preventDefault();
     setGoogle(true);
     signIn('google', { callbackUrl: 'https://poool.party/dashboard' });
-  };
-
-  const handleAddToHomescreenClick = () => {
-    alert(`
-      1. Open Share menu in Safari
-      2. Tap on "Add to Home Screen"`);
   };
 
   const isIos = () => {
@@ -354,7 +346,7 @@ const Home = () => {
           <Step>
             1. Open <Share /> on the bottom of Safari
           </Step>
-          <Step>2. Scroll down and tap "Add to Home Screen"</Step>
+          <Step>2. Scroll down and "Add to Home Screen"</Step>
         </Modal>
       </WrapModal>
     </Content>
