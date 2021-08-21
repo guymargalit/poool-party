@@ -571,7 +571,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       changeUsers({
         users: pool?.users,
       });
-    } else if (expense?.metadata?.locked) {
+    } 
+    else if (expense?.metadata?.locked) {
       updateLockedAmount(expense?.metadata?.locked);
     }
   }, [expense?.id]);
@@ -693,6 +694,9 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   };
 
   const updateTotal = (t) => {
+    if (!t) {
+      t = 0;
+    }
     setTotal(parseFloat(t));
     const amounts = currency(parseFloat(t) - lockedTotal)?.distribute(
       unlockedUsers
@@ -955,7 +959,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                       decimalsLimit={2}
                       value={u?.amount || ''}
                       onValueChange={(v) => updateAmount(u, v)}
-                      disabled={u?.locked}
                       onFocus={handleFocus}
                     />
                   </WrapAmount>
