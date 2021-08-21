@@ -87,12 +87,17 @@ const LeftChevron = styled(IconLeftChevron)`
   }
 `;
 
-const Settings = styled(IconEmpty)`
+const Settings = styled(IconSettings)`
   width: 28px;
   height: 28px;
-  /* cursor: pointer; */
+  cursor: pointer;
   fill: ${({ theme }) => theme.text.primary};
   transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
 `;
 
 const Plus = styled(IconPlus)`
@@ -366,6 +371,76 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
+const WrapModal = styled.div`
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  flex-direction: column;
+  justify-content: flex-end;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: ${({ modal }) =>
+    modal ? ' rgba(0, 0, 0, 0.4)' : ' rgba(0, 0, 0, 0);'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+  width: 100%;
+  background-color: ${({ theme }) => theme.bg.content};
+  bottom: 0px;
+  border-radius: 18px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding: 10px 20px 0;
+  transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
+  height: ${({ modal }) => (modal ? '100px' : '0px')};
+`;
+
+const Tab = styled.div`
+  background-color: #e2e2e2;
+  width: 60px;
+  height: 4px;
+  border-radius: 8px;
+`;
+
+const DeleteButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.white};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? '#aaa' : theme.colors.error};
+  padding: 0 10px;
+  margin: 15px 0;
+  border-radius: 24px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 16px;
+  text-transform: capitalize;
+  height: 50px;
+  width: 100%;
+  user-select: none;
+  transition: all 0.25s ease 0s;
+  max-width: 1040px;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ disabled, theme }) => !disabled && '#d1435b'};
+    }
+    &:hover ${Popper} {
+      transform: rotate(-10deg);
+    }
+  }
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -385,6 +460,7 @@ const Pool = (props) => {
   const [expense, setExpense] = useState();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const getPool = async () => {
     setLoading(true);
@@ -394,6 +470,15 @@ const Pool = (props) => {
     });
     setPool(await response.json());
     setLoading(false);
+  };
+
+  const deletePool = async () => {
+    setLoading(true);
+    await fetch(`/api/pools/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    Router.push('/pools');
   };
 
   useEffect(() => {
@@ -430,7 +515,7 @@ const Pool = (props) => {
         ) : (
           <Title>{pool?.name}</Title>
         )}
-        <Settings />
+        <Settings onClick={() => setModal(true)} />
       </Header>
       <WrapContent>
         <Content>
@@ -511,6 +596,23 @@ const Pool = (props) => {
             )}
           </Items>
         </Content>
+        <WrapModal onClick={() => setModal(false)} modal={modal}>
+          <Modal modal={modal}>
+            <Tab />
+            <DeleteButton
+              disabled={loading || submitting}
+              onClick={() => pool && !submitting && deletePool()}
+            >
+              {submitting ? (
+                <Loader viewBox="0 0 50 50">
+                  <Circle cx="25" cy="25" r="20"></Circle>
+                </Loader>
+              ) : (
+                !loading && <>Archive Pool</>
+              )}
+            </DeleteButton>
+          </Modal>
+        </WrapModal>
         <Panel panel={panel}>
           {panel ? (
             <Expense

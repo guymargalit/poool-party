@@ -617,7 +617,9 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         const file = files[index];
         const compressedFile = await imageCompression(file, options);
         const type = await FileType.fromBlob(compressedFile);
-        compressedFile.name = `expense-${expense?.id}.${type?.ext}`;
+        compressedFile.name = `expense-${
+          pool?.draft?.receipt?.id || expense?.id
+        }.${type?.ext}`;
         const { url } = await uploadToS3(compressedFile);
         setUploading(false);
         setImage(url);
@@ -756,7 +758,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     ];
     const lockedUsers = updatedUsers.filter((u) => u.locked === true);
     updateLockedAmount(updatedUsers);
-    console.log(lockedUsers);
     changeLocked({ locked: lockedUsers });
   };
 
@@ -772,7 +773,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         updatedUsers.push({ ...usr, locked: false });
       }
     }
-    console.log(updatedUsers);
     const currentLockedTotal = updatedUsers?.reduce(
       (a, b) => a + (b['locked'] ? parseFloat(b['amount']) : 0),
       0
@@ -795,7 +795,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           : 0,
       })),
     ];
-    console.log(updatedUsers)
     setUsers(updatedUsers);
     changeUsers({
       users: updatedUsers,

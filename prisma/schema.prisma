@@ -95,6 +95,7 @@ model Pool {
   venmoId   String   @map(name: "venmo_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
+  deletedAt     DateTime? @map(name: "deleted_at")
 
   expenses Expense[]  @relation(name: "pool_expenses")
   users    PoolUser[] @relation(name: "users")
@@ -110,6 +111,7 @@ model PoolUser {
   venmoId String?  @map(name: "venmo_id")
   draft   Expense? @relation("current_expense", fields: [draftId], references: [id])
   draftId Int?     @map(name: "draft_id")
+  deletedAt     DateTime? @map(name: "deleted_at")
 
   expenses        ExpenseUser[] @relation(name: "expenses")
   expensesCreated Expense[]     @relation(name: "expenses_created")
@@ -128,6 +130,7 @@ model User {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   toy           String?   @default("flamingo")
   settings      Json?
+  deletedAt     DateTime? @map(name: "deleted_at")
 
   venmo Venmo? @relation(name: "venmo")
 
