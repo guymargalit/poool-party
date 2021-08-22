@@ -697,7 +697,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
     if (!t) {
       t = 0;
     }
-    setTotal(parseFloat(t));
+    setTotal(t);
     const amounts = currency(parseFloat(t) - lockedTotal)?.distribute(
       unlockedUsers
     );
@@ -913,9 +913,12 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 prefix="$"
                 placeholder="$0"
                 allowNegativeValue={false}
+                allowDecimals={true}
                 decimalsLimit={2}
                 value={total}
                 onValueChange={(v) => updateTotal(v)}
+                step={1}
+                decimalScale={2}
               />
               <CameraInput
                 accept="image/*"
@@ -957,9 +960,12 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                       placeholder="$0"
                       allowNegativeValue={false}
                       decimalsLimit={2}
+                      allowDecimals={true}
                       value={u?.amount || ''}
                       onValueChange={(v) => updateAmount(u, v)}
                       onFocus={handleFocus}
+                      step={1}
+                      decimalScale={2}
                     />
                   </WrapAmount>
                   {u?.locked ? (
