@@ -36,7 +36,33 @@ const options = {
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    })
+    }),
+    {
+      id: "venmo",
+      name: "Venmo",
+      type: "oauth",
+      version: "2.0",
+      scope: "make_payments access_profile access_email access_phone access_friends",
+      params: { grant_type: "authorization_code" },
+      accessTokenUrl: "https://api.venmo.com/v1/oauth/access_token",
+      authorizationUrl: `https://api.venmo.com/v1/oauth/authorize?client_id=${process.env.VENMO_CLIENT_ID}&response_type=code`,
+      profileUrl:'https://api.venmo.com/v1/me',
+      async profile(response, tokens) {
+        console.log(response)
+        // You can use the tokens, in case you want to fetch more profile information
+        // For example several OAuth providers do not return email by default.
+        // Depending on your provider, will have tokens like `access_token`, `id_token` and or `refresh_token`
+        return {
+          id: response?.data?.id,
+          username: response?.data?.username,
+          name: response?.data?.display_name,
+          email: response?.data?.email,
+          image: response?.data?.profile_picture_url,
+        }
+      },
+      clientId: process.env.VENMO_CLIENT_ID,
+      clientSecret: process.env.VENMO_CLIENT_SECRET
+    }
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
   secret: process.env.SECRET,
