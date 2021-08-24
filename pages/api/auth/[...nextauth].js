@@ -48,16 +48,16 @@ const options = {
       authorizationUrl: `https://api.venmo.com/v1/oauth/authorize?client_id=${process.env.VENMO_CLIENT_ID}&response_type=code`,
       profileUrl:'https://api.venmo.com/v1/me',
       async profile(response, tokens) {
-        console.log(response)
+        console.log(response, tokens)
+        const user = response?.data;
         // You can use the tokens, in case you want to fetch more profile information
         // For example several OAuth providers do not return email by default.
         // Depending on your provider, will have tokens like `access_token`, `id_token` and or `refresh_token`
         return {
-          id: response?.data?.id,
-          username: response?.data?.username,
-          name: response?.data?.display_name,
-          email: response?.data?.email,
-          image: response?.data?.profile_picture_url,
+          id: user?.id,
+          name: user?.display_name,
+          email: user?.email,
+          image: user?.profile_picture_url,
         }
       },
       clientId: process.env.VENMO_CLIENT_ID,
