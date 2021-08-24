@@ -31,8 +31,8 @@ model Expense {
   id            Int       @id @default(autoincrement())
   name          String?
   total         Float?
-  creator       PoolUser  @relation("expenses_created", fields: [creatorId], references: [id])
-  creatorId     Int       @map(name: "creator_id")
+  venmo         Venmo     @relation("expenses_created", fields: [venmoId], references: [id])
+  venmoId       String    @map(name: "venmo_id")
   pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
   poolId        Int?      @map(name: "pool_id")
   createdAt     DateTime  @default(now()) @map(name: "created_at")
@@ -46,9 +46,10 @@ model Expense {
   image         String?
   metadata      Json?
 
-  receipt        Receipt?      @relation("expense_receipt")
-  currentExpense PoolUser?     @relation("current_expense")
-  users          ExpenseUser[] @relation(name: "expense_users")
+  receipt            Receipt?      @relation("expense_receipt")
+  currentPoolExpense PoolUser?     @relation("current_pool_expense")
+  currentExpense     User?         @relation("current_expense")
+  users              ExpenseUser[] @relation(name: "expense_users")
 
   @@map(name: "expenses")
 }
@@ -58,8 +59,8 @@ model ExpenseUser {
   amount    Float
   expense   Expense  @relation(name: "expense_users", fields: [expenseId], references: [id])
   expenseId Int      @map(name: "expense_id")
-  user      PoolUser @relation("expenses", fields: [userId], references: [id])
-  userId    Int      @map(name: "user_id")
+  venmo     Venmo    @relation("expenses", fields: [venmoId], references: [id])
+  venmoId   String   @map(name: "venmo_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
@@ -89,13 +90,13 @@ model Request {
 }
 
 model Pool {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  venmo     Venmo    @relation(name: "pools_created", fields: [venmoId], references: [id])
-  venmoId   String   @map(name: "venmo_id")
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-  deletedAt     DateTime? @map(name: "deleted_at")
+  venmo     Venmo     @relation(name: "pools_created", fields: [venmoId], references: [id])
+  venmoId   String    @map(name: "venmo_id")
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @updatedAt @map(name: "updated_at")
+  deletedAt DateTime? @map(name: "deleted_at")
 
   expenses Expense[]  @relation(name: "pool_expenses")
   users    PoolUser[] @relation(name: "users")
@@ -104,17 +105,14 @@ model Pool {
 }
 
 model PoolUser {
-  id      Int      @id @default(autoincrement())
-  pool    Pool     @relation("users", fields: [poolId], references: [id])
-  poolId  Int      @map(name: "pool_id")
-  venmo   Venmo?   @relation("venmos", fields: [venmoId], references: [id])
-  venmoId String?  @map(name: "venmo_id")
-  draft   Expense? @relation("current_expense", fields: [draftId], references: [id])
-  draftId Int?     @map(name: "draft_id")
-  deletedAt     DateTime? @map(name: "deleted_at")
-
-  expenses        ExpenseUser[] @relation(name: "expenses")
-  expensesCreated Expense[]     @relation(name: "expenses_created")
+  id        Int       @id @default(autoincrement())
+  pool      Pool      @relation("users", fields: [poolId], references: [id])
+  poolId    Int       @map(name: "pool_id")
+  venmo     Venmo?    @relation("venmos", fields: [venmoId], references: [id])
+  venmoId   String?   @map(name: "venmo_id")
+  draft     Expense?  @relation("current_pool_expense", fields: [draftId], references: [id])
+  draftId   Int?      @map(name: "draft_id")
+  deletedAt DateTime? @map(name: "deleted_at")
 
   @@unique([venmoId, poolId], name: "venmopoolId")
   @@map(name: "poolusers")
@@ -131,6 +129,8 @@ model User {
   toy           String?   @default("flamingo")
   settings      Json?
   deletedAt     DateTime? @map(name: "deleted_at")
+  draft         Expense?  @relation("current_expense", fields: [draftId], references: [id])
+  draftId       Int?      @map(name: "draft_id")
 
   venmo Venmo? @relation(name: "venmo")
 
@@ -151,8 +151,10 @@ model Venmo {
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @updatedAt @map(name: "updated_at")
 
-  poolUsers    PoolUser[] @relation(name: "venmos")
-  poolsCreated Pool[]     @relation(name: "pools_created")
+  poolUsers       PoolUser[]    @relation(name: "venmos")
+  poolsCreated    Pool[]        @relation(name: "pools_created")
+  expensesCreated Expense[]     @relation(name: "expenses_created")
+  expenses        ExpenseUser[] @relation(name: "expenses")
 
   @@map(name: "venmos")
 }

@@ -59,6 +59,18 @@ export default async function handler(req, res) {
     return res.status(200).send([]);
   }
 
+  // if (!query) {
+    // const result = await fetch(`https://api.venmo.com/v1/suggested`, {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: `Bearer ${getToken(user?.venmo?.accessToken)}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // const response = await result.json();
+  //   return res.json(response);
+  // }
+
   const result = await fetch(
     `https://api.venmo.com/v1/users?query=${query}&type=username`,
     {

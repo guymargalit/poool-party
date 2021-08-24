@@ -12,6 +12,8 @@ import {
   IconShare,
   IconCamera,
   IconPicture,
+  IconSearch,
+  IconRemove,
 } from '../icons';
 import CurrencyInput from 'react-currency-input-field';
 import currency from 'currency.js';
@@ -157,9 +159,9 @@ const Name = styled.div`
 `;
 
 const Avatar = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
 `;
 
 const Popper = styled(IconPopper)`
@@ -526,11 +528,183 @@ const WrapImage = styled.div`
   transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
 `;
 
+const WrapDraft = styled.div`
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: ${({ modal }) =>
+    modal ? ' rgba(0, 0, 0, 0.4)' : ' rgba(0, 0, 0, 0);'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Draft = styled.div`
+  position: fixed;
+  display: ${({ modal }) => (modal ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+  padding: 0 30px;
+  background-color: ${({ theme }) => theme.bg.content};
+  border-radius: 18px;
+  padding-top: 10px;
+  height: 100px;
+  transition: all 0.1s ease 0s;
+`;
+
+const DraftTitle = styled.div`
+  width: 100%;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text.tertiary};
+  text-align: center;
+  font-size: 16px;
+  margin: 10px 0 20px;
+`;
+
+const WrapButtons = styled.div`
+  display: flex;
+`;
+
+const SaveButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 75px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.purple};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #042759;
+    }
+  }
+`;
+
+const DiscardButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 80px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-right: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.error};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #d1435b;
+    }
+  }
+`;
+
 const Tab = styled.div`
   background-color: #e2e2e2;
   width: 60px;
   height: 4px;
   border-radius: 8px;
+  min-height: 4px;
+`;
+
+const Search = styled(IconSearch)`
+  width: 16px;
+  height: 16px;
+  fill: ${({ theme }) => theme.text.quarternary};
+`;
+
+const WrapList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+`;
+
+const SearchList = styled.div`
+  max-height: 150px;
+  width: 100%;
+  overflow-y: auto;
+`;
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: solid 1px ${({ theme }) => theme.bg.border};
+  height: 50px;
+  padding: 0 15px;
+  cursor: pointer;
+  transition: all 0.25s ease 0s;
+  background-color: ${({ theme }) => theme.bg.border};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  margin-left: 10px;
+`;
+
+const FullName = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: ${({ theme }) => theme.text.secondary};
+`;
+
+const Username = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 12px;
+  color: ${({ theme }) => theme.text.quarternary};
+`;
+
+const Remove = styled(IconRemove)`
+  width: 20px;
+  height: 20px;
+  fill: ${({ theme }) => theme.colors.error};
+  position: absolute;
+  right: -5px;
+  transition: all 0.25s ease 0s;
+  cursor: pointer;
 `;
 
 const intervalOptions = {
@@ -552,13 +726,20 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       : new Date().toISOString().substr(0, 10)
   );
   const [users, setUsers] = useState(
-    expense?.metadata?.users ? [...expense?.metadata?.users] : [...pool?.users]
+    expense?.metadata?.users
+      ? [...expense?.metadata?.users]
+      : pool
+      ? [...pool?.users]
+      : []
   );
   const [total, setTotal] = useState(expense?.metadata?.total || '');
   const [user, updatingUser] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
+  const [query, setQuery] = useState('');
+  const [result, setResult] = useState([]);
+  const [draft, setDraft] = useState(false);
   const [error, setError] = useState('');
   const [modal, setModal] = useState(false);
   const [viewImage, setViewImage] = useState(false);
@@ -571,8 +752,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       changeUsers({
         users: pool?.users,
       });
-    } 
-    else if (expense?.metadata?.locked) {
+    } else if (expense?.metadata?.locked) {
       updateLockedAmount(expense?.metadata?.locked);
     }
   }, [expense?.id]);
@@ -585,6 +765,17 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         body: JSON.stringify(body),
       });
       await response.json();
+    }
+  };
+
+  const deleteDraft = async () => {
+    if (expense?.id) {
+      close(
+        fetch(`/api/expenses/${expense?.id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        })
+      );
     }
   };
 
@@ -604,6 +795,64 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
   const changeLocked = useMemo(() => debounce(changeHandler, 500), []);
 
+  const searchHandler = (e) => {
+    queryUsers(e);
+  };
+
+  const debouncedChangeHandler = useMemo(
+    () => debounce(searchHandler, 300),
+    []
+  );
+
+  const queryUsers = async (query) => {
+    const body = {
+      query: query,
+    };
+    const result = await fetch('/api/venmo/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const response = await result?.json();
+    setResult(response?.data || []);
+  };
+
+  const addUser = (user) => {
+    if (user.id) {
+      const list = [
+        ...users,
+        {
+          id: user.id,
+          venmo: {
+            id: user.id,
+            image: user.profile_picture_url,
+            displayName: user.display_name,
+            username: user.username,
+          },
+        },
+      ];
+      setUsers(list);
+      changeUsers({
+        users: list,
+      });
+      setQuery('');
+      setResult([]);
+    }
+  };
+
+  const removeUser = (user) => {
+    if (user.id) {
+      const index = users.findIndex((u) => u?.id === user?.id);
+      const updatedUsers = [
+        ...users.slice(0, index),
+        ...users.slice(index + 1),
+      ];
+      setUsers(updatedUsers);
+      setQuery('');
+      setResult([]);
+    }
+  };
+
   const handleFileChange = async ({ target }) => {
     const options = {
       maxSizeMB: 0.2,
@@ -618,9 +867,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         const file = files[index];
         const compressedFile = await imageCompression(file, options);
         const type = await FileType.fromBlob(compressedFile);
-        compressedFile.name = `expense-${
-          pool?.draft?.receipt?.id || expense?.id
-        }.${type?.ext}`;
+        compressedFile.name = `expense-${expense?.receipt?.id}.${type?.ext}`;
         const { url } = await uploadToS3(compressedFile);
         setUploading(false);
         setImage(url);
@@ -824,7 +1071,13 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           users: users.map((u) => ({
             id: u?.id,
             venmoId: u?.venmo?.id,
-            amount: parseInt(u?.amount),
+            amount: parseFloat(Math.abs(u?.amount)),
+            venmo: {
+              id: u?.venmo?.id,
+              username: u?.venmo?.username,
+              displayName: u?.venmo?.displayName,
+              image: u?.venmo?.image,
+            },
           })),
           total,
         };
@@ -867,13 +1120,13 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   return (
     <Container>
       <Header>
-        <Close onClick={() => close()} />
+        <Close onClick={() => setDraft(true)} />
         {navigator?.share && (
           <Share
             onClick={async () => {
               if (navigator?.share) {
                 await navigator.share({
-                  url: `https://poool.party/receipts/${pool?.draft?.receipt?.id}`,
+                  url: `https://poool.party/receipts/${expense?.receipt?.id}`,
                 });
               }
             }}
@@ -884,18 +1137,58 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         <Content>
           <Section>
             <Subtitle>Who's Paying?</Subtitle>
+            {!pool && (
+              <WrapInput>
+                <Search />
+                <Input
+                  onChange={(e) => {
+                    debouncedChangeHandler(e.target.value);
+                    setQuery(e.target.value);
+                  }}
+                  placeholder="Find them on venmo"
+                  type="text"
+                  value={query}
+                />
+              </WrapInput>
+            )}
+            <WrapList>
+              <SearchList>
+                {result?.map((u) => (
+                  <Item onClick={() => addUser(u)} key={u?.id}>
+                    <Avatar
+                      alt="profile_picture"
+                      src={u?.profile_picture_url}
+                    />
+                    <Info>
+                      <FullName>{u?.display_name}</FullName>
+                      <Username>@{u?.username}</Username>
+                    </Info>
+                  </Item>
+                ))}
+              </SearchList>
+            </WrapList>
             <List>
-              {pool?.users?.map((usr, i) => (
-                <WrapAvatar key={i} onClick={() => selectUser(usr)}>
-                  <Checkmark
-                    visible={users?.some(
-                      (u) => usr?.venmo?.id === u?.venmo?.id
-                    )}
-                  />
-                  <Avatar src={usr?.venmo?.image} />
-                  <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
-                </WrapAvatar>
-              ))}
+              {pool?.users
+                ? pool?.users?.map((usr, i) => (
+                    <WrapAvatar key={i} onClick={() => selectUser(usr)}>
+                      <Checkmark
+                        visible={users?.some(
+                          (u) => usr?.venmo?.id === u?.venmo?.id
+                        )}
+                      />
+                      <Avatar src={usr?.venmo?.image} />
+                      <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
+                    </WrapAvatar>
+                  ))
+                : users?.map((usr, i) => (
+                    <WrapAvatar key={usr?.id}>
+                      {!usr?.creator && (
+                        <Remove onClick={() => removeUser(usr)} />
+                      )}
+                      <Avatar src={usr?.venmo?.image} />
+                      <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
+                    </WrapAvatar>
+                  ))}
             </List>
           </Section>
           <Section>
@@ -1016,6 +1309,15 @@ const Expense = ({ pool, expense, setExpense, close }) => {
               </WrapDate>
             </Section>
           )}
+          <WrapDraft onClick={() => setDraft(false)} modal={draft}>
+            <Draft modal={draft}>
+              <DraftTitle>Save Expense as Draft?</DraftTitle>
+              <WrapButtons>
+                <DiscardButton onClick={deleteDraft}>Discard</DiscardButton>
+                <SaveButton onClick={() => close(false)}>Save</SaveButton>
+              </WrapButtons>
+            </Draft>
+          </WrapDraft>
           <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
             <WrapImage modal={viewImage}>
               {image && (

@@ -46,13 +46,13 @@ const GlobalStyle = createGlobalStyle`
   
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: transparent; 
     border-radius: 5px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: transparent; 
   }
 `;
 

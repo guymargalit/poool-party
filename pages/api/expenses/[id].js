@@ -30,11 +30,11 @@ export default async function handler(req, res) {
       select: {
         id: true,
         poolId: true,
-        creator: { select: { id: true, venmoId: true } },
+        venmoId: true
       },
     });
 
-    if (user?.venmo?.id !== expense?.creator?.venmoId) {
+    if (user?.venmo?.id !== expense?.venmoId) {
       return res.status(403).end();
     }
 
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         name: name,
         active: true,
         draft: false,
-        total: parseFloat(total),
+        total: parseFloat(Math.abs(total)),
         interval: interval,
         intervalCount: interval ? 1 : null,
         startDate: date ? new Date(date) : new Date(),
@@ -70,29 +70,58 @@ export default async function handler(req, res) {
 
     if (users) {
       for (const u of users) {
-        const poolUser = await prisma.poolUser.findUnique({
-          where: { id: parseInt(u?.id) },
-          select: {
-            id: true,
-            venmoId: true,
-            poolId: true,
-          },
-        });
-
-        if (poolUser) {
-          const expenseUser = await prisma.expenseUser.create({
-            data: {
-              amount: parseFloat(Math.abs(u?.amount)),
-              expense: { connect: { id: expense?.id } },
-              user: { connect: { id: parseInt(u?.id) } },
+        let expenseUser;
+        if (expense?.poolId) {
+          const poolUser = await prisma.poolUser.findUnique({
+            where: { id: parseInt(u?.id) },
+            select: {
+              id: true,
+              venmoId: true,
+              poolId: true,
             },
           });
 
+          if (poolUser) {
+            expenseUser = await prisma.expenseUser.create({
+              data: {
+                amount: parseFloat(Math.abs(u?.amount)),
+                expense: { connect: { id: expense?.id } },
+                venmo: { connect: { id: u?.id } },
+              },
+            });
+          }
+        } else {
+          const venmoUser = await prisma.venmo.upsert({
+            where: { id: u?.id },
+            update: {},
+            create: {
+              id: u?.venmo?.id,
+              username: u?.venmo?.username,
+              displayName: u?.venmo?.displayName,
+              image: u?.venmo?.image,
+            },
+          });
+
+          if (venmoUser) {
+            expenseUser = await prisma.expenseUser.create({
+              data: {
+                amount: parseFloat(Math.abs(u?.amount)),
+                expense: { connect: { id: expense?.id } },
+                venmo: { connect: { id: venmoUser?.id } },
+              },
+            });
+          }
+        }
+
+        if (expenseUser) {
           // Don't create expense if not start date
           if (expense?.startDate && expense?.startDate <= new Date()) {
             // Don't create venmo request for expense creator
             let paymentId, status;
-            if (poolUser?.id !== expense?.creatorId) {
+            if (
+              expenseUser?.venmoId !== expense?.venmoId &&
+              parseFloat(Math.abs(u?.amount)) > 0
+            ) {
               // Start venmo request
               const result = await fetch('https://api.venmo.com/v1/payments', {
                 method: 'POST',
@@ -103,8 +132,7 @@ export default async function handler(req, res) {
                 body: JSON.stringify({
                   note: name,
                   amount: `-${parseFloat(Math.abs(u?.amount))}`,
-                  user_id: u?.venmoId,
-                  audience: 'private',
+                  user_id: expenseUser?.venmoId,
                 }),
               });
               const response = await result.json();
@@ -141,17 +169,28 @@ export default async function handler(req, res) {
       }
     }
 
-    await prisma.poolUser.update({
-      where: {
-        venmopoolId: {
-          venmoId: user?.venmo?.id,
-          poolId: expense?.poolId,
+    if (expense?.poolId) {
+      await prisma.poolUser.update({
+        where: {
+          venmopoolId: {
+            venmoId: user?.venmo?.id,
+            poolId: expense?.poolId,
+          },
         },
-      },
-      data: {
-        draftId: null,
-      },
-    });
+        data: {
+          draftId: null,
+        },
+      });
+    } else {
+      await prisma.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          draftId: null,
+        },
+      });
+    }
 
     return res.status(200).end();
   } else if (req.method === 'GET') {
@@ -176,9 +215,9 @@ export default async function handler(req, res) {
     const expenseUsers = await prisma.expenseUser.findMany({
       select: {
         id: true,
-        user: {
+        venmo: {
           select: {
-            venmoId: true,
+            id: true,
           },
         },
         requests: {
@@ -237,20 +276,24 @@ export default async function handler(req, res) {
         active: true,
         interval: true,
         metadata: true,
+        venmo: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            image: true,
+          },
+        },
         users: {
           select: {
             id: true,
             amount: true,
-            user: {
+            venmo: {
               select: {
-                venmo: {
-                  select: {
-                    id: true,
-                    username: true,
-                    displayName: true,
-                    image: true,
-                  },
-                },
+                id: true,
+                username: true,
+                displayName: true,
+                image: true,
               },
             },
             requests: {
@@ -258,7 +301,7 @@ export default async function handler(req, res) {
                 id: true,
                 name: true,
                 status: true,
-                createdAt: true,
+                updatedAt: true,
                 amount: true,
               },
             },
@@ -266,7 +309,12 @@ export default async function handler(req, res) {
         },
       },
     });
-    return res.json(expense);
+    const receipt = await prisma.receipt.findFirst({
+      where: {
+        expenseId: expense?.id,
+      },
+    });
+    return res.json(Object.assign({}, expense, { receipt }));
   } else if (req.method === 'PUT') {
     const channels = new Pusher({
       appId: process.env.PUSHER_APP_ID,
@@ -318,6 +366,65 @@ export default async function handler(req, res) {
         res.json(updateExpense);
       }
     );
-    return res.json(updateExpense);
+    const receipt = await prisma.receipt.findFirst({
+      where: {
+        expenseId: expense?.id,
+      },
+    });
+    return res.json(Object.assign({}, updateExpense, { receipt }));
+  } else if (req.method === 'DELETE') {
+    const session = await getSession({ req });
+    if (!session) {
+      return res.status(403).end();
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: session?.user?.id },
+      select: {
+        id: true,
+        venmo: { select: { id: true, accessToken: true } },
+      },
+    });
+
+    if (!user?.venmo?.accessToken) {
+      return res.status(403).end();
+    }
+    const expense = await prisma.expense.findUnique({
+      where: {
+        id: Number(req?.query?.id) || -1,
+      },
+      select: {
+        id: true,
+        venmoId: true,
+      },
+    });
+
+    if (!expense) {
+      return res.status(404).end();
+    }
+
+    if (user?.venmo?.id !== expense?.venmoId) {
+      return res.status(403).end();
+    }
+
+    const receipt = await prisma.receipt.findFirst({
+      where: {
+        expenseId: expense?.id,
+      },
+    });
+
+    await prisma.receipt.delete({
+      where: {
+        id: receipt?.id,
+      },
+    });
+
+    await prisma.expense.delete({
+      where: {
+        id: Number(req?.query?.id) || -1,
+      },
+    });
+
+    return res.status(200).end();
   }
 }

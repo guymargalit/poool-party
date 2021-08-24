@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Router from 'next/router';
 import Toy from './Toy';
 import Wave from './Wave';
 import { routes } from '../lib/routes';
-import { IconDashboard, IconPools, IconProfile } from '../icons';
+import {
+  IconAdd,
+  IconDashboard,
+  IconPlus,
+  IconPools,
+  IconProfile,
+} from '../icons';
 import Venmo from './Venmo';
+import Expense from './Expense';
+import Tooltip from './Tooltip';
 
 const Container = styled.div`
   display: flex;
@@ -57,7 +66,7 @@ const Content = styled.div`
     `};
 `;
 
-const Panel = styled.div`
+const Area = styled.div`
   height: 65px;
   background-color: ${({ theme }) => theme.bg.content};
   width: 100%;
@@ -196,6 +205,138 @@ const Modal = styled.div`
   height: ${({ modal }) => (modal ? '80%' : '0')};
 `;
 
+const WrapTooltip = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
+const Plus = styled(IconAdd)`
+  width: 45px;
+  height: 45px;
+  fill: ${({ theme }) => theme.colors.white};
+  transition: all 0.25s ease 0s;
+  z-index: 3;
+`;
+
+const PlusFill = styled.div`
+  width: 35px;
+  height: 35px;
+  background-color: #222;
+  position: absolute;
+  transition: all 0.25s ease 0s;
+  border-radius: 36px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.18);
+  z-index: 2;
+`;
+
+const PlusEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 37px;
+  height: 37px;
+  background-color: ${({ theme }) => theme.colors.white};
+  position: absolute;
+  transition: all 0.25s ease 0s;
+  border-radius: 40px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.18);
+  z-index: 2;
+`;
+
+const WrapPlus = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 45px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-right: 15px;
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover ${PlusFill} {
+      background: ${({ theme }) => theme.colors.white};
+    }
+    :hover ${Plus} {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+`;
+
+const Panel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.bg.content};
+  bottom: 0px;
+  width: 100%;
+  height: ${({ panel }) => (panel ? '100%' : '0px')};
+  transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
+  user-select: none;
+  position: fixed;
+  z-index: ${({ panel }) => (panel ? 101 : 100)};
+`;
+
+const rotate = keyframes`
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const dash = keyframes`
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+`;
+
+const Loader = styled.svg`
+  animation: ${rotate} 2s linear infinite;
+  width: 20px;
+  height: 20px;
+  margin-bottom: 2px;
+`;
+
+const Circle = styled.circle`
+  stroke: #222222;
+  stroke-linecap: round;
+  animation: ${dash} 1.5s ease-in-out infinite;
+  fill: none;
+  stroke-width: 8px;
+`;
+
+const Notification = styled.div`
+  display: ${({ notification }) => (notification ? 'block' : 'none')};
+  background-color: rgb(255, 56, 92);
+  position: absolute;
+  z-index: 11;
+  border-radius: 50%;
+  height: 10px;
+  min-width: 10px;
+  right: 6px;
+  top: 2px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.35, 1.1) 0s;
+`;
+
 const toys = [
   {
     type: 'zebra',
@@ -215,26 +356,29 @@ const toys = [
   },
 ];
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 const Layout = (props) => {
   const router = useRouter();
   const { navigation, setNavigation } = props;
   const { darkMode, setDarkMode } = props;
   const [venmo, setVenmo] = useState(false);
   const [hideVenmo, setHideVenmo] = useState(false);
-
+  const [panel, setPanel] = useState(false);
+  const [expense, setExpense] = useState();
+  const [submitting, setSubmitting] = useState(false);
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
+  const { mutate } = useSWR('/api/user', fetcher);
 
   useEffect(() => {
-    setNavigation(
-      !props?.user
-        ? false
-        : routes[router.pathname]?.navigation
-    );
+    setNavigation(!props?.user ? false : routes[router.pathname]?.navigation);
     setHeight(routes[router.pathname]?.height);
     setBackground(
       !props?.user
-        ? router.pathname === '/' ? true:false
+        ? router.pathname === '/'
+          ? true
+          : false
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
@@ -257,12 +401,32 @@ const Layout = (props) => {
         setVenmo(false);
       }
     }
-  }, [
-    props?.user?.id,
-    props?.user?.venmo,
-    hideVenmo,
-    router.pathname,
-  ]);
+  }, [props?.user?.id, props?.user?.venmo, hideVenmo, router.pathname]);
+
+  const handleExpense = async () => {
+    if (props?.user?.draft) {
+      setSubmitting(true);
+      const response = await fetch(`/api/expenses/${props?.user?.draft?.id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      setExpense(await response.json());
+      setPanel(true);
+      setSubmitting(false);
+    } else {
+      setSubmitting(true);
+      const response = await fetch(`/api/expenses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      setExpense(await response.json());
+      setPanel(true);
+      setSubmitting(false);
+    }
+  };
+
+  useEffect(() => mutate(),[]);
+
   return (
     <Container>
       <WrapModal modal={venmo}>
@@ -275,7 +439,53 @@ const Layout = (props) => {
           />
         </Modal>
       </WrapModal>
+      <Panel panel={panel}>
+        {panel && (
+          <Expense
+            expense={expense}
+            setExpense={setExpense}
+            {...props}
+            close={(promise) => {
+              setSubmitting(true);
+              setPanel(false);
+              if (promise) {
+                promise?.then(() => mutate());
+                setSubmitting(false);
+              } else {
+                mutate()
+                setSubmitting(false)
+              }
+            }}
+          />
+        )}
+      </Panel>
       <Hero background={background}>
+        {!routes[router.pathname]?.public && (
+          <WrapTooltip>
+            <Tooltip
+              content={
+                <>
+                  Create an expense, <br /> make a splash!
+                </>
+              }
+            />
+            <WrapPlus>
+              <Notification notification={props?.user?.draft !== null} />
+              {submitting ? (
+                <PlusEmpty>
+                  <Loader viewBox="0 0 50 50">
+                    <Circle cx="25" cy="25" r="20"></Circle>
+                  </Loader>
+                </PlusEmpty>
+              ) : (
+                <>
+                  <Plus onClick={handleExpense} />
+                  <PlusFill />
+                </>
+              )}
+            </WrapPlus>
+          </WrapTooltip>
+        )}
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !props?.user && router.pathname === '/' ? (
@@ -294,7 +504,8 @@ const Layout = (props) => {
           <>
             {router.pathname === '/' && !props?.user ? (
               <>{props.children}</>
-            ) : router.pathname !== '/' && (props?.user || routes[router.pathname]?.public) ? (
+            ) : router.pathname !== '/' &&
+              (props?.user || routes[router.pathname]?.public) ? (
               <WrapContent>
                 <Content
                   background={background}
@@ -307,7 +518,7 @@ const Layout = (props) => {
                     setDarkMode,
                   })}
                 </Content>
-                <Panel />
+                <Area />
               </WrapContent>
             ) : (
               <></>

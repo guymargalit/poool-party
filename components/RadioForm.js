@@ -7,7 +7,6 @@ const Form = styled.form`
   padding: 5px 10px;
   border-radius: 10px;
   width: 100%;
-  overflow-y: auto;
 `;
 
 const Radio = styled.label`

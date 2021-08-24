@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Router from 'next/router';
 import { useRouter } from 'next/router';
-import Expense from '../../../../components/Expense';
 import {
   IconEmpty,
   IconLeftChevron,
@@ -11,7 +10,7 @@ import {
   IconPopper,
   IconRightChevron,
   IconSettings,
-} from '../../../../icons';
+} from '../../icons';
 import currency from 'currency.js';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
@@ -363,16 +362,16 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const PoolExpense = (props) => {
+const Expense = (props) => {
   const router = useRouter();
-  const { id, eid } = router.query;
+  const { id } = router.query;
   const [expense, setExpense] = useState(props?.expense);
   const [active, setActive] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const getPoolExpense = async () => {
+  const getExpense = async () => {
     setLoading(true);
-    const response = await fetch(`/api/expenses/${eid}`, {
+    const response = await fetch(`/api/expenses/${id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -381,10 +380,10 @@ const PoolExpense = (props) => {
   };
 
   useEffect(() => {
-    if (id && eid) {
-      getPoolExpense();
+    if (id) {
+      getExpense();
     }
-  }, [id, eid]);
+  }, [id]);
 
   useEffect(() => {
     setActive(expense?.active);
@@ -395,7 +394,7 @@ const PoolExpense = (props) => {
     const body = {
       active: !active,
     };
-    await fetch(`/api/expenses/${eid}`, {
+    await fetch(`/api/expenses/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -405,7 +404,7 @@ const PoolExpense = (props) => {
   return (
     <Fragment>
       <Header>
-        <LeftChevron onClick={() => Router.push(`/pools/${id}`)} />
+        <LeftChevron onClick={() => Router.back()} />
         {loading ? (
           <Skeleton height={20} width={150} />
         ) : (
@@ -470,14 +469,14 @@ const PoolExpense = (props) => {
                 u?.requests?.map((r) => (
                   <Item onClick={() => {}} key={u?.id}>
                     <Left>
-                      <Label>{u?.user?.venmo?.displayName}</Label>
+                      <Label>{u?.venmo?.displayName}</Label>
                       <Description>{formatter.format(u?.amount)}</Description>
                     </Left>
                     <Right>
                       <Status status={r?.status}>
                         {r?.status === 'succeeded' ? 'paid' : r?.status}
                       </Status>
-                      <Date>{moment(r?.createdAt).format('M/D/YY h:mmA')}</Date>
+                      <Date>{moment(r?.updatedAt).format('M/D/YY h:mmA')}</Date>
                     </Right>
                   </Item>
                 ))
@@ -487,7 +486,7 @@ const PoolExpense = (props) => {
                 <WrapPartyFace>
                   <IconPartyFace />
                 </WrapPartyFace>
-                <Text>You've got no requests!</Text>
+                <Text>You've got no expense requests!</Text>
               </Area>
             ) : (
               <></>
@@ -499,4 +498,4 @@ const PoolExpense = (props) => {
   );
 };
 
-export default PoolExpense;
+export default Expense;

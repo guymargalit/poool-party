@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/client';
 import prisma from '../../../../lib/prisma';
 import redis from '../../../../lib/redis';
-var CryptoJS = require("crypto-js");
+var CryptoJS = require('crypto-js');
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
@@ -59,7 +59,10 @@ export default async function handler(req, res) {
   }
   const response = await result.json();
   if (response?.user) {
-    const accessToken = CryptoJS.AES.encrypt(response?.access_token, process.env.TOKEN_SECRET_KEY).toString();
+    const accessToken = CryptoJS.AES.encrypt(
+      response?.access_token,
+      process.env.TOKEN_SECRET_KEY
+    ).toString();
     await prisma.venmo.upsert({
       where: { id: response?.user?.id },
       update: {
@@ -84,7 +87,9 @@ export default async function handler(req, res) {
         expiredAt: null,
       },
     });
-    redis.del(`user-${session?.user?.id}`);
+    if (redis) {
+      redis.del(`user-${session?.user?.id}`);
+    }
     const user = await prisma.user.findUnique({
       where: { id: session?.user?.id },
       select: {

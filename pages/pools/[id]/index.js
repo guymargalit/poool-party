@@ -414,6 +414,7 @@ const Tab = styled.div`
   width: 60px;
   height: 4px;
   border-radius: 8px;
+  min-height: 4px;
 `;
 
 const DeleteButton = styled.div`
@@ -432,6 +433,7 @@ const DeleteButton = styled.div`
   font-size: 16px;
   text-transform: capitalize;
   height: 50px;
+  min-height: 50px;
   width: 100%;
   user-select: none;
   transition: all 0.25s ease 0s;
@@ -629,9 +631,14 @@ const Pool = (props) => {
               expense={expense}
               setExpense={setExpense}
               {...props}
-              close={() => {
+              close={(promise) => {
+                setLoading(true);
                 setPanel();
-                getPool();
+                if (promise) {
+                  promise.then(() => getPool());
+                } else {
+                  getPool();
+                }
               }}
             />
           ) : (

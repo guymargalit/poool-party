@@ -13,7 +13,7 @@ export default async function handler(req, res) {
           select: {
             id: true,
             name: true,
-            creatorId: true,
+            venmoId: true,
             active: true,
             interval: true,
           },
@@ -53,39 +53,40 @@ export default async function handler(req, res) {
               expenseId: true,
               amount: true,
               userId: true,
-              user: {
-                select: {
-                  venmo: { select: { id: true, userId: true, accessToken: true } },
-                },
-              },
+              venmoId: true,
             },
+          });
+
+          const creator = await prisma.venmo.findUnique({
+            where: { id: expense?.venmoId },
           });
 
           for (const expenseUser of expenseUsers) {
             // Don't create venmo request for expense creator
             let paymentId, status;
-            if (expenseUser?.userId !== expense?.creatorId) {
+            if (expenseUser?.venmoId !== creator?.venmoId) {
               // Start venmo request
               const result = await fetch('https://api.venmo.com/v1/payments', {
                 method: 'POST',
                 headers: {
-                  Authorization: `Bearer ${getToken(expenseUser?.user?.venmo?.accessToken)}`,
+                  Authorization: `Bearer ${getToken(
+                    creator?.accessToken
+                  )}`,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                   note: expense?.name,
                   amount: `-${parseFloat(expenseUser?.amount)}`,
-                  user_id: expenseUser?.user?.venmo?.id,
-                  audience: 'private',
+                  user_id: expenseUser?.venmoId,
                 }),
               });
               const response = await result.json();
               if (response?.error) {
                 await prisma.venmo.update({
                   data: { expiredAt: new Date() },
-                  where: { id: expenseUser?.user?.venmo?.id },
+                  where: { id: creator?.venmoId },
                 });
-                redis.del(`user-${expenseUser?.user?.venmo?.userId}`);
+                redis.del(`user-${creator?.userId}`);
               }
               status = response?.data?.payment?.status || 'failed';
               paymentId = response?.data?.payment?.id;

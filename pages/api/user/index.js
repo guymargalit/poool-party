@@ -28,18 +28,25 @@ export default async function handler(req, res) {
         },
       },
     });
-    redis.set(`user-${session?.user?.id}`, JSON.stringify(updateUser));
+    if (redis) {
+      redis.set(`user-${session?.user?.id}`, JSON.stringify(updateUser));
+    }
     res.json(updateUser);
   } else if (req.method === 'GET') {
     const session = await getSession({ req });
     if (!session) {
       return res.status(403).end();
     }
-    let start = Date.now();
-    let cache = await redis.get(`user-${session?.user?.id}`);
-    cache = JSON.parse(cache);
+    let cache;
+    if (redis) {
+      cache = await redis.get(`user-${session?.user?.id}`);
+      cache = JSON.parse(cache);
+    }
     if (cache) {
-      return res.status(200).json(cache);
+      const draft = await prisma.expense.findFirst({
+        where: { venmoId: cache?.venmo?.id, poolId: null, draft: true },
+      });
+      return res.status(200).json(Object.assign({}, cache, { draft }));
     } else {
       const user = await prisma.user.findUnique({
         where: { id: session?.user?.id },
@@ -58,8 +65,15 @@ export default async function handler(req, res) {
           },
         },
       });
-      redis.set(`user-${session?.user?.id}`, JSON.stringify(user));
-      return res.status(200).json(user);
+
+      if (redis) {
+        redis.set(`user-${session?.user?.id}`, JSON.stringify(user));
+      }
+
+      const draft = await prisma.expense.findFirst({
+        where: { venmoId: user?.venmo?.id, poolId: null, draft: true },
+      });
+      return res.status(200).json(Object.assign({}, user, { draft }));
     }
   } else if (req.method === 'PUT') {
     const session = await getSession({ req });
