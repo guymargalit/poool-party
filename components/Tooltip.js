@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 /* Wrapping */
 const Wrapper = styled.div`
@@ -37,10 +37,10 @@ const Tip = styled.div`
 
   bottom: calc(110px * -1);
 
-::before {
-  bottom: 100%;
-  border-bottom-color: #222;
-}
+  ::before {
+    bottom: 100%;
+    border-bottom-color: #222;
+  }
 `;
 
 const Top = styled.div`
@@ -92,32 +92,10 @@ const Left = styled.div`
 `;
 
 const Tooltip = (props) => {
-  let timeout;
-  const [active, setActive] = useState(false);
-
-  const showTip = () => {
-    timeout = setTimeout(() => {
-      setActive(true);
-    }, props.delay || 400);
-  };
-
-  const hideTip = () => {
-    clearInterval(timeout);
-    setActive(false);
-  };
-
   return (
-    <Wrapper
-      // When to show the tooltip
-      onMouseEnter={showTip}
-      onMouseLeave={hideTip}
-    >
-      {/* Wrapping */}
+    <Wrapper>
       {props.children}
-      <Tip>
-        {/* Content */}
-        {props.content}
-      </Tip>
+      <Tip>{props.content}</Tip>
     </Wrapper>
   );
 };
