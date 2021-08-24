@@ -49,7 +49,7 @@ const options = {
       profileUrl:'https://api.venmo.com/v1/me',
       async profile(response, tokens) {
         console.log(response, tokens)
-        const user = response?.data;
+        const user = response?.data?.user;
         // You can use the tokens, in case you want to fetch more profile information
         // For example several OAuth providers do not return email by default.
         // Depending on your provider, will have tokens like `access_token`, `id_token` and or `refresh_token`
