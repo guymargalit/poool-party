@@ -277,7 +277,7 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
         {user?.venmo ? (
           <Link
             passHref
-            href={`venmo://${process.env.VENMO_CLIENT_ID}/login`}
+            href={`venmo://extension/login`}
           >
             <VenmoWrap link>
               <Info>
