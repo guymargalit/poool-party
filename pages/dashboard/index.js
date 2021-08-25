@@ -9,11 +9,11 @@ import {
 import { signOut } from 'next-auth/client';
 import Skeleton from 'react-loading-skeleton';
 import Router from 'next/router';
+import Link from 'next/link';
 
 const Content = styled.div`
   width: 100%;
   height: calc(100% - 75px - env(safe-area-inset-bottom));
-  overflow-y: auto;
 `;
 
 const Header = styled.div`
@@ -78,6 +78,13 @@ const Area = styled.div`
   justify-content: flex-start;
   user-select: none;
   margin: 0 0 10px;
+`;
+
+const Requests = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
 const Items = styled.div`
@@ -165,6 +172,20 @@ const Badge = styled.div`
   font-weight: 700;
 `;
 
+const WrapRequest = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 60px);
+  border-radius: 15px;
+  min-height: 65px;
+  padding: 0 15px;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.bg.wave};
+  user-select: none;
+  cursor: pointer;
+`;
+
 const Logout = styled(IconLogout)`
   width: 28px;
   cursor: pointer;
@@ -201,7 +222,7 @@ const Dashboard = ({ user }) => {
   useEffect(async () => {
     setLoading(true);
     const getRequests = async () => {
-      const response = await fetch(`/api/venmo/requests`, {
+      const response = await fetch(`/api/requests`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -217,8 +238,6 @@ const Dashboard = ({ user }) => {
     };
     getRequests();
     getExpenses();
-
-
   }, []);
 
   return (
@@ -230,7 +249,7 @@ const Dashboard = ({ user }) => {
       <Content>
         <Section>
           <Subtitle>Requests</Subtitle>
-          <Items>
+          <Requests>
             {loading ? (
               Array(1)
                 .fill(0)
@@ -247,23 +266,21 @@ const Dashboard = ({ user }) => {
                   </Item>
                 ))
             ) : requests?.length > 0 ? (
-              requests?.map((e) => (
-                <Item
-                  onClick={() => Router.push(`/expenses/${e?.id}`)}
-                  key={e?.id}
+              requests?.map((e, i) => (
+                <Link
+                  key={i}
+                  passHref
+                  href={`venmo://incomplete/requests`}
                 >
-                  <Info>
-                    <Label>{e?.name}</Label>
-                    <Description>
-                      <Total>{formatter.format(e?.total)}</Total>
-                      {e?.interval && (
-                        <Badge active={e?.active}>
-                          {intervalOptions[e?.interval]}
-                        </Badge>
-                      )}
-                    </Description>
-                  </Info>
-                </Item>
+                  <WrapRequest>
+                    <Info>
+                      <Label>{e?.name}</Label>
+                      <Description>
+                        <Total>{formatter.format(e?.amount)}</Total>
+                      </Description>
+                    </Info>
+                  </WrapRequest>
+                </Link>
               ))
             ) : !loading ? (
               <Area>
@@ -275,7 +292,7 @@ const Dashboard = ({ user }) => {
             ) : (
               <></>
             )}
-          </Items>
+          </Requests>
         </Section>
         <Subtitle>Expenses</Subtitle>
         <Items>

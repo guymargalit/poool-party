@@ -35,8 +35,8 @@ const GlobalStyle = createGlobalStyle`
 
 /* Scroll bar stylings */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 0px;
+    height: 0px;
   }
 
   /* Track */
