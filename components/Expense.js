@@ -295,6 +295,7 @@ const Footer = styled.div`
   flex: 1;
   max-width: 1040px;
   justify-content: center;
+  margin-bottom: env(safe-area-inset-bottom);
 `;
 
 const Label = styled.div`
