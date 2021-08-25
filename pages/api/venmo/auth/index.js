@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   };
 
   const body = {
-    client_id: '3532',
+    client_id: process.env.VENMO_CLIENT_ID,
     client_secret: '',
     code: code,
   };
@@ -22,6 +22,5 @@ export default async function handler(req, res) {
   });
 
   const response = await result.json();
-  console.log(response)
   res.json(response);
 }

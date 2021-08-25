@@ -275,10 +275,7 @@ const Profile = ({ user, setVenmo, darkMode, setDarkMode }) => {
       </Header>
       <Content>
         {user?.venmo ? (
-          <Link
-            passHref
-            href={`https://api.venmo.com/v1/oauth/authorize?client_id=3532&scope=make_payments%20access_profile%20access_email%20access_phone%20access_friends&response_type=code`}
-          >
+          <Link passHref href={`venmo://users/${user?.venmo?.id}`}>
             <VenmoWrap link>
               <Info>
                 <Avatar src={user?.venmo?.image} />

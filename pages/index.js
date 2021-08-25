@@ -6,7 +6,6 @@ import {
   IconClose,
   IconEmpty,
   IconGoogle,
-  IconVenmo,
   IconAppleShare,
 } from '../icons';
 
@@ -237,16 +236,6 @@ const GoogleIcon = styled(IconGoogle)`
   transition: all 0.25s ease 0s;
 `;
 
-const VenmoIcon = styled(IconVenmo)`
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  user-select: none;
-  transition: all 0.25s ease 0s;
-`;
-
 const Empty = styled(IconEmpty)`
   width: 20px;
 `;
@@ -287,7 +276,6 @@ const Modal = styled.div`
 const Home = () => {
   const [apple, setApple] = useState(false);
   const [google, setGoogle] = useState(false);
-  const [venmo, setVenmo] = useState(false);
   const [banner, setBanner] = useState(true);
   const [modal, setModal] = useState(false);
   const handleApple = (e) => {
@@ -299,12 +287,6 @@ const Home = () => {
     e.preventDefault();
     setGoogle(true);
     signIn('google', { callbackUrl: 'https://poool.party/dashboard' });
-  };
-
-  const handleVenmo = (e) => {
-    e.preventDefault();
-    setVenmo(true);
-    signIn('venmo', { callbackUrl: 'https://pizza.poool.party/dashboard' });
   };
 
   const isIos = () => {
@@ -352,17 +334,6 @@ const Home = () => {
         <GoogleIcon />
         Continue with Google
         {google ? (
-          <Svg viewBox="0 0 50 50">
-            <Circle cx="25" cy="25" r="20"></Circle>
-          </Svg>
-        ) : (
-          <Empty />
-        )}
-      </Button>
-      <Button onClick={handleVenmo}>
-        <VenmoIcon />
-        Continue with Venmo
-        {venmo ? (
           <Svg viewBox="0 0 50 50">
             <Circle cx="25" cy="25" r="20"></Circle>
           </Svg>
