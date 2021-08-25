@@ -281,8 +281,7 @@ const WrapFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.nav.border};
   bottom: 0px;
   width: 100%;
-  height: calc(80px + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
+  height: 80px;
   position: sticky;
   transition: all 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;
