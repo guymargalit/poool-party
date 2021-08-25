@@ -179,6 +179,8 @@ const Button = styled.div`
   background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.disabled : theme.colors.purple};
   padding: 0 10px;
+  margin-top: 15px;
+  margin-bottom: calc(15px + env(safe-area-inset-bottom));
   border-radius: 24px;
   font-weight: 600;
   text-align: center;
@@ -281,7 +283,6 @@ const WrapFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.nav.border};
   bottom: 0px;
   width: 100%;
-  height: 80px;
   position: sticky;
   transition: all 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;
@@ -294,7 +295,6 @@ const Footer = styled.div`
   flex: 1;
   max-width: 1040px;
   justify-content: center;
-  margin-bottom: env(safe-area-inset-bottom);
 `;
 
 const Label = styled.div`
