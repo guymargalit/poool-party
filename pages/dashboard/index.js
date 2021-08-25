@@ -109,7 +109,7 @@ const Item = styled.div`
   margin: 1px 0;
   height: 70px;
   width: 100%;
-  padding: 0 35px;
+  padding: 0 20px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
   border-top: 1px solid ${({ theme }) => theme.bg.border};
@@ -176,7 +176,7 @@ const WrapRequest = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - 60px);
+  width: calc(100% - 40px);
   border-radius: 15px;
   min-height: 65px;
   padding: 0 15px;
