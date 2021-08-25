@@ -41,7 +41,7 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 125px - env(safe-area-inset-top));
+  height: calc(100% - 125px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -180,7 +180,7 @@ const Button = styled.div`
     disabled ? theme.colors.disabled : theme.colors.purple};
   padding: 0 10px;
   margin-top: 15px;
-  margin-bottom: calc(15px + env(safe-area-inset-bottom));
+  margin-bottom: calc(15px - env(safe-area-inset-bottom));
   border-radius: 24px;
   font-weight: 600;
   text-align: center;
