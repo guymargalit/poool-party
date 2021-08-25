@@ -29,6 +29,7 @@ const FileType = require('file-type/browser');
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  padding-top: env(safe-area-inset-top);
   background-color: ${({ theme }) => theme.bg.content};
 `;
 
@@ -179,7 +180,7 @@ const Button = styled.div`
     disabled ? theme.colors.disabled : theme.colors.purple};
   padding: 0 10px;
   margin-top: 15px;
-  margin-bottom: calc(15px + env(safe-area-inset-bottom));
+  margin-bottom: calc(15px + 2*env(safe-area-inset-bottom));
   border-radius: 24px;
   font-weight: 600;
   text-align: center;
