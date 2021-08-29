@@ -52,8 +52,8 @@ const Title = styled.div`
   width: 100%;
   font-weight: 600;
   color: ${({ theme }) => theme.text.tertiary};
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 24px;
+  margin: 10px 0;
   text-align: center;
 `;
 
@@ -331,14 +331,17 @@ const WrapFooter = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.bg.content};
-  border-top: 1px solid ${({ theme }) => theme.bg.border};
   bottom: 0px;
   width: 100%;
-  height: calc(80px + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
   position: absolute;
   transition: all 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;
+  border-top: ${({ visible, theme }) =>
+    visible ? `1px solid ${theme.nav.border}` : '0px'};
+  height: ${({ visible }) =>
+    visible ? 'calc(80px + env(safe-area-inset-bottom))' : '0px'};
+  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;
 
 const Footer = styled.div`
@@ -428,7 +431,7 @@ const Receipt = () => {
       try {
         const body = {
           locked: updatedLocked,
-          lockedUser: true
+          lockedUser: true,
         };
         const response = await fetch(`/api/expenses/${receipt?.id}`, {
           method: 'PUT',
@@ -472,42 +475,6 @@ const Receipt = () => {
       ) : (
         <Content>
           <Section>
-            {receipt?.metadata?.users ? (
-              <Subtitle>Who are you?</Subtitle>
-            ) : (
-              !loading && (
-                <Subtitle>Looks like we're waiting on some info...</Subtitle>
-              )
-            )}
-            <List>
-              {loading
-                ? Array(3)
-                    .fill(0)
-                    .map((u, i) => (
-                      <WrapAvatar key={i}>
-                        <Skeleton circle={true} height={60} width={60} />
-                        <Name>
-                          <Skeleton width={40} />
-                        </Name>
-                      </WrapAvatar>
-                    ))
-                : receipt?.metadata?.users?.map((usr, i) => (
-                    <WrapAvatar
-                      key={i}
-                      onClick={() => {
-                        setUser(usr);
-                        setAmount(usr?.amount);
-                      }}
-                    >
-                      <Checkmark visible={usr?.id === user?.id} />
-
-                      <Avatar src={usr?.venmo?.image} />
-                      <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
-                    </WrapAvatar>
-                  ))}
-            </List>
-          </Section>
-          <Section>
             {loading ? (
               <Title>
                 <Skeleton width={220} />
@@ -529,7 +496,39 @@ const Receipt = () => {
               </WrapSelect>
             </Section>
           )}
-          {receipt?.metadata?.total && (
+          {receipt?.metadata?.users && (
+            <Section>
+              <Subtitle>Who are you?</Subtitle>
+              <List>
+                {loading
+                  ? Array(3)
+                      .fill(0)
+                      .map((u, i) => (
+                        <WrapAvatar key={i}>
+                          <Skeleton circle={true} height={60} width={60} />
+                          <Name>
+                            <Skeleton width={40} />
+                          </Name>
+                        </WrapAvatar>
+                      ))
+                  : receipt?.metadata?.users?.map((usr, i) => (
+                      <WrapAvatar
+                        key={i}
+                        onClick={() => {
+                          setUser(usr);
+                          setAmount(usr?.amount);
+                        }}
+                      >
+                        <Checkmark visible={usr?.id === user?.id} />
+
+                        <Avatar src={usr?.venmo?.image} />
+                        <Name>{usr?.venmo?.displayName?.split(' ')[0]}</Name>
+                      </WrapAvatar>
+                    ))}
+              </List>
+            </Section>
+          )}{' '}
+          {receipt?.metadata?.total && user ? (
             <Section>
               <Subtitle>How much are you paying?</Subtitle>
               <WrapInput>
@@ -544,6 +543,12 @@ const Receipt = () => {
                 />
               </WrapInput>
             </Section>
+          ) : (
+            user && (
+              <Section>
+                <Subtitle>Waiting for the total...</Subtitle>}
+              </Section>
+            )
           )}
           <WrapModal onClick={() => setViewImage(false)} modal={viewImage}>
             <WrapImage modal={viewImage}>
@@ -557,8 +562,8 @@ const Receipt = () => {
               )}
             </WrapImage>
           </WrapModal>
-          <WrapFooter>
-            <Footer>
+          <WrapFooter visible={amount && user && receipt?.metadata?.total}>
+            {amount && user && receipt?.metadata?.total && <Footer>
               <Button
                 disabled={!amount || !user || !receipt?.metadata?.total}
                 onClick={() =>
@@ -587,7 +592,7 @@ const Receipt = () => {
               ) : (
                 <></>
               )}
-            </Footer>
+            </Footer>}
           </WrapFooter>
         </Content>
       )}
