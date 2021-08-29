@@ -25,7 +25,7 @@ const Container = styled.div`
   min-height: 100%;
   z-index: 1;
   margin-top: env(safe-area-inset-top);
-  padding-bottom: calc(2*env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
   background-color: ${({ theme }) => theme.bg.wave};
   overflow: hidden;
 `;
