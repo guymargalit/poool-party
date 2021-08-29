@@ -180,7 +180,7 @@ const Button = styled.div`
     disabled ? theme.colors.disabled : theme.colors.purple};
   padding: 0 10px;
   margin-top: 15px;
-  margin-bottom: calc(15px + env(safe-area-inset-bottom));
+  margin-bottom: 15px;
   border-radius: 24px;
   font-weight: 600;
   text-align: center;
