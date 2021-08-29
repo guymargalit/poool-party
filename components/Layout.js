@@ -59,7 +59,7 @@ const Content = styled.div`
     '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 150px);
   }
   ${({ background }) =>
     !background &&

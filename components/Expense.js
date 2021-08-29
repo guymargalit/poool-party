@@ -1193,6 +1193,20 @@ const Expense = ({ pool, expense, setExpense, close }) => {
             </List>
           </Section>
           <Section>
+            <Subtitle>What is it?</Subtitle>
+            <WrapInput>
+              <Input
+                onChange={(e) => {
+                  changeName({ name: e.target.value });
+                  setName(e.target.value);
+                }}
+                placeholder="Name of the expense..."
+                type="text"
+                value={name}
+              />
+            </WrapInput>
+          </Section>
+          <Section>
             <Subtitle>How Much?</Subtitle>
             <WrapInput
               error={
@@ -1270,20 +1284,6 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 </Split>
               ))}
             </WrapSplit>
-          </Section>
-          <Section>
-            <Subtitle>What is it?</Subtitle>
-            <WrapInput>
-              <Input
-                onChange={(e) => {
-                  changeName({ name: e.target.value });
-                  setName(e.target.value);
-                }}
-                placeholder="Name of the expense..."
-                type="text"
-                value={name}
-              />
-            </WrapInput>
           </Section>
           <Section>
             <Subtitle>How Often?</Subtitle>

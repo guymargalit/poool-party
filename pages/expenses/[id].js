@@ -22,8 +22,8 @@ const WrapContent = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  height: calc(100% - 75px - env(safe-area-inset-bottom));
-  overflow-y: auto;
+  height: calc(100% - env(safe-area-inset-bottom));
+  /* overflow-y: auto; */
 `;
 
 const Title = styled.div`
@@ -174,7 +174,7 @@ const Popper = styled(IconPopper)`
 
 const Items = styled.div`
   width: 100%;
-  height: calc(100% - 150px - env(safe-area-inset-bottom));
+  height: calc(100% - 185px - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 

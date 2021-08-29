@@ -77,7 +77,7 @@ const Area = styled.div`
   align-items: center;
   justify-content: flex-start;
   user-select: none;
-  margin: 0 0 10px;
+  margin: 10px 0;
 `;
 
 const Requests = styled.div`
@@ -89,7 +89,7 @@ const Requests = styled.div`
 
 const Items = styled.div`
   width: 100%;
-  height: calc(100% - 150px - env(safe-area-inset-bottom));
+  height: calc(100% - env(safe-area-inset-bottom));
   overflow-y: auto;
 `;
 
@@ -112,7 +112,7 @@ const Item = styled.div`
   padding: 0 20px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  border-top: 1px solid ${({ theme }) => theme.bg.border};
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   color: ${({ theme, checked }) =>
     checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
@@ -216,19 +216,19 @@ const intervalOptions = {
 };
 
 const Dashboard = ({ user }) => {
-  const [requests, setRequests] = useState([]);
+  //const [requests, setRequests] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(async () => {
-    setLoading(true);
-    const getRequests = async () => {
-      const response = await fetch(`/api/requests`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      setRequests(await response.json());
-    };
+    // const getRequests = async () => {
+    //   const response = await fetch(`/api/requests`, {
+    //     method: 'GET',
+    //     headers: { 'Content-Type': 'application/json' },
+    //   });
+    //   setRequests(await response.json());
+    // };
     const getExpenses = async () => {
+      setLoading(true);
       const response = await fetch(`/api/expenses`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -236,7 +236,7 @@ const Dashboard = ({ user }) => {
       setExpenses(await response.json());
       setLoading(false);
     };
-    getRequests();
+    // getRequests();
     getExpenses();
   }, []);
 
@@ -247,7 +247,7 @@ const Dashboard = ({ user }) => {
         <Logout onClick={handleLogout} />
       </Header>
       <Content>
-        <Section>
+        {/* <Section>
           <Subtitle>Requests</Subtitle>
           <Requests>
             {loading ? (
@@ -293,8 +293,8 @@ const Dashboard = ({ user }) => {
               <></>
             )}
           </Requests>
-        </Section>
-        <Subtitle>Expenses</Subtitle>
+        </Section> */}
+        {/* <Subtitle>Expenses</Subtitle> */}
         <Items>
           {loading ? (
             Array(3)
@@ -332,6 +332,13 @@ const Dashboard = ({ user }) => {
                 <RightChevron />
               </Item>
             ))
+          ) : !loading ? (
+            <Area>
+              <WrapPartyFace>
+                <IconPartyFace />
+              </WrapPartyFace>
+              <Text>You've got no expenses!</Text>
+            </Area>
           ) : (
             <></>
           )}
