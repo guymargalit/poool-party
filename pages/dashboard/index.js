@@ -109,7 +109,7 @@ const Item = styled.div`
   margin: 1px 0;
   height: 70px;
   width: 100%;
-  padding: 0 20px;
+  padding: 0px 35px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};

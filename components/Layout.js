@@ -207,6 +207,10 @@ const Modal = styled.div`
   height: ${({ modal }) => (modal ? '80%' : '0')};
 `;
 
+const TooltipContainer = styled.div`
+  display: none;
+`;
+
 const WrapTooltip = styled.div`
   display: flex;
   align-items: center;
@@ -214,6 +218,12 @@ const WrapTooltip = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover ${TooltipContainer} {
+      display: inline-block;
+    }
+  }
 `;
 
 const Plus = styled(IconAdd)`
@@ -427,7 +437,7 @@ const Layout = (props) => {
     }
   };
 
-  useEffect(() => mutate(),[]);
+  useEffect(() => mutate(), []);
 
   return (
     <Container>
@@ -454,8 +464,8 @@ const Layout = (props) => {
                 promise?.then(() => mutate());
                 setSubmitting(false);
               } else {
-                mutate()
-                setSubmitting(false)
+                mutate();
+                setSubmitting(false);
               }
             }}
           />
@@ -464,13 +474,15 @@ const Layout = (props) => {
       <Hero background={background}>
         {!routes[router.pathname]?.public && (
           <WrapTooltip>
-            <Tooltip
-              content={
-                <>
-                  Create an expense, <br /> make a splash!
-                </>
-              }
-            />
+            <TooltipContainer>
+              <Tooltip
+                content={
+                  <>
+                    Create an expense, <br /> make a splash!
+                  </>
+                }
+              />
+            </TooltipContainer>
             <WrapPlus>
               <Notification notification={props?.user?.draft !== null} />
               {submitting ? (

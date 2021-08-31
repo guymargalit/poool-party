@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 /* Wrapping */
 const Wrapper = styled.div`
-  display: inline-block;
   position: relative;
   user-select: none;
 `;
