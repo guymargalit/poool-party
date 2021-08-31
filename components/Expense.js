@@ -23,6 +23,8 @@ import imageCompression from 'browser-image-compression';
 import { debounce } from '../lib/utils';
 import Image from 'next/image';
 import Pusher from 'pusher-js';
+import { useWindowSize } from 'react-use';
+import Confetti from 'react-confetti';
 
 const FileType = require('file-type/browser');
 
@@ -708,6 +710,30 @@ const Remove = styled(IconRemove)`
   cursor: pointer;
 `;
 
+const Area = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+`;
+
+const SuccessCheckmark = styled(IconCheckmark)`
+  fill: ${({ theme }) => theme.colors.success};
+  width: 130px;
+  height: 130px;
+`;
+
+const SuccessText = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 25px;
+  color: ${({ theme }) => theme.text.secondary};
+  margin-bottom: 100px;
+`;
+
 const intervalOptions = {
   month: 'Monthly',
   week: 'Weekly',
@@ -746,6 +772,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   const [viewImage, setViewImage] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState(expense?.metadata?.image || '');
+  const { width, height } = useWindowSize();
   const { uploadToS3 } = useS3Upload();
 
   useEffect(() => {
@@ -1090,7 +1117,8 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         if (!response?.ok) {
           setError(await response.text());
         } else {
-          close();
+          setSuccess(true);
+          setTimeout(() => close(), 4000);
         }
         setSubmitting(false);
       } catch (err) {
@@ -1117,6 +1145,21 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       });
     }
   }, [expense?.id]);
+
+  if (success) {
+    return (
+      <Container>
+        <Header>
+          <Close onClick={() => close()} />
+          <Confetti width={width} height={height} />
+        </Header>
+        <Area>
+          <SuccessCheckmark />
+          <SuccessText>Requests sent!</SuccessText>
+        </Area>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -1393,15 +1436,11 @@ const Expense = ({ pool, expense, setExpense, close }) => {
               </>
             )}
           </Button>
-          {success ? (
-            <Success>{success}</Success>
-          ) : error ? (
+          {error && (
             <Error>
               <Warning />
               {error}
             </Error>
-          ) : (
-            <></>
           )}
         </Footer>
       </WrapFooter>
