@@ -86,13 +86,13 @@ export default async function handler(req, res) {
               data: {
                 amount: parseFloat(Math.abs(u?.amount)),
                 expense: { connect: { id: expense?.id } },
-                venmo: { connect: { id: u?.id } },
+                venmo: { connect: { id: u?.venmo?.id } },
               },
             });
           }
         } else {
           const venmoUser = await prisma.venmo.upsert({
-            where: { id: u?.id },
+            where: { id: u?.venmo?.id },
             update: {},
             create: {
               id: u?.venmo?.id,
