@@ -410,7 +410,7 @@ const Expense = (props) => {
         ) : (
           <Title>{expense?.name}</Title>
         )}
-        {expense?.interval ? (
+        {expense?.interval && expense?.venmo?.id === props?.user?.venmo?.id ? (
           <CheckBoxWrapper>
             <CheckBox
               checked={active}

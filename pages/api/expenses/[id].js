@@ -330,6 +330,11 @@ export default async function handler(req, res) {
       select: {
         id: true,
         metadata: true,
+        venmo: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
@@ -337,7 +342,7 @@ export default async function handler(req, res) {
       return res.status(404).end();
     }
 
-    if (req.body.active) {
+    if (req.body.active !== undefined) {
       const session = await getSession({ req });
       if (!session) {
         return res.status(403).end();
@@ -355,7 +360,7 @@ export default async function handler(req, res) {
         return res.status(403).end();
       }
 
-      if (user?.venmo?.id !== expense?.venmoId) {
+      if (user?.venmo?.id !== expense?.venmo?.id) {
         return res.status(403).end();
       }
     }
