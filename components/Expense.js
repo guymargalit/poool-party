@@ -254,18 +254,6 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
-const Success = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.success};
-  text-align: center;
-  font-size: 14px;
-  margin-top: 5px;
-`;
-
 const Error = styled.div`
   display: flex;
   align-items: center;
@@ -354,7 +342,7 @@ const Split = styled.div`
   justify-content: space-between;
   width: 100%;
   background-color: ${({ theme }) => theme.bg.item};
-  padding: 8px;
+  padding: 6px;
 `;
 
 const WrapAmount = styled.div`
@@ -362,11 +350,26 @@ const WrapAmount = styled.div`
   border-radius: 8px;
   min-width: 75px;
   flex: 1;
-  padding: 0px;
+  padding: 2px 1px;
   overflow: hidden;
   transition: all 0.25s ease 0s;
   border: ${({ error, theme }) =>
     error ? `2px solid ${theme.colors.error}` : '2px solid transparent'};
+`;
+
+const WrapInnerAmount = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
+
+const WrapAmountTip = styled.div`
+  color: ${({ theme }) => theme.text.secondary};
+  overflow: hidden;
+  transition: all 0.25s ease 0s;
+  margin: 0 5px;
+  font-size: 10px;
+  font-weight: 600;
 `;
 
 const Amount = styled(CurrencyInput)`
@@ -391,18 +394,20 @@ const Venmo = styled(IconVenmo)`
 const Lock = styled(IconLock)`
   width: 20px;
   margin-left: 5px;
-  fill: ${({ theme }) => theme.colors.purple};
+  margin-bottom: 3px;
+  fill: ${({ theme }) => theme.bg.border};
   cursor: pointer;
 `;
 
 const Unlock = styled(IconUnlock)`
   width: 20px;
   margin-left: 5px;
+  margin-bottom: 3px;
   fill: ${({ theme }) => theme.text.secondary};
   cursor: pointer;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.colors.purple};
+      fill: ${({ theme }) => theme.bg.border};
     }
   }
 `;
@@ -555,10 +560,9 @@ const Draft = styled.div`
   flex-direction: column;
   align-items: center;
   z-index: 999;
-  padding: 0 30px;
+  padding: 5px 30px;
   background-color: ${({ theme }) => theme.bg.content};
   border-radius: 18px;
-  padding-top: 10px;
   height: 100px;
   transition: all 0.1s ease 0s;
 `;
@@ -676,6 +680,47 @@ const Item = styled.div`
   }
 `;
 
+const WrapTip = styled.div`
+  display: ${({visible}) => visible ? 'flex':'none'};
+  margin: 10px 0 0;
+  border: solid 2px ${({ theme }) => theme.bg.item};
+  overflow: hidden;
+  border-radius: 8px;
+  justify-content: space-between;
+  visibility: ${({visible}) => visible ? 'visible':'hidden'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Tip = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  flex: 1;
+  color: ${({ theme }) => theme.text.primary};
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.bg.item : 'inherit'};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: ${({ theme }) => theme.bg.item};
+    }
+  }
+  border-right: 2px solid ${({ theme }) => theme.bg.item};
+  :last-child {
+    border-right: 0px;
+  }
+`;
+
+const TipAmount = styled.div`
+  font-size: 11px;
+  font-weight: 400;
+`;
+
 const Info = styled.div`
   display: flex;
   flex-direction: column;
@@ -760,6 +805,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       : []
   );
   const [total, setTotal] = useState(expense?.metadata?.total || '');
+  const [tip, setTip] = useState(0);
   const [user, updatingUser] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -1099,7 +1145,10 @@ const Expense = ({ pool, expense, setExpense, close }) => {
           users: users.map((u) => ({
             id: u?.id,
             venmoId: u?.venmo?.id,
-            amount: parseFloat(Math.abs(u?.amount)),
+            amount:
+              u?.amount > 0
+                ? Math.abs(parseFloat(u?.amount) + parseFloat(u?.amount) * tip)
+                : 0,
             venmo: {
               id: u?.venmo?.id,
               username: u?.venmo?.username,
@@ -1259,18 +1308,29 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 currentTotal < total
               }
             >
-              <Amount
-                intlConfig={{ locale: 'en-US', currency: 'USD' }}
-                prefix="$"
-                placeholder="$0"
-                allowNegativeValue={false}
-                allowDecimals={true}
-                decimalsLimit={2}
-                value={total}
-                onValueChange={(v) => updateTotal(v)}
-                step={1}
-                decimalScale={2}
-              />
+              <WrapInnerAmount>
+                <Amount
+                  intlConfig={{ locale: 'en-US', currency: 'USD' }}
+                  prefix="$"
+                  placeholder="$0"
+                  allowNegativeValue={false}
+                  allowDecimals={true}
+                  decimalsLimit={2}
+                  value={total}
+                  onValueChange={(v) => updateTotal(v)}
+                  step={1}
+                  decimalScale={2}
+                />
+                {tip !== 0 && (
+                  <WrapAmountTip>
+                    {total > 0
+                      ? currency(
+                          parseFloat(total) + parseFloat(total) * tip
+                        )?.format()
+                      : currency(0).format()}
+                  </WrapAmountTip>
+                )}
+              </WrapInnerAmount>
               <CameraInput
                 accept="image/*"
                 id="icon-button-file"
@@ -1289,10 +1349,24 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                 </WrapCamera>
               )}
             </WrapInput>
+            <WrapTip visible={total > 0}>
+              <Tip onClick={() => setTip(0)} selected={tip === 0}>
+                No Tip
+              </Tip>
+              <Tip onClick={() => setTip(0.15)} selected={tip === 0.15}>
+                15%<TipAmount>{currency(total * 0.15)?.format()}</TipAmount>
+              </Tip>
+              <Tip onClick={() => setTip(0.18)} selected={tip === 0.18}>
+                18%<TipAmount>{currency(total * 0.18)?.format()}</TipAmount>
+              </Tip>
+              <Tip onClick={() => setTip(0.2)} selected={tip === 0.2}>
+                20%<TipAmount>{currency(total * 0.2)?.format()}</TipAmount>
+              </Tip>
+            </WrapTip>
             {image && (
               <WrapSelect onClick={() => setViewImage(true)}>
                 <Picture />
-                View Image
+                View Receipt
               </WrapSelect>
             )}
             <WrapSplit>
@@ -1318,6 +1392,16 @@ const Expense = ({ pool, expense, setExpense, close }) => {
                       step={1}
                       decimalScale={2}
                     />
+                    {tip !== 0 && (
+                      <WrapAmountTip>
+                        {u?.amount > 0
+                          ? currency(
+                              parseFloat(u?.amount) +
+                                parseFloat(u?.amount) * tip
+                            )?.format()
+                          : currency(0).format()}
+                      </WrapAmountTip>
+                    )}
                   </WrapAmount>
                   {u?.locked ? (
                     <Lock onClick={() => updateLock(u)} />

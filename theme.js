@@ -37,7 +37,7 @@ const dark = {
     content: '#02122c',
     border: '#111236',
     input:'#dddddd',
-    item: '#042759',
+    item: '#5a489b',
   },
   text: {
     primary: '#fefefe',
