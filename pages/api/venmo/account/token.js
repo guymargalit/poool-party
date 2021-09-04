@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   const body = {
     phone_email_or_username: username,
     password: password,
-    client_id: process.env.VENMO_CLIENT_ID,
+    client_id: '1',
   };
 
   const headers = {
