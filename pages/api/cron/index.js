@@ -15,14 +15,14 @@ export default async function handler(req, res) {
             name: true,
             venmoId: true,
             active: true,
+            draft: true,
             interval: true,
+            startDate: true,
+            lastRequest: true,
           },
           where: {
             active: true,
             draft: false,
-            startDate: {
-              gte: new Date(),
-            },
             OR: [
               {
                 interval: 'day',
@@ -42,6 +42,15 @@ export default async function handler(req, res) {
                   lte: moment().subtract(1, 'months').toDate(),
                 },
               },
+              {
+                interval: {
+                  not: null,
+                },
+                startDate: {
+                  lte: new Date(),
+                },
+                lastRequest: null,
+              },
             ],
           },
         });
@@ -50,9 +59,9 @@ export default async function handler(req, res) {
           const expenseUsers = await prisma.expenseUser.findMany({
             where: { expenseId: expense?.id },
             select: {
+              id: true,
               expenseId: true,
               amount: true,
-              userId: true,
               venmoId: true,
             },
           });
@@ -64,14 +73,12 @@ export default async function handler(req, res) {
           for (const expenseUser of expenseUsers) {
             // Don't create venmo request for expense creator
             let paymentId, status;
-            if (expenseUser?.venmoId !== creator?.venmoId) {
+            if (expenseUser?.venmoId !== creator?.id) {
               // Start venmo request
               const result = await fetch('https://api.venmo.com/v1/payments', {
                 method: 'POST',
                 headers: {
-                  Authorization: `Bearer ${getToken(
-                    creator?.accessToken
-                  )}`,
+                  Authorization: `Bearer ${getToken(creator?.accessToken)}`,
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -84,7 +91,7 @@ export default async function handler(req, res) {
               if (response?.error) {
                 await prisma.venmo.update({
                   data: { expiredAt: new Date() },
-                  where: { id: creator?.venmoId },
+                  where: { id: creator?.id },
                 });
                 redis.del(`user-${creator?.userId}`);
               }
@@ -98,7 +105,7 @@ export default async function handler(req, res) {
                 expenseUser: { connect: { id: expenseUser?.id } },
                 name: expense?.name,
                 status: status || 'succeeded',
-                paymentId: paymentId,
+                paymentId: paymentId || null,
               },
             });
           }

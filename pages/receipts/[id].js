@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import {
@@ -14,6 +14,8 @@ import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
 import Head from 'next/head';
 import Pusher from 'pusher-js';
+import { useWindowSize } from 'react-use';
+import Confetti from 'react-confetti';
 
 const Container = styled.div`
   display: flex;
@@ -302,18 +304,6 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
-const Success = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.success};
-  text-align: center;
-  font-size: 14px;
-  margin-top: 5px;
-`;
-
 const Error = styled.div`
   display: flex;
   align-items: center;
@@ -368,6 +358,21 @@ const Area = styled.div`
   user-select: none;
 `;
 
+const SuccessCheckmark = styled(IconCheckmark)`
+  fill: ${({ theme }) => theme.colors.success};
+  width: 130px;
+  height: 130px;
+`;
+
+const SuccessText = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 25px;
+  color: ${({ theme }) => theme.text.secondary};
+  margin-bottom: 100px;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -384,6 +389,8 @@ const Receipt = () => {
   const [user, setUser] = useState();
   const [amount, setAmount] = useState('');
   const [viewImage, setViewImage] = useState(false);
+  const { width, height } = useWindowSize();
+
   useEffect(() => {
     const getReceipt = async () => {
       if (id) {
@@ -449,6 +456,19 @@ const Receipt = () => {
       }
     }
   };
+
+  if (success) {
+    return (
+      <Container>
+        <Confetti width={width} height={height} />
+        <Area>
+          <SuccessCheckmark />
+          <SuccessText>All done!</SuccessText>
+        </Area>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Head>
@@ -546,7 +566,7 @@ const Receipt = () => {
           ) : (
             user && (
               <Section>
-                <Subtitle>Waiting for the total...</Subtitle>}
+                <Subtitle>Waiting for the total...</Subtitle>
               </Section>
             )
           )}
@@ -563,36 +583,36 @@ const Receipt = () => {
             </WrapImage>
           </WrapModal>
           <WrapFooter visible={amount && user && receipt?.metadata?.total}>
-            {amount && user && receipt?.metadata?.total && <Footer>
-              <Button
-                disabled={!amount || !user || !receipt?.metadata?.total}
-                onClick={() =>
-                  !amount || !user || !receipt?.metadata?.total || submitting
-                    ? null
-                    : submitData()
-                }
-              >
-                {submitting || loading ? (
-                  <Loader viewBox="0 0 50 50">
-                    <Circle cx="25" cy="25" r="20"></Circle>
-                  </Loader>
+            {amount && user && receipt?.metadata?.total && (
+              <Footer>
+                <Button
+                  disabled={!amount || !user || !receipt?.metadata?.total}
+                  onClick={() =>
+                    !amount || !user || !receipt?.metadata?.total || submitting
+                      ? null
+                      : submitData()
+                  }
+                >
+                  {submitting || loading ? (
+                    <Loader viewBox="0 0 50 50">
+                      <Circle cx="25" cy="25" r="20"></Circle>
+                    </Loader>
+                  ) : (
+                    <>
+                      Done <Popper />
+                    </>
+                  )}
+                </Button>
+                {error ? (
+                  <Error>
+                    <Warning />
+                    {error}
+                  </Error>
                 ) : (
-                  <>
-                    Done <Popper />
-                  </>
+                  <></>
                 )}
-              </Button>
-              {success ? (
-                <Success>{success}</Success>
-              ) : error ? (
-                <Error>
-                  <Warning />
-                  {error}
-                </Error>
-              ) : (
-                <></>
-              )}
-            </Footer>}
+              </Footer>
+            )}
           </WrapFooter>
         </Content>
       )}
