@@ -681,13 +681,13 @@ const Item = styled.div`
 `;
 
 const WrapTip = styled.div`
-  display: ${({visible}) => visible ? 'flex':'none'};
+  display: ${({ visible }) => (visible ? 'flex' : 'none')};
   margin: 10px 0 0;
   border: solid 2px ${({ theme }) => theme.bg.item};
   overflow: hidden;
   border-radius: 8px;
   justify-content: space-between;
-  visibility: ${({visible}) => visible ? 'visible':'hidden'};
+  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
   transition: all 0.25s ease 0s;
 `;
 
@@ -804,6 +804,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       ? [...pool?.users]
       : []
   );
+  const [locked, setLocked] = useState([]);
   const [total, setTotal] = useState(expense?.metadata?.total || '');
   const [tip, setTip] = useState(0);
   const [user, updatingUser] = useState(null);
@@ -830,6 +831,14 @@ const Expense = ({ pool, expense, setExpense, close }) => {
       updateLockedAmount(expense?.metadata?.locked);
     }
   }, [expense?.id]);
+
+  // update locked amount on pusher (avoids closure issue)
+  useEffect(() => {
+    if (locked?.length > 0) {
+      updateLockedAmount(locked);
+      setLocked([]);
+    }
+  }, [locked]);
 
   const handleSave = async (body) => {
     if (expense?.id) {
@@ -966,7 +975,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
   const unlockedUsers = users?.reduce((a, b) => a + (b['locked'] ? 0 : 1), 0);
 
   useEffect(() => {
-    if (total !== '' && user) {
+    if (total !== '' && user && !user.locked) {
       const amounts =
         unlockedUsers > 1
           ? currency(
@@ -1051,18 +1060,23 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         },
         ...users.slice(index + 1),
       ];
-      const amounts = currency(total - lockedTotal)?.distribute(unlockedUsers);
-      let i = 0;
-      updatedUsers = [
-        ...updatedUsers?.map((u) => ({
-          ...u,
-          amount: u?.locked
-            ? parseFloat(u?.amount) || 0
-            : amounts?.length > 0
-            ? parseFloat(amounts[i++]?.value)
-            : 0,
-        })),
-      ];
+      console.log(users)
+      if (!usr?.locked) {
+        const amounts = currency(total - lockedTotal)?.distribute(
+          unlockedUsers
+        );
+        let i = 0;
+        updatedUsers = [
+          ...updatedUsers?.map((u) => ({
+            ...u,
+            amount: u?.locked
+              ? parseFloat(u?.amount) || 0
+              : amounts?.length > 0
+              ? parseFloat(amounts[i++]?.value)
+              : 0,
+          })),
+        ];
+      }
       setUsers(updatedUsers);
       changeUsers({
         users: updatedUsers,
@@ -1190,7 +1204,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
       // Bind a callback function to an event within the subscribed channel
       channel.bind('locked', async (response) => {
-        updateLockedAmount(response?.metadata?.locked);
+        setLocked(response?.metadata?.locked);
       });
     }
   }, [expense?.id]);
