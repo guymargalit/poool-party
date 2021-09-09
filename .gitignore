@@ -32,3 +32,5 @@ yarn-error.log*
 
 # vercel
 .vercel
+AuthKey_B7MD4PW86U.p8
+.env

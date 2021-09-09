@@ -190,7 +190,7 @@ const getTotals = async () => {
     },
   ];
   let total = 0;
-  let hotspots = [];
+  const hotspots = [];
   for (const spot of spots) {
     const result = await fetch(
       `https://api.helium.io/v1/hotspots/${
@@ -198,12 +198,16 @@ const getTotals = async () => {
       }/rewards/sum?min_time=2021-07-01T00:00:00.000Z&max_time=${date.toISOString()}&bucket=week`
     );
     const response = await result.json();
-    if (response.data && response.data[0]) {
+    if (response.data && response.data.length) {
+      let hotspotTotal = 0;
+      for(const t of response.data) {
+        hotspotTotal += parseFloat(t.total)
+      }
       hotspots.push({
         name: spot.name,
-        total: parseFloat(heliumUSD) * response.data[0].total,
+        total: parseFloat(heliumUSD) * hotspotTotal,
       });
-      total += response.data[0].total;
+      total += hotspotTotal;
     }
   }
   // Convert to USD
@@ -236,7 +240,7 @@ const Home = (props) => {
   return (
     <Container>
       <Head>
-        <title>Poool Party</title>
+        <title>Helium Poool Party</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Content>
@@ -247,7 +251,7 @@ const Home = (props) => {
             </Badge>
           ))}
         </List>
-        <Title>poool.party</Title>
+        <Title>helium.poool.party</Title>
         <Subtitle>{data.total} USD</Subtitle>
         <Subtitle>{data.each} USD per Partier</Subtitle>
         <Footer>Last updated: {data.updated}</Footer>
