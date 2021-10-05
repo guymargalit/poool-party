@@ -41,18 +41,6 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `;
 
-const Subtitle = styled.div`
-  width: 100%;
-  font-weight: 500;
-  color: ${({ theme }) => theme.text.tertiary};
-  font-size: 16px;
-  margin: 10px 0;
-  padding: 0 35px;
-  @media (max-width: 675px) {
-    padding: 0 20px;
-  }
-`;
-
 const Text = styled.div`
   width: 100%;
   text-align: center;
@@ -129,7 +117,6 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
 const List = styled.div`
@@ -174,7 +161,7 @@ const Popper = styled(IconPopper)`
 
 const Items = styled.div`
   width: 100%;
-  height: calc(100% - 185px - env(safe-area-inset-bottom));
+  height: calc(100% - 145px);
   overflow-y: auto;
 `;
 
@@ -382,7 +369,7 @@ const Total = styled.div`
 `;
 
 const Badge = styled.div`
-  font-size: ${({date}) => date ? '12px' : '11px'};
+  font-size: ${({ date }) => (date ? '12px' : '11px')};
   text-transform: uppercase;
   display: inline-flex;
   text-align: center;
@@ -390,7 +377,8 @@ const Badge = styled.div`
   align-items: center;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  color: ${({ theme, date }) => date ? theme.colors.primary : theme.colors.white};
+  color: ${({ theme, date }) =>
+    date ? theme.colors.primary : theme.colors.white};
   background-color: ${({ active, theme, date }) =>
     date
       ? theme.bg.border
@@ -400,7 +388,7 @@ const Badge = styled.div`
   border-radius: 0.25rem;
   margin-left: 10px;
   line-height: 1rem;
-  font-weight: ${({date}) => date ? '500' : '700'};
+  font-weight: ${({ date }) => (date ? '500' : '700')};
   transition: all 0.25s ease 0s;
 `;
 
@@ -510,7 +498,6 @@ const Expense = (props) => {
               </Card>
             )}
           </Section>
-          <Subtitle>Requests</Subtitle>
           <Items>
             {loading ? (
               Array(3)
@@ -521,10 +508,12 @@ const Expense = (props) => {
                       <Label>
                         <Skeleton width={120} />
                       </Label>
-                      <Description>
-                        <Skeleton width={40} />
-                      </Description>
                     </Top>
+                    <WrapBottom>
+                      <Bottom>
+                        <Skeleton width={'100%'} />
+                      </Bottom>
+                    </WrapBottom>
                   </Item>
                 ))
             ) : expense?.users?.length > 0 ? (
