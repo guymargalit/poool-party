@@ -297,6 +297,11 @@ export default async function handler(req, res) {
               },
             },
             requests: {
+              orderBy: [
+                {
+                  updatedAt: 'desc',
+                },
+              ],
               select: {
                 id: true,
                 name: true,

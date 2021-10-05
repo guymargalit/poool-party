@@ -206,15 +206,14 @@ const Card = styled.div`
 
 const Item = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   margin: 1px 0;
-  height: 70px;
+  min-height: 70px;
   width: 100%;
-  padding: 0 35px;
+  padding: 10px 35px;
   @media (max-width: 675px) {
-    padding: 0 20px;
+    padding: 10px 20px;
   }
   cursor: pointer;
   transition: all 0.25s ease 0s;
@@ -240,15 +239,27 @@ const Label = styled.div`
   font-size: 16px;
 `;
 
-const Left = styled.div`
+const Top = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const Right = styled.div`
+const WrapBottom = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  margin-top: 10px;
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 5px;
+  background-color: ${({ theme }) => theme.bg.border};
+  border-radius: 8px;
+  padding: 0 10px 7px;
+  color: ${({ theme }) => theme.text.primary};
 `;
 
 const Description = styled.div`
@@ -258,6 +269,11 @@ const Description = styled.div`
   text-align: center;
   font-size: 12px;
   margin-top: 5px;
+`;
+
+const Amount = styled.div`
+  display: flex;
+  margin-right: 10px;
 `;
 
 const Status = styled.div`
@@ -357,10 +373,47 @@ const CheckBox = styled.input`
   }
 `;
 
+const Total = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  text-align: center;
+  font-size: 12px;
+`;
+
+const Badge = styled.div`
+  font-size: ${({date}) => date ? '12px' : '11px'};
+  text-transform: uppercase;
+  display: inline-flex;
+  text-align: center;
+  padding: 0 0.2rem;
+  align-items: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme, date }) => date ? theme.colors.primary : theme.colors.white};
+  background-color: ${({ active, theme, date }) =>
+    date
+      ? theme.bg.border
+      : active
+      ? theme.colors.success
+      : theme.colors.disabled};
+  border-radius: 0.25rem;
+  margin-left: 10px;
+  line-height: 1rem;
+  font-weight: ${({date}) => date ? '500' : '700'};
+  transition: all 0.25s ease 0s;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+const intervalOptions = {
+  month: 'Monthly',
+  week: 'Weekly',
+  [null]: 'One Time',
+};
 
 const Expense = (props) => {
   const router = useRouter();
@@ -429,21 +482,31 @@ const Expense = (props) => {
           <Section>
             {loading ? (
               <Card>
-                <Left>
+                <Top>
                   <Label>
                     <Skeleton width={120} />
                   </Label>
                   <Description>
                     <Skeleton width={40} />
                   </Description>
-                </Left>
+                </Top>
               </Card>
             ) : (
               <Card key={expense?.id}>
-                <Left>
+                <Top>
                   <Label>{expense?.name}</Label>
-                  <Description>{formatter.format(expense?.total)}</Description>
-                </Left>
+                  <Description>
+                    <Total>{formatter.format(expense?.total)}</Total>
+                    {expense?.interval && (
+                      <Badge active={active}>
+                        {intervalOptions[expense?.interval]}
+                      </Badge>
+                    )}
+                    <Badge date>
+                      {moment(expense?.createdAt).format('M/D/YY h:mmA')}
+                    </Badge>
+                  </Description>
+                </Top>
               </Card>
             )}
           </Section>
@@ -454,33 +517,39 @@ const Expense = (props) => {
                 .fill(0)
                 .map((u, i) => (
                   <Item key={i}>
-                    <Left>
+                    <Top>
                       <Label>
                         <Skeleton width={120} />
                       </Label>
                       <Description>
                         <Skeleton width={40} />
                       </Description>
-                    </Left>
+                    </Top>
                   </Item>
                 ))
             ) : expense?.users?.length > 0 ? (
-              expense?.users?.map((u) =>
-                u?.requests?.map((r) => (
-                  <Item onClick={() => {}} key={u?.id}>
-                    <Left>
-                      <Label>{u?.venmo?.displayName}</Label>
-                      <Description>{formatter.format(u?.amount)}</Description>
-                    </Left>
-                    <Right>
-                      <Status status={r?.status}>
-                        {r?.status === 'succeeded' ? 'paid' : r?.status}
-                      </Status>
-                      <Date>{moment(r?.updatedAt).format('M/D/YY h:mmA')}</Date>
-                    </Right>
-                  </Item>
-                ))
-              )
+              expense?.users?.map((u) => (
+                <Item onClick={() => {}} key={u?.id}>
+                  <Top>
+                    <Label>{u?.venmo?.displayName}</Label>
+                  </Top>
+                  <WrapBottom>
+                    {u?.requests?.map((r) => (
+                      <Bottom>
+                        <Description>
+                          <Amount>{formatter.format(u?.amount)}</Amount>
+                          <Status status={r?.status}>
+                            {r?.status === 'succeeded' ? 'paid' : r?.status}
+                          </Status>
+                        </Description>
+                        <Date>
+                          {moment(r?.updatedAt).format('M/D/YY h:mmA')}
+                        </Date>
+                      </Bottom>
+                    ))}
+                  </WrapBottom>
+                </Item>
+              ))
             ) : !loading ? (
               <Area>
                 <WrapPartyFace>
