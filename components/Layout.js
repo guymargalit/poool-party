@@ -6,12 +6,7 @@ import Router from 'next/router';
 import Toy from './Toy';
 import Wave from './Wave';
 import { routes } from '../lib/routes';
-import {
-  IconAdd,
-  IconDashboard,
-  IconPools,
-  IconProfile,
-} from '../icons';
+import { IconAdd, IconDashboard, IconPools, IconProfile } from '../icons';
 import Venmo from './Venmo';
 import Expense from './Expense';
 import Tooltip from './Tooltip';
@@ -511,15 +506,15 @@ const Layout = (props) => {
               <Toy key={i} {...toy} />
             ))}
           </Toys>
+        ) : !props?.user && router.pathname === '/' && !isInStandaloneMode() ? (
+          <Toy
+            type={'flamingo'}
+            position={{ x: '10%', y: '4%', z: 6 }}
+            maxWidth={'250px'}
+            width={'25%'}
+          />
         ) : (
-          <>
-            <Toy
-              type={'flamingo'}
-              position={{ x: '10%', y: '4%', z: 6 }}
-              maxWidth={'250px'}
-              width={'25%'}
-            />
-          </>
+          <></>
         )}
         <Wave />
       </Hero>
