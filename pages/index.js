@@ -372,7 +372,7 @@ const Home = () => {
   if (!isInStandaloneMode()) {
     return (
       <Container>
-        {typeof window !== 'undefined' && !isIos() && banner && (
+        {typeof window !== 'undefined' && isIos() && banner && (
           <Banner>
             <Left>
               <Close onClick={() => setBanner(false)} />
