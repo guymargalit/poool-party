@@ -12,9 +12,11 @@ import Turtle from './toys/Turtle';
 const Container = styled.div`
   position: absolute;
   z-index: 4;
-  max-width: ${(props) => (props.z ? `${props.z * 30}px` : '250px')};
+  max-width: ${(props) =>
+    props.maxWidth ? props.maxWidth : props.z ? `${props.z * 30}px` : '250px'};
   min-width: 10px;
-  width: ${(props) => (props.z ? `${props.z * 4}%` : '30%')};
+  width: ${(props) =>
+    props.width ? props.width : props.z ? `${props.z * 4}%` : '30%'};
   transition: all 5s ease 0s;
   transition: transform 1.5s ease-in-out 0s;
   margin-bottom: ${(props) => (props.y ? props.y : '3%')};
@@ -47,14 +49,20 @@ const toys = {
   turtle: Turtle,
 };
 
-const Toy = ({ type, position, spots }) => {
-  if(!type) {
+const Toy = ({ type, position, spots, width, maxWidth }) => {
+  if (!type) {
     return <></>;
   }
   return (
-    <Container x={position.x} y={position.y} z={position.z}>
+    <Container
+      width={width}
+      maxWidth={maxWidth}
+      x={position.x}
+      y={position.y}
+      z={position.z}
+    >
       <Content z={position.z}>
-        {React.createElement(toys[type], {spots})}
+        {React.createElement(toys[type], { spots })}
       </Content>
     </Container>
   );

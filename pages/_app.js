@@ -7,8 +7,6 @@ import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { darkTheme, lightTheme } from '../theme';
 import useDarkMode from 'use-dark-mode';
-import App from 'next/app';
-import cookie from 'cookie';
 
 const GlobalStyle = createGlobalStyle`
   html, body {

@@ -7,7 +7,43 @@ import {
   IconEmpty,
   IconGoogle,
   IconAppleShare,
+  Logo,
 } from '../icons';
+import Wave from '../components/Wave';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  z-index: 4;
+  overflow: hidden;
+`;
+
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  top: 0;
+  position: absolute;
+`;
+
+const Section = styled.div`
+  width: 100%;
+  background-color: aqua;
+`;
+
+const Hero = styled.div`
+  display: flex;
+  flex-direction: column;
+  left: 100px;
+  position: absolute;
+  align-items: center;
+  @media (max-width: 675px) {
+    position: relative;
+    left: 0px;
+  }
+`;
 
 const Content = styled.div`
   display: flex;
@@ -51,19 +87,30 @@ const Title = styled.div`
 `;
 
 const Subtitle = styled.div`
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
+  text-align: left;
+  font-size: 50px;
+  width: 450px;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.white};
-  margin: 5px 15px 10px;
+  @media (max-width: 675px) {
+    text-align: center;
+    max-width: 400px;
+    font-size: 40px;
+  }
 `;
 
 const Caption = styled.div`
-  text-align: center;
+  text-align: left;
   font-size: 16px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
-  margin: 20px 0 50px;
+  margin: 20px;
+  max-width: 450px;
+  @media (max-width: 675px) {
+    text-align: center;
+    max-width: 350px;
+    font-size: 14px;
+  }
 `;
 
 const slide = keyframes`
@@ -158,12 +205,16 @@ const Button = styled.div`
   justify-content: space-between;
   max-width: 500px;
   width: calc(100% - 40px);
-  background-color: #5a489b;
+  background-color: #e789b7;
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: #111236;
+      background-color: #eb68a8
     }
+  }
+  @media (max-width: 675px) {
+    width: 250px;
+    padding: 0.5rem 1.2rem;
   }
 `;
 
@@ -216,6 +267,25 @@ const Circle = styled.circle`
   stroke-width: 8px;
 `;
 
+const TitleLogo = styled(Logo)`
+  height: 150px;
+  margin: 25px 25px 50px;
+  @media (max-width: 675px) {
+    height: 120px;
+    margin: 25px 25px 80px;
+  }
+`;
+
+const WrapLogo = styled(Logo)`
+  height: 60px;
+  margin: 20px 25px;
+  @media (max-width: 675px) {
+    height: 50px;
+    margin: 15px 20px;
+  }
+  transition: all 0.25s ease 0s;
+`;
+
 const AppleIcon = styled(IconApple)`
   width: 20px;
   height: 20px;
@@ -224,6 +294,9 @@ const AppleIcon = styled(IconApple)`
   flex-shrink: 0;
   user-select: none;
   transition: all 0.25s ease 0s;
+  @media (max-width: 675px) {
+    margin-right: 20px;
+  }
 `;
 
 const GoogleIcon = styled(IconGoogle)`
@@ -234,6 +307,9 @@ const GoogleIcon = styled(IconGoogle)`
   flex-shrink: 0;
   user-select: none;
   transition: all 0.25s ease 0s;
+  @media (max-width: 675px) {
+    margin-right: 20px;
+  }
 `;
 
 const Empty = styled(IconEmpty)`
@@ -298,10 +374,52 @@ const Home = () => {
     return 'standalone' in window.navigator && window.navigator.standalone;
   };
 
+  if (!isInStandaloneMode()) {
+    return (
+      <Container>
+        <Header>
+          <WrapLogo fill={'#fff'} />
+        </Header>
+        <Hero>
+          <Subtitle>Make a splash.</Subtitle>
+          <Caption>
+            Poool Party lets you send Venmos to your friends, with easy
+            splitting and monthly requests.
+          </Caption>
+          <Button onClick={handleApple}>
+            <AppleIcon />
+            Sign In with Apple
+            {apple ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
+          <Button onClick={handleGoogle}>
+            <GoogleIcon />
+            Sign In with Google
+            {google ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
+        </Hero>
+        <Section></Section>
+      </Container>
+    );
+  }
+
   return (
     <Content>
-      {(typeof window !== 'undefined' && isIos() && !isInStandaloneMode()) &&
-        (banner && (
+      {typeof window !== 'undefined' &&
+        isIos() &&
+        !isInStandaloneMode() &&
+        banner && (
           <Banner>
             <Left>
               <Close onClick={() => setBanner(false)} />
@@ -315,10 +433,8 @@ const Home = () => {
               <GetButton onClick={setModal}>Get</GetButton>
             </Right>
           </Banner>
-        ))}
-      <Title>Poool Party</Title>
-      <Subtitle>Recurring and easy splitting with Venmo*</Subtitle>
-      <Caption>*but like actually</Caption>
+        )}
+      <Title><TitleLogo /></Title>
       <Button onClick={handleApple}>
         <AppleIcon />
         Continue with Apple

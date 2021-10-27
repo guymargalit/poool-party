@@ -9,7 +9,6 @@ import { routes } from '../lib/routes';
 import {
   IconAdd,
   IconDashboard,
-  IconPlus,
   IconPools,
   IconProfile,
 } from '../icons';
@@ -437,6 +436,10 @@ const Layout = (props) => {
     }
   };
 
+  const isInStandaloneMode = () => {
+    return 'standalone' in window.navigator && window.navigator.standalone;
+  };
+
   useEffect(() => mutate(), []);
 
   return (
@@ -502,14 +505,21 @@ const Layout = (props) => {
         )}
         {props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : !props?.user && router.pathname === '/' ? (
+        ) : !props?.user && router.pathname === '/' && isInStandaloneMode() ? (
           <Toys>
             {toys.map((toy, i) => (
               <Toy key={i} {...toy} />
             ))}
           </Toys>
         ) : (
-          <></>
+          <>
+            <Toy
+              type={'flamingo'}
+              position={{ x: '10%', y: '4%', z: 6 }}
+              maxWidth={'250px'}
+              width={'25%'}
+            />
+          </>
         )}
         <Wave />
       </Hero>
