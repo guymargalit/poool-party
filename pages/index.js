@@ -128,7 +128,7 @@ const Banner = styled.div`
   background-color: ${({ theme }) => theme.bg.content};
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    z-index: 999;
+  z-index: 999;
 `;
 
 const Icon = styled.img`
@@ -204,7 +204,7 @@ const Button = styled.div`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: #eb68a8
+      background-color: #eb68a8;
     }
   }
   @media (max-width: 675px) {
@@ -372,9 +372,7 @@ const Home = () => {
   if (!isInStandaloneMode()) {
     return (
       <Container>
-        {typeof window !== 'undefined' &&
-        isIos() &&
-        banner && (
+        {typeof window !== 'undefined' && !isIos() && banner && (
           <Banner>
             <Left>
               <Close onClick={() => setBanner(false)} />
@@ -385,7 +383,7 @@ const Home = () => {
               </Info>
             </Left>
             <Right>
-              <GetButton onClick={setModal}>Get</GetButton>
+              <GetButton onClick={() => setModal(true)}>Get</GetButton>
             </Right>
           </Banner>
         )}
@@ -421,13 +419,23 @@ const Home = () => {
             )}
           </Button>
         </Hero>
+        <WrapModal onClick={() => setModal(false)} modal={modal}>
+          <Modal modal={modal}>
+            <Step>
+              1. Open <Share /> on the bottom of Safari
+            </Step>
+            <Step>2. Scroll down and "Add to Home Screen"</Step>
+          </Modal>
+        </WrapModal>
       </Container>
     );
   }
 
   return (
     <Content>
-      <Title><TitleLogo /></Title>
+      <Title>
+        <TitleLogo />
+      </Title>
       <Button onClick={handleApple}>
         <AppleIcon />
         Continue with Apple
@@ -450,14 +458,6 @@ const Home = () => {
           <Empty />
         )}
       </Button>
-      <WrapModal onClick={() => setModal(false)} modal={modal}>
-        <Modal modal={modal}>
-          <Step>
-            1. Open <Share /> on the bottom of Safari
-          </Step>
-          <Step>2. Scroll down and "Add to Home Screen"</Step>
-        </Modal>
-      </WrapModal>
     </Content>
   );
 };
