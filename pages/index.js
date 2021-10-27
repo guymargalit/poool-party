@@ -9,7 +9,6 @@ import {
   IconAppleShare,
   Logo,
 } from '../icons';
-import Wave from '../components/Wave';
 
 const Container = styled.div`
   display: flex;
@@ -26,11 +25,6 @@ const Header = styled.div`
   width: 100%;
   top: 0;
   position: absolute;
-`;
-
-const Section = styled.div`
-  width: 100%;
-  background-color: aqua;
 `;
 
 const Hero = styled.div`
@@ -129,11 +123,12 @@ const Banner = styled.div`
   width: 100%;
   height: 65px;
   user-select: none;
-  top: 0;
+  bottom: 0;
   position: absolute;
   background-color: ${({ theme }) => theme.bg.content};
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    z-index: 999;
 `;
 
 const Icon = styled.img`
@@ -377,6 +372,23 @@ const Home = () => {
   if (!isInStandaloneMode()) {
     return (
       <Container>
+        {typeof window !== 'undefined' &&
+        isIos() &&
+        banner && (
+          <Banner>
+            <Left>
+              <Close onClick={() => setBanner(false)} />
+              <Icon src={'/favicon.png'} />
+              <Info>
+                <AppTitle>Poool Party</AppTitle>
+                <AppDescription>Add to Home Screen</AppDescription>
+              </Info>
+            </Left>
+            <Right>
+              <GetButton onClick={setModal}>Get</GetButton>
+            </Right>
+          </Banner>
+        )}
         <Header>
           <WrapLogo fill={'#fff'} />
         </Header>
@@ -409,31 +421,12 @@ const Home = () => {
             )}
           </Button>
         </Hero>
-        <Section></Section>
       </Container>
     );
   }
 
   return (
     <Content>
-      {typeof window !== 'undefined' &&
-        isIos() &&
-        !isInStandaloneMode() &&
-        banner && (
-          <Banner>
-            <Left>
-              <Close onClick={() => setBanner(false)} />
-              <Icon src={'/favicon.png'} />
-              <Info>
-                <AppTitle>Poool Party</AppTitle>
-                <AppDescription>Add to Home Screen</AppDescription>
-              </Info>
-            </Left>
-            <Right>
-              <GetButton onClick={setModal}>Get</GetButton>
-            </Right>
-          </Banner>
-        )}
       <Title><TitleLogo /></Title>
       <Button onClick={handleApple}>
         <AppleIcon />
