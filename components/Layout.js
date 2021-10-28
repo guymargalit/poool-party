@@ -437,6 +437,18 @@ const Layout = (props) => {
 
   useEffect(() => mutate(), []);
 
+  // 404 layout
+  if (!routes[router.pathname]) {
+    return (
+      <Container>
+        <Hero background>
+          <Wave />
+        </Hero>
+        {props.children}
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <WrapModal modal={venmo}>
@@ -506,7 +518,9 @@ const Layout = (props) => {
               <Toy key={i} {...toy} />
             ))}
           </Toys>
-        ) : !props?.user && routes[router.pathname]?.landing && !isInStandaloneMode() ? (
+        ) : !props?.user &&
+          routes[router.pathname]?.landing &&
+          !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}
             position={{ x: '10%', y: '4%', z: 6 }}
@@ -521,7 +535,8 @@ const Layout = (props) => {
       {!(props?.user && router.pathname === '/') &&
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>
-            {(router.pathname === '/' || routes[router.pathname]?.landing) && !props?.user ? (
+            {(router.pathname === '/' || routes[router.pathname]?.landing) &&
+            !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
               (props?.user || routes[router.pathname]?.public) ? (
