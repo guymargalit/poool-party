@@ -13,7 +13,6 @@
     "@prisma/client": "^2.30.3",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "browser-image-compression": "^1.0.15",
-    "cookie": "^0.4.1",
     "crypto-js": "^4.1.1",
     "currency.js": "^2.0.4",
     "eslint-config-airbnb": "^18.2.1",
@@ -35,7 +34,6 @@
     "react-use": "^17.3.1",
     "styled-components": "^5.3.1",
     "swr": "^1.0.0",
-    "tesseract.js": "^2.1.5",
     "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
