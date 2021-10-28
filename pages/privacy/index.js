@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Logo } from '../../icons';
-import Router from 'next/router';
+// import Router from 'next/router';
 
 const Container = styled.div`
   display: flex;
@@ -70,31 +70,31 @@ const WrapLogo = styled(Logo)`
   cursor: pointer;
 `;
 
-const Footer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 50px;
-  position: fixed;
-  bottom: 0;
-  background-color: ${({ theme }) => theme.bg.sky};
-`;
+// const Footer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   height: 50px;
+//   position: fixed;
+//   bottom: 0;
+//   background-color: ${({ theme }) => theme.bg.sky};
+// `;
 
-const Item = styled.div`
-  color: ${({ theme }) => theme.colors.white};
-  font-size: 14px;
-  font-weight: 600;
-  padding: 3px 5px;
-  cursor: pointer;
-  border-radius: 5px;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  }
-  transition: all 0.25s ease 0s;
-`;
+// const Item = styled.div`
+//   color: ${({ theme }) => theme.colors.white};
+//   font-size: 14px;
+//   font-weight: 600;
+//   padding: 3px 5px;
+//   cursor: pointer;
+//   border-radius: 5px;
+//   @media (hover: hover) and (pointer: fine) {
+//     :hover {
+//       background-color: rgba(255, 255, 255, 0.1);
+//     }
+//   }
+//   transition: all 0.25s ease 0s;
+// `;
 
 const Privacy = () => {
   return (
@@ -584,9 +584,9 @@ const Privacy = () => {
           <li>By email: privacy@poool.party</li>
         </ul>
       </Content>
-      <Footer>
+      {/* <Footer>
         <Item onClick={() => Router.push('/privacy')}>Privacy</Item>
-      </Footer>
+      </Footer> */}
     </Container>
   );
 };
