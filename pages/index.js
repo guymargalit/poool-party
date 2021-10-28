@@ -379,12 +379,12 @@ const Home = () => {
   const handleApple = (e) => {
     e.preventDefault();
     setApple(true);
-    signIn('apple', { callbackUrl: 'https://poool.party/dashboard' });
+    signIn('apple', { callbackUrl: 'https://poool.party/loading' });
   };
   const handleGoogle = (e) => {
     e.preventDefault();
     setGoogle(true);
-    signIn('google', { callbackUrl: 'https://poool.party/dashboard' });
+    signIn('google', { callbackUrl: 'https://poool.party/loading' });
   };
 
   const isIos = () => {

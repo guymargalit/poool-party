@@ -89,12 +89,25 @@ export default function MyApp({ Component, pageProps }) {
     <Provider session={pageProps.session}>
       <Head>
         <title>Poool Party</title>
+        <meta
+          name="description"
+          content="Send Venmos to your friends, with easy
+          splitting and monthly requests."
+        />
+        <meta property="og:title" content="Poool Party" />
+        <meta
+          property="og:description"
+          content="Send Venmos to your friends, with easy
+          splitting and monthly requests."
+        />
+        <meta property="og:url" content="https://poool.party" />
+        <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.png" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
-        <meta name="theme-color" content={value ? "#111236": "#8fd0fa"} />
+        <meta name="theme-color" content={value ? '#111236' : '#8fd0fa'} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="application-name" content="Poool Party"></meta>
         <link href="/favicon.png" rel="apple-touch-icon" />

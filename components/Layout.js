@@ -388,6 +388,10 @@ const Layout = (props) => {
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
+    if (props?.user && router.pathname === '/loading') {
+      Router.push('/dashboard');
+    }
+    // Non-auth user can only access homepage
     if (!props?.user && !routes[router.pathname]?.public) {
       Router.push('/');
     }
@@ -510,7 +514,7 @@ const Layout = (props) => {
             </WrapPlus>
           </WrapTooltip>
         )}
-        {props?.user?.toy ? (
+        {!routes[router.pathname]?.public && props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !props?.user && router.pathname === '/' && isInStandaloneMode() ? (
           <Toys>
@@ -539,7 +543,7 @@ const Layout = (props) => {
             !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
-              (props?.user || routes[router.pathname]?.public) ? (
+              ((props?.user || routes[router.pathname]?.public) && !routes[router.pathname]?.landing) ? (
               <WrapContent>
                 <Content
                   background={background}
