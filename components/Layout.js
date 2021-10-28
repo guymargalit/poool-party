@@ -524,6 +524,7 @@ const Layout = (props) => {
           </Toys>
         ) : !props?.user &&
           routes[router.pathname]?.landing &&
+          !routes[router.pathname]?.loading &&
           !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}

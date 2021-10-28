@@ -22,6 +22,11 @@ const options = {
       session.user.id = token.id;
       return session;
     },
+    callbacks: {
+      redirect: async (url, baseUrl) => {
+        return Promise.resolve(url);
+      },
+    },
   },
   providers: [
     Providers.Apple({
@@ -35,7 +40,7 @@ const options = {
     }),
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     // {
     //   id: "venmo",
