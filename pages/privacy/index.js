@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Logo } from '../../icons';
-// import Router from 'next/router';
+import Router from 'next/router';
 
 const Container = styled.div`
   display: flex;
