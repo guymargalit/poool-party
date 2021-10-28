@@ -382,7 +382,7 @@ const Layout = (props) => {
     setHeight(routes[router.pathname]?.height);
     setBackground(
       !props?.user
-        ? router.pathname === '/'
+        ? routes[router.pathname]?.landing
           ? true
           : false
         : routes[router.pathname]?.background
@@ -506,7 +506,7 @@ const Layout = (props) => {
               <Toy key={i} {...toy} />
             ))}
           </Toys>
-        ) : !props?.user && router.pathname === '/' && !isInStandaloneMode() ? (
+        ) : !props?.user && routes[router.pathname]?.landing && !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}
             position={{ x: '10%', y: '4%', z: 6 }}
@@ -521,7 +521,7 @@ const Layout = (props) => {
       {!(props?.user && router.pathname === '/') &&
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>
-            {router.pathname === '/' && !props?.user ? (
+            {(router.pathname === '/' || routes[router.pathname]?.landing) && !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
               (props?.user || routes[router.pathname]?.public) ? (
