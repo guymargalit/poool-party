@@ -228,9 +228,6 @@ const Privacy = () => {
             <p>First name and last name</p>
           </li>
           <li>
-            <p>Phone number</p>
-          </li>
-          <li>
             <p>Usage Data</p>
           </li>
         </ul>
@@ -374,13 +371,12 @@ const Privacy = () => {
           </li>
           <li>
             <p>
-              <strong>To contact You:</strong> To contact You by email,
-              telephone calls, SMS, or other equivalent forms of electronic
-              communication, such as a mobile application's push notifications
-              regarding updates or informative communications related to the
-              functionalities, products or contracted services, including the
-              security updates, when necessary or reasonable for their
-              implementation.
+              <strong>To contact You:</strong> To contact You by email or other
+              equivalent forms of electronic communication, such as a web
+              application's push notifications regarding updates or informative
+              communications related to the functionalities, products or
+              contracted services, including the security updates, when
+              necessary or reasonable for their implementation.
             </p>
           </li>
           <li>

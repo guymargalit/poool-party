@@ -202,7 +202,8 @@ const Modal = styled.div`
 `;
 
 const TooltipContainer = styled.div`
-  display: none;
+  display: ${({ active }) => (active ? 'inline-block' : 'none')};
+  z-index: 999;
 `;
 
 const WrapTooltip = styled.div`
@@ -212,12 +213,6 @@ const WrapTooltip = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover ${TooltipContainer} {
-      display: inline-block;
-    }
-  }
 `;
 
 const Plus = styled(IconAdd)`
@@ -488,7 +483,7 @@ const Layout = (props) => {
       <Hero background={background}>
         {!routes[router.pathname]?.public && (
           <WrapTooltip>
-            <TooltipContainer>
+            <TooltipContainer active={!localStorage.getItem('tooltip')}>
               <Tooltip
                 content={
                   <>
@@ -507,7 +502,12 @@ const Layout = (props) => {
                 </PlusEmpty>
               ) : (
                 <>
-                  <Plus onClick={handleExpense} />
+                  <Plus
+                    onClick={() => {
+                      localStorage.setItem('tooltip', 'true');
+                      handleExpense();
+                    }}
+                  />
                   <PlusFill />
                 </>
               )}
@@ -544,7 +544,8 @@ const Layout = (props) => {
             !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
-              ((props?.user || routes[router.pathname]?.public) && !routes[router.pathname]?.landing) ? (
+              (props?.user || routes[router.pathname]?.public) &&
+              !routes[router.pathname]?.landing ? (
               <WrapContent>
                 <Content
                   background={background}

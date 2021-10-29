@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect, useRef } from 'react';
 import Router from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import useSWR from 'swr';
+import { IconLock } from '../../icons';
 
 const Content = styled.div`
   width: 100%;
@@ -156,6 +157,13 @@ const Confirm = styled.svg`
   }
 `;
 
+const Lock = styled(IconLock)`
+  width: 20px;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  fill: ${({ theme }) => theme.bg.input};
+`;
+
 const Profile = ({ user }) => {
   const { mutate } = useSWR('/api/user');
   const [submitting, setSubmitting] = useState(false);
@@ -190,8 +198,9 @@ const Profile = ({ user }) => {
     }
   };
 
-  const options = [
-    'flamingo',
+  const options = ['flamingo'];
+
+  const premiumOptions = [
     'unicorn',
     'duck',
     'turtle',
@@ -232,6 +241,24 @@ const Profile = ({ user }) => {
                     <Circle cx="25" cy="25" r="20"></Circle>
                   </Spinner>
                 )}
+              </WrapInput>
+            </Radio>
+          ))}
+          {premiumOptions.map((option) => (
+            <Radio
+              ref={selected === option ? scrollItem : null}
+              checked={selected === option}
+              key={option}
+            >
+              <WrapInput>
+                <Label>{option}</Label>
+                <Input
+                  type="radio"
+                  value={option}
+                  checked={selected === option}
+                  onChange={(e) => {}}
+                />
+                <Lock />
               </WrapInput>
             </Radio>
           ))}

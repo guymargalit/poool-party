@@ -93,6 +93,10 @@ export default async function handler(req, res) {
       },
     });
 
+    if(!poolUser) {
+      return res.status(404).end();
+    }
+
     res.json(Object.assign({}, pool, pick(poolUser, ['venmoId', 'draft'])));
   } else if (req.method === 'DELETE') {
     const session = await getSession({ req });

@@ -276,6 +276,7 @@ export default async function handler(req, res) {
         active: true,
         interval: true,
         metadata: true,
+        draft: true,
         venmo: {
           select: {
             id: true,
@@ -319,6 +320,25 @@ export default async function handler(req, res) {
         expenseId: expense?.id,
       },
     });
+
+    // If not a draft, check expense user
+    if (!expense.draft) {
+      const currentExpenseUser = await prisma.expenseUser.findFirst({
+        where: {
+          venmoId: user?.venmo?.id,
+          expenseId: Number(req?.query?.id),
+        },
+        select: {
+          venmoId: true,
+          expenseId: true,
+        },
+      });
+
+      if (!currentExpenseUser) {
+        return res.status(404).end();
+      }
+    }
+
     return res.json(Object.assign({}, expense, { receipt }));
   } else if (req.method === 'PUT') {
     const channels = new Pusher({

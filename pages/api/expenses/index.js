@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         },
       });
     } else {
-      if(user?.draft) {
+      if (user?.draft) {
         const receipt = await prisma.receipt.findFirst({
           where: {
             expenseId: user?.draft?.id,
@@ -163,10 +163,19 @@ export default async function handler(req, res) {
         interval: true,
         total: true,
         draft: true,
+        users: {
+          select: {
+            venmoId: true
+          },
+        },
       },
       where: {
         draft: false,
-        venmoId: user?.venmo?.id,
+        users: {
+          some: {
+            venmoId: user?.venmo?.id,
+          },
+        },
       },
     });
     res.json(result);
