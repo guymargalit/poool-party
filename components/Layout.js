@@ -383,10 +383,6 @@ const Layout = (props) => {
         : routes[router.pathname]?.background
     );
     // Non-auth user can only access homepage
-    if (props?.user && router.pathname === '/loading') {
-      Router.push('/dashboard');
-    }
-    // Non-auth user can only access homepage
     if (!props?.user && !routes[router.pathname]?.public) {
       Router.push('/');
     }

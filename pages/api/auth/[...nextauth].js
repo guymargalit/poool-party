@@ -22,9 +22,6 @@ const options = {
       session.user.id = token.id;
       return session;
     },
-    async redirect(url, baseUrl) {
-      return Promise.resolve(url)
-    },
   },
   providers: [
     Providers.Apple({

@@ -31,6 +31,16 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 }
 
+.orientleft #shell {
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin:160px 160px;
+}
+
+.orientright #shell {
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin:230px 230px;
+} 
+
 /* Scroll bar stylings */
 ::-webkit-scrollbar {
     width: 0px;
@@ -81,6 +91,22 @@ export default function MyApp({ Component, pageProps }) {
     if (typeof window !== 'undefined') {
       const data = localStorage.getItem(key);
       if (data) mutate(key, JSON.parse(data), false);
+
+      window.addEventListener(
+        'orientationchange',
+        function () {
+          if (window.orientation == -90) {
+            document.getElementById('orient').className = 'orientright';
+          }
+          if (window.orientation == 90) {
+            document.getElementById('orient').className = 'orientleft';
+          }
+          if (window.orientation == 0) {
+            document.getElementById('orient').className = '';
+          }
+        },
+        true
+      );
     }
     setMounted(true);
   }, []);
