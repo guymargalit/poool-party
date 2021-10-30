@@ -200,8 +200,9 @@ const Logout = styled(IconLogout)`
 
 const handleLogout = (e) => {
   e.preventDefault();
-  //localStorage.clear();
-  signOut({ callbackUrl: process.env.APP_URL });
+  localStorage.removeItem('/api/user');
+  localStorage.clear();
+  signOut({ callbackUrl: 'https://poool.party/loading' });
 };
 
 const formatter = new Intl.NumberFormat('en-US', {

@@ -460,36 +460,38 @@ const Home = () => {
       </Container>
     );
   }
-
-  return (
-    <Content>
-      <Title>
-        <TitleLogo />
-      </Title>
-      <Button onClick={handleApple}>
-        <AppleIcon />
-        Continue with Apple
-        {apple ? (
-          <Svg viewBox="0 0 50 50">
-            <Circle cx="25" cy="25" r="20"></Circle>
-          </Svg>
-        ) : (
-          <Empty />
-        )}
-      </Button>
-      <Button onClick={handleGoogle}>
-        <GoogleIcon />
-        Continue with Google
-        {google ? (
-          <Svg viewBox="0 0 50 50">
-            <Circle cx="25" cy="25" r="20"></Circle>
-          </Svg>
-        ) : (
-          <Empty />
-        )}
-      </Button>
-    </Content>
-  );
+  if (isInStandaloneMode()) {
+    return (
+      <Content>
+        <Title>
+          <TitleLogo />
+        </Title>
+        <Button onClick={handleApple}>
+          <AppleIcon />
+          Continue with Apple
+          {apple ? (
+            <Svg viewBox="0 0 50 50">
+              <Circle cx="25" cy="25" r="20"></Circle>
+            </Svg>
+          ) : (
+            <Empty />
+          )}
+        </Button>
+        <Button onClick={handleGoogle}>
+          <GoogleIcon />
+          Continue with Google
+          {google ? (
+            <Svg viewBox="0 0 50 50">
+              <Circle cx="25" cy="25" r="20"></Circle>
+            </Svg>
+          ) : (
+            <Empty />
+          )}
+        </Button>
+      </Content>
+    );
+  }
+  return <></>;
 };
 
 export default Home;

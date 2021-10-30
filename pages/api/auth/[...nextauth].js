@@ -22,10 +22,10 @@ const options = {
       session.user.id = token.id;
       return session;
     },
-    callbacks: {
-      redirect: async (url, baseUrl) => {
-        return Promise.resolve(url);
-      },
+    async redirect(url, baseUrl) {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(baseUrl);
     },
   },
   providers: [

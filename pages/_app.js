@@ -61,10 +61,10 @@ const key = '/api/user';
 function useUser() {
   return useSWR(key, fetcher, {
     onFailure() {
-      //localStorage.removeItem(key);
+      localStorage.removeItem(key);
     },
     onSuccess(user) {
-      //localStorage.setItem(key, JSON.stringify(user));
+      localStorage.setItem(key, JSON.stringify(user));
     },
   });
 }
@@ -79,8 +79,8 @@ export default function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      //const data = localStorage.getItem(key);
-      //if (data) mutate(key, JSON.parse(data), false);
+      const data = localStorage.getItem(key);
+      if (data) mutate(key, JSON.parse(data), false);
     }
     setMounted(true);
   }, []);

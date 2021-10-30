@@ -1,4 +1,5 @@
-import React from 'react';
+import Router from 'next/router';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -12,6 +13,13 @@ const Container = styled.div`
 `;
 
 const Loading = () => {
+  useEffect(() => {
+    let interval = null;
+    interval = setInterval(() => {
+      Router.push('/');
+    }, 3000);
+    return () => (interval ? clearInterval(interval) : null);
+  }, []);
   return <Container></Container>;
 };
 
