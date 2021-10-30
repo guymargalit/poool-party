@@ -23,9 +23,7 @@ const options = {
       return session;
     },
     async redirect(url, baseUrl) {
-      return url.startsWith(baseUrl)
-        ? Promise.resolve(url)
-        : Promise.resolve(baseUrl);
+      return Promise.resolve(url)
     },
   },
   providers: [
