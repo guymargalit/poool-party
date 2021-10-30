@@ -9,7 +9,7 @@ import {
   IconAppleShare,
   Logo,
 } from '../icons';
-import Router from 'next/router';
+import Router, {useRouter} from 'next/router';
 
 const Container = styled.div`
   display: flex;
@@ -376,15 +376,23 @@ const Home = () => {
   const [google, setGoogle] = useState(false);
   const [banner, setBanner] = useState(true);
   const [modal, setModal] = useState(false);
+
+  const router = useRouter();
+  if (router.query.callback) {
+    return <></>;
+  }
+
   const handleApple = (e) => {
     e.preventDefault();
     setApple(true);
-    signIn('apple');
+    signIn('apple', { callbackUrl: `${window.location.origin}/?callback=true` });
   };
   const handleGoogle = (e) => {
     e.preventDefault();
     setGoogle(true);
-    signIn('google');
+    signIn('google', {
+      callbackUrl: `${window.location.origin}/?callback=true`,
+    });
   };
 
   const isIos = () => {

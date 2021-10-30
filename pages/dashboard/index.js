@@ -201,7 +201,7 @@ const Logout = styled(IconLogout)`
 const handleLogout = (e) => {
   e.preventDefault();
   localStorage.removeItem('/api/user');
-  signOut();
+  signOut({ callbackUrl: `${window.location.origin}` });
 };
 
 const formatter = new Intl.NumberFormat('en-US', {

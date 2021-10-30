@@ -382,6 +382,9 @@ const Layout = (props) => {
           : false
         : routes[router.pathname]?.background
     );
+    if (props?.user && router.query.callback) {
+      Router.push('/dashboard');
+    }
     // Non-auth user can only access homepage
     if (!props?.user && !routes[router.pathname]?.public) {
       Router.push('/');
@@ -519,8 +522,7 @@ const Layout = (props) => {
             ))}
           </Toys>
         ) : !props?.user &&
-          routes[router.pathname]?.landing &&
-          !routes[router.pathname]?.loading &&
+          routes[router.pathname]?.landing && !router.query.callback &&
           !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}
