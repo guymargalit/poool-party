@@ -200,7 +200,7 @@ const Logout = styled(IconLogout)`
 
 const handleLogout = (e) => {
   e.preventDefault();
-  localStorage.clear();
+  localStorage.removeItem('/api/user');
   signOut();
 };
 
