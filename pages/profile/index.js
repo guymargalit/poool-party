@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { signOut, useSession } from 'next-auth/client';
 import {
   IconLogout,
   IconMoon,
