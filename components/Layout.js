@@ -522,7 +522,7 @@ const Layout = (props) => {
             ))}
           </Toys>
         ) : !props?.user &&
-          routes[router.pathname]?.landing && !router.query.callback &&
+          router.pathname === '/' && !router.query.callback &&
           !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}

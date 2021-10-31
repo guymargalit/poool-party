@@ -9,7 +9,7 @@ import {
   IconAppleShare,
   Logo,
 } from '../icons';
-import Router, {useRouter} from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 const Container = styled.div`
   display: flex;
@@ -280,6 +280,7 @@ const WrapLogo = styled(Logo)`
     margin: 15px 20px;
   }
   transition: all 0.25s ease 0s;
+  cursor: pointer;
 `;
 
 const AppleIcon = styled(IconApple)`
@@ -385,7 +386,9 @@ const Home = () => {
   const handleApple = (e) => {
     e.preventDefault();
     setApple(true);
-    signIn('apple', { callbackUrl: `${window.location.origin}/?callback=true` });
+    signIn('apple', {
+      callbackUrl: `${window.location.origin}/?callback=true`,
+    });
   };
   const handleGoogle = (e) => {
     e.preventDefault();
@@ -423,7 +426,7 @@ const Home = () => {
           </Banner>
         )}
         <Header>
-          <WrapLogo fill={'#fff'} />
+          <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
         </Header>
         <Hero>
           <Subtitle>Make a splash.</Subtitle>

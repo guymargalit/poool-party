@@ -23,7 +23,6 @@ const options = {
       return session;
     },
     async redirect(url, baseUrl) {
-      console.log("OK ", url, baseUrl);
       return Promise.resolve(url)
     },
   },

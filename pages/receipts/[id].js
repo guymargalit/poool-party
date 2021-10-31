@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import {
   IconCheckmark,
@@ -8,6 +8,7 @@ import {
   IconPicture,
   IconPopper,
   IconWarning,
+  Logo,
 } from '../../icons';
 import CurrencyInput from 'react-currency-input-field';
 import Image from 'next/image';
@@ -36,18 +37,10 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  padding-top: 10px;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 0px 35px;
-  height: 75px;
-  transition: all 0.5s ease 0s;
-  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
+  padding-top: 110px;
+  @media (max-width: 675px) {
+    padding-top: 90px;
+  }
 `;
 
 const Title = styled.div`
@@ -373,6 +366,24 @@ const SuccessText = styled.div`
   margin-bottom: 100px;
 `;
 
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  top: 0;
+  position: absolute;
+  border-bottom: 1px solid ${({ theme }) => theme.bg.border};
+`;
+const WrapLogo = styled(Logo)`
+  height: 60px;
+  margin: 20px 25px;
+  @media (max-width: 675px) {
+    height: 50px;
+    margin: 15px 20px;
+  }
+  transition: all 0.25s ease 0s;
+  cursor: pointer;
+`;
+
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -460,6 +471,9 @@ const Receipt = () => {
   if (success) {
     return (
       <Container>
+        <Header>
+          <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
+        </Header>
         <Confetti width={width} height={height} />
         <Area>
           <SuccessCheckmark />
@@ -480,6 +494,9 @@ const Receipt = () => {
         />
         <link href="/favicon.png" rel="apple-touch-icon" />
       </Head>
+      <Header>
+        <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
+      </Header>
       {!loading &&
       !receipt &&
       (!receipt?.metadata?.users || !receipt?.metadata?.total) ? (

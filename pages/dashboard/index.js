@@ -198,6 +198,102 @@ const Logout = styled(IconLogout)`
   }
 `;
 
+const WrapModal = styled.div`
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: ${({ modal }) =>
+    modal ? ' rgba(0, 0, 0, 0.4)' : ' rgba(0, 0, 0, 0);'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  display: ${({ modal }) => (modal ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+  padding: 5px 30px;
+  background-color: ${({ theme }) => theme.bg.content};
+  border-radius: 18px;
+  height: 100px;
+  transition: all 0.1s ease 0s;
+`;
+
+const ModalTitle = styled.div`
+  width: 100%;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text.tertiary};
+  text-align: center;
+  font-size: 16px;
+  margin: 10px 0 20px;
+`;
+
+const WrapButtons = styled.div`
+  display: flex;
+`;
+
+const SaveButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 75px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.purple};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #042759;
+    }
+  }
+`;
+
+const DiscardButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 80px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-right: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.error};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #d1435b;
+    }
+  }
+`;
+
 const handleLogout = (e) => {
   e.preventDefault();
   localStorage.removeItem('/api/user');
@@ -219,6 +315,7 @@ const Dashboard = ({ user }) => {
   //const [requests, setRequests] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
   useEffect(async () => {
     // const getRequests = async () => {
     //   const response = await fetch(`/api/requests`, {
@@ -242,9 +339,18 @@ const Dashboard = ({ user }) => {
 
   return (
     <Fragment>
+      <WrapModal onClick={() => setModal(false)} modal={modal}>
+        <Modal modal={modal}>
+          <ModalTitle>Are you sure you want to log out?</ModalTitle>
+          <WrapButtons>
+            <DiscardButton onClick={() => setModal(false)}>Cancel</DiscardButton>
+            <SaveButton onClick={handleLogout}>Log out</SaveButton>
+          </WrapButtons>
+        </Modal>
+      </WrapModal>
       <Header>
         <Title>Dashboard</Title>
-        <Logout onClick={handleLogout} />
+        <Logout onClick={() => setModal(true)} />
       </Header>
       <Content>
         {/* <Section>
