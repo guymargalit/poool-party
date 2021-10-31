@@ -510,14 +510,20 @@ const Layout = (props) => {
         )}
         {!routes[router.pathname]?.public && props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : !props?.user && router.pathname === '/' && isInStandaloneMode() ? (
+        ) : !props?.user &&
+          router.pathname === '/' &&
+          !localStorage.getItem('apple') &&
+          !window.location.href?.includes('#') &&
+          isInStandaloneMode() ? (
           <Toys>
             {toys.map((toy, i) => (
               <Toy key={i} {...toy} />
             ))}
           </Toys>
         ) : !props?.user &&
-          router.pathname === '/' && !window.location.href?.includes('#') &&
+          router.pathname === '/' &&
+          !localStorage.getItem('apple') &&
+          !window.location.href?.includes('#') &&
           !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}

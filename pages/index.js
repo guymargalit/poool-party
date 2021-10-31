@@ -380,7 +380,7 @@ const Home = () => {
 
   useEffect(() => {
     let timeout = null;
-    if (window.location.href?.includes('#')) {
+    if (localStorage.getItem('apple') || window.location.href?.includes('#')) {
       timeout = setTimeout(() => {
         localStorage.removeItem('apple');
         Router.push('/');
@@ -396,10 +396,9 @@ const Home = () => {
   const handleApple = (e) => {
     e.preventDefault();
     setApple(true);
-    localStorage.setItem('apple', 'true');
     signIn('apple', {
       callbackUrl: `/#`,
-    });
+    }).then(() => localStorage.setItem('apple', 'true'));
   };
   const handleGoogle = (e) => {
     e.preventDefault();
