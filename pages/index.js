@@ -382,19 +382,21 @@ const Home = () => {
     let timeout = null;
     if (window.location.href?.includes('#')) {
       timeout = setTimeout(() => {
+        localStorage.removeItem('apple');
         Router.push('/');
       }, 3000);
     }
     return () => (timeout ? clearTimeout(timeout) : null);
   }, []);
 
-  if (window.location.href?.includes('#')) {
+  if (localStorage.getItem('apple') || window.location.href?.includes('#')) {
     return <></>;
   }
 
   const handleApple = (e) => {
     e.preventDefault();
     setApple(true);
+    localStorage.setItem('apple', 'true');
     signIn('apple', {
       callbackUrl: `/#`,
     });
