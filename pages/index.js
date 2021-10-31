@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { signIn } from 'next-auth/client';
 import {
@@ -9,7 +9,7 @@ import {
   IconAppleShare,
   Logo,
 } from '../icons';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 
 const Container = styled.div`
   display: flex;
@@ -377,6 +377,16 @@ const Home = () => {
   const [google, setGoogle] = useState(false);
   const [banner, setBanner] = useState(true);
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    let timeout = null;
+    if (window.location.href?.includes('#')) {
+      timeout = setTimeout(() => {
+        Router.push('/');
+      }, 3000);
+    }
+    return () => (timeout ? clearTimeout(timeout) : null);
+  }, []);
 
   if (window.location.href?.includes('#')) {
     return <></>;

@@ -534,7 +534,7 @@ const Layout = (props) => {
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>
             {(router.pathname === '/' || routes[router.pathname]?.landing) &&
-            !props?.user && !window.location.href?.includes('#') ? (
+            !props?.user ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
               (props?.user || routes[router.pathname]?.public) &&
