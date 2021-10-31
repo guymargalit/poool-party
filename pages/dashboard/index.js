@@ -14,7 +14,6 @@ import Link from 'next/link';
 const Content = styled.div`
   width: 100%;
   height: calc(100% - 75px - env(safe-area-inset-bottom));
-  overflow: hidden;
 `;
 
 const Header = styled.div`
