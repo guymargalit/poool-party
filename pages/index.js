@@ -386,7 +386,7 @@ const Home = () => {
     e.preventDefault();
     setApple(true);
     signIn('apple', {
-      callbackUrl: `${window.location.origin}/#`,
+      callbackUrl: `/#`,
     });
   };
   const handleGoogle = (e) => {

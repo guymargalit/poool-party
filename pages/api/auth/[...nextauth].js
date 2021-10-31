@@ -23,7 +23,7 @@ const options = {
       return session;
     },
     async redirect(url, baseUrl) {
-      return Promise.resolve(`${url}#`)
+      return Promise.resolve(url)
     },
   },
   providers: [
