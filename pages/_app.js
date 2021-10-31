@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
         : `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 30%, ${theme.bg.wave} 30%, ${theme.bg.wave} 100%)`};
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    overflow: ${({ navigation }) => (navigation ? 'hidden' : 'inherit')};
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
       -webkit-tap-highlight-color: rgba(0,0,0,0);
