@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     position: ${({ navigation }) => (navigation ? 'fixed' : 'relative')};
+    touch-action: none;
     overflow: ${({ navigation }) => (navigation ? 'hidden' : 'inherit')};
     left: 0; top: 0; right: 0; bottom: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
