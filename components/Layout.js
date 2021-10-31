@@ -443,7 +443,7 @@ const Layout = (props) => {
   }
 
   return (
-    <Container fixed={!routes[router.pathname]?.public}>
+    <Container fixed={isInStandaloneMode() || !routes[router.pathname]?.public}>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
           <Venmo
