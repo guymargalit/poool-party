@@ -14,9 +14,9 @@ import Tooltip from './Tooltip';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
+  position: fixed;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   z-index: 1;
   margin-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
@@ -443,7 +443,7 @@ const Layout = (props) => {
   }
 
   return (
-    <Container fixed={!routes[router.pathname]?.public}>
+    <Container>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
           <Venmo
@@ -520,6 +520,17 @@ const Layout = (props) => {
               <Toy key={i} {...toy} />
             ))}
           </Toys>
+        ) : !props?.user &&
+          router.pathname === '/' &&
+          !localStorage.getItem('apple') &&
+          !window.location.href?.includes('#') &&
+          !isInStandaloneMode() ? (
+          <Toy
+            type={'flamingo'}
+            position={{ x: '10%', y: '4%', z: 6 }}
+            maxWidth={'250px'}
+            width={'25%'}
+          />
         ) : (
           <></>
         )}

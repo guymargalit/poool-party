@@ -10,7 +10,6 @@ import {
   Logo,
 } from '../icons';
 import Router from 'next/router';
-import Toy from '../components/Toy/homepage';
 
 const Container = styled.div`
   display: flex;
@@ -19,8 +18,7 @@ const Container = styled.div`
   justify-content: flex-start;
   flex: 1;
   z-index: 4;
-  overflow-y: auto;
-  height: 100%;
+  overflow: hidden;
 `;
 
 const Header = styled.div`
@@ -28,6 +26,18 @@ const Header = styled.div`
   width: 100%;
   top: 0;
   position: fixed;
+`;
+
+const Hero = styled.div`
+  display: flex;
+  flex-direction: column;
+  left: 100px;
+  position: absolute;
+  align-items: center;
+  @media (max-width: 675px) {
+    position: relative;
+    left: 0px;
+  }
 `;
 
 const Content = styled.div`
@@ -159,39 +169,6 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const Section = styled.div`
-  display: flex;
-  background-color: red;
-  width: 100%;
-`;
-
-const Hero = styled.div`
-  display: flex;
-  width: 100%;
-  @media (max-width: 675px) {
-    align-items: center;
-    flex-direction: column;
-  }
-  height: 400px;
-`;
-
-const HeroInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  left: 100px;
-  position: relative;
-  align-items: center;
-  @media (max-width: 675px) {
-    left: 0;
-  }
-`;
-
-const HeroContent = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
 `;
 
 const AppTitle = styled.div`
@@ -375,7 +352,7 @@ const Footer = styled.div`
   justify-content: center;
   width: 100%;
   height: 50px;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.sky};
 `;
@@ -461,40 +438,34 @@ const Home = () => {
         <Header>
           <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
         </Header>
-        <Toy />
-        <Section></Section>
         <Hero>
-          <HeroInfo>
-            <Subtitle>Make a splash.</Subtitle>
-            <Caption>
-              Poool Party lets you send Venmos to your friends, with easy
-              splitting and monthly requests.
-            </Caption>
-            <Button onClick={handleApple}>
-              <AppleIcon />
-              Sign In with Apple
-              {apple ? (
-                <Svg viewBox="0 0 50 50">
-                  <Circle cx="25" cy="25" r="20"></Circle>
-                </Svg>
-              ) : (
-                <Empty />
-              )}
-            </Button>
-            <Button onClick={handleGoogle}>
-              <GoogleIcon />
-              Sign In with Google
-              {google ? (
-                <Svg viewBox="0 0 50 50">
-                  <Circle cx="25" cy="25" r="20"></Circle>
-                </Svg>
-              ) : (
-                <Empty />
-              )}
-            </Button>
-          </HeroInfo>
-          <HeroContent>
-          </HeroContent>
+          <Subtitle>Make a splash.</Subtitle>
+          <Caption>
+            Poool Party lets you send Venmos to your friends, with easy
+            splitting and monthly requests.
+          </Caption>
+          <Button onClick={handleApple}>
+            <AppleIcon />
+            Sign In with Apple
+            {apple ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
+          <Button onClick={handleGoogle}>
+            <GoogleIcon />
+            Sign In with Google
+            {google ? (
+              <Svg viewBox="0 0 50 50">
+                <Circle cx="25" cy="25" r="20"></Circle>
+              </Svg>
+            ) : (
+              <Empty />
+            )}
+          </Button>
         </Hero>
         <Footer>
           <Item onClick={() => Router.push('/privacy')}>Privacy</Item>
