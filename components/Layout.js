@@ -357,8 +357,6 @@ const toys = [
   },
 ];
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 const Layout = (props) => {
   const router = useRouter();
   const { navigation, setNavigation } = props;
@@ -370,7 +368,7 @@ const Layout = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
-  const { mutate } = useSWR('/api/user', fetcher);
+  const { mutate } = useSWR('/api/user');
 
   useEffect(() => {
     setNavigation(!props?.user ? false : routes[router.pathname]?.navigation);
@@ -382,9 +380,6 @@ const Layout = (props) => {
           : false
         : routes[router.pathname]?.background
     );
-    if (props?.user && router.query.callback) {
-      Router.push('/dashboard');
-    }
     // Non-auth user can only access homepage
     if (!props?.user && !routes[router.pathname]?.public) {
       Router.push('/');
@@ -522,7 +517,7 @@ const Layout = (props) => {
             ))}
           </Toys>
         ) : !props?.user &&
-          router.pathname === '/' && !router.query.callback &&
+          router.pathname === '/' && !window.location.href?.includes('#') &&
           !isInStandaloneMode() ? (
           <Toy
             type={'flamingo'}
@@ -539,7 +534,7 @@ const Layout = (props) => {
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>
             {(router.pathname === '/' || routes[router.pathname]?.landing) &&
-            !props?.user ? (
+            !props?.user && !window.location.href?.includes('#') ? (
               <>{props.children}</>
             ) : router.pathname !== '/' &&
               (props?.user || routes[router.pathname]?.public) &&

@@ -2,7 +2,7 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'next-auth/client';
 import Layout from '../components/Layout';
-import useSWR, { mutate } from 'swr';
+import useSWR, { mutate, SWRConfig } from 'swr';
 import Head from 'next/head';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { darkTheme, lightTheme } from '../theme';
@@ -64,23 +64,14 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 const key = '/api/user';
 
 function useUser() {
-  return useSWR(key, fetcher, {
-    onFailure() {
-      localStorage.removeItem(key);
-    },
-    onSuccess(user) {
-      localStorage.setItem(key, JSON.stringify(user));
-    },
-  });
+  return useSWR(key);
 }
 
 export default function MyApp({ Component, pageProps }) {
-  const { data, error } = useUser('/api/user', fetcher);
+  const { data, error } = useUser('/api/user');
   const [navigation, setNavigation] = useState(false);
   const { value, toggle } = useDarkMode(false, {});
   const theme = value ? darkTheme : lightTheme;
@@ -91,22 +82,6 @@ export default function MyApp({ Component, pageProps }) {
     if (typeof window !== 'undefined') {
       const data = localStorage.getItem(key);
       if (data) mutate(key, JSON.parse(data), false);
-
-      window.addEventListener(
-        'orientationchange',
-        function () {
-          if (window.orientation == -90) {
-            document.getElementById('orient').className = 'orientright';
-          }
-          if (window.orientation == 90) {
-            document.getElementById('orient').className = 'orientleft';
-          }
-          if (window.orientation == 0) {
-            document.getElementById('orient').className = '';
-          }
-        },
-        true
-      );
     }
     setMounted(true);
   }, []);
@@ -185,25 +160,51 @@ export default function MyApp({ Component, pageProps }) {
       </Head>
       {mounted && (
         <>
-          <GlobalStyle theme={theme} navigation={navigation} />
-          <ThemeProvider theme={theme}>
-            <SkeletonTheme
-              color={theme.loader.color}
-              highlightColor={theme.loader.highlight}
-            >
-              <Layout
-                navigation={navigation}
-                setNavigation={setNavigation}
-                darkMode={value}
-                setDarkMode={toggle}
-                user={data}
-                error={error}
-                {...pageProps}
+          <SWRConfig
+            value={{
+              shouldRetryOnError: false,
+              revalidateOnFocus: false,
+              fetcher: (url) =>
+                fetch(url).then((res) => {
+                  if (res.status === 403)
+                    throw new Error('403 is unacceptable for me!');
+                  return res.json();
+                }),
+              onError: (error, key) => {
+                if (error.status !== 403 && error.status !== 404) {
+                  return;
+                }
+              },
+              onFailure() {
+                localStorage.removeItem(key);
+              },
+              onSuccess(user) {
+                if (user?.id) {
+                  localStorage.setItem(key, JSON.stringify(user));
+                }
+              },
+            }}
+          >
+            <GlobalStyle theme={theme} navigation={navigation} />
+            <ThemeProvider theme={theme}>
+              <SkeletonTheme
+                color={theme.loader.color}
+                highlightColor={theme.loader.highlight}
               >
-                <Component user={data} {...pageProps} />
-              </Layout>
-            </SkeletonTheme>
-          </ThemeProvider>
+                <Layout
+                  navigation={navigation}
+                  setNavigation={setNavigation}
+                  darkMode={value}
+                  setDarkMode={toggle}
+                  user={data}
+                  error={error}
+                  {...pageProps}
+                >
+                  <Component user={data} {...pageProps} />
+                </Layout>
+              </SkeletonTheme>
+            </ThemeProvider>
+          </SWRConfig>
         </>
       )}
     </Provider>

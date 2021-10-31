@@ -378,8 +378,7 @@ const Home = () => {
   const [banner, setBanner] = useState(true);
   const [modal, setModal] = useState(false);
 
-  const router = useRouter();
-  if (router.query.callback) {
+  if (window.location.href?.includes('#')) {
     return <></>;
   }
 
@@ -387,14 +386,14 @@ const Home = () => {
     e.preventDefault();
     setApple(true);
     signIn('apple', {
-      callbackUrl: `${window.location.origin}/?callback=true`,
+      callbackUrl: `${window.location.origin}/#`,
     });
   };
   const handleGoogle = (e) => {
     e.preventDefault();
     setGoogle(true);
     signIn('google', {
-      callbackUrl: `${window.location.origin}/?callback=true`,
+      callbackUrl: `${window.location.origin}/#`,
     });
   };
 
