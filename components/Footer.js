@@ -51,7 +51,15 @@ const Footer = () => {
     <Container>
       <Content>
         <Items>
-          <FooterText>© 2021 Birthday Guy, LLC</FooterText>
+          <FooterText>
+            <a
+              href="https://birthdayguy.co"
+              rel="external nofollow noopener"
+              target="_blank"
+            >
+              © 2021 Birthday Guy, LLC
+            </a>
+          </FooterText>
         </Items>
         <Items>
           <Item onClick={() => Router.push('/faq')}>FAQs</Item>
