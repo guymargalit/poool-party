@@ -32,7 +32,7 @@ const Heading = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   position: absolute;
   background-color: ${({ theme }) => theme.bg.content};
-  padding: 0 35px;
+  padding: 0 10px;
 `;
 
 const Title = styled.div`
@@ -126,579 +126,450 @@ const Terms = () => {
           </Heading>
           <Content>
             <Text>Last updated: October 27, 2021</Text>
+
+            <Subtitle>OVERVIEW</Subtitle>
+
             <Text>
-              This Privacy Policy describes Our policies and procedures on the
-              collection, use and disclosure of Your information when You use
-              the Service and tells You about Your privacy rights and how the
-              law protects You.
+              This website is operated by Birthday Guy, LLC. Throughout the
+              site, the terms “we”, “us” and “our” refer to Birthday Guy, LLC.
+              Birthday Guy, LLC offers this website, including all information,
+              tools and services available from this site to you, the user,
+              conditioned upon your acceptance of all terms, conditions,
+              policies and notices stated here.
+            </Text>
+
+            <Text>
+              By visiting our site and/ or purchasing something from us, you
+              engage in our “Service” and agree to be bound by the following
+              terms and conditions (“Terms of Service”, “Terms”), including
+              those additional terms and conditions and policies referenced
+              herein and/or available by hyperlink. These Terms of Service apply
+              to all users of the site, including without limitation users who
+              are browsers, vendors, customers, merchants, and/ or contributors
+              of content. Please read these Terms of Service carefully before
+              accessing or using our website. By accessing or using any part of
+              the site, you agree to be bound by these Terms of Service. If you
+              do not agree to all the terms and conditions of this agreement,
+              then you may not access the website or use any services. If these
+              Terms of Service are considered an offer, acceptance is expressly
+              limited to these Terms of Service.
+            </Text>
+
+            <Text>
+              Any new features or tools which are added to the current store
+              shall also be subject to the Terms of Service. You can review the
+              most current version of the Terms of Service at any time on this
+              page. We reserve the right to update, change or replace any part
+              of these Terms of Service by posting updates and/or changes to our
+              website. It is your responsibility to check this page periodically
+              for changes. Your continued use of or access to the website
+              following the posting of any changes constitutes acceptance of
+              those changes. Our store is hosted on Shopify Inc. They provide us
+              with the online e-commerce platform that allows us to sell our
+              products and services to you.
+            </Text>
+
+            <Subtitle>SECTION 1 - ONLINE STORE TERMS</Subtitle>
+
+            <Text>
+              By agreeing to these Terms of Service, you represent that you are
+              at least the age of majority in your state or province of
+              residence, or that you are the age of majority in your state or
+              province of residence and you have given us your consent to allow
+              any of your minor dependents to use this site.
+            </Text>
+
+            <Text>
+              You may not use our products for any illegal or unauthorized
+              purpose nor may you, in the use of the Service, violate any laws
+              in your jurisdiction (including but not limited to copyright
+              laws).
+            </Text>
+
+            <Text>
+              You must not transmit any worms or viruses or any code of a
+              destructive nature.
+            </Text>
+
+            <Text>
+              A breach or violation of any of the Terms will result in an
+              immediate termination of your Services.
+            </Text>
+
+            <Subtitle>SECTION 2 - GENERAL CONDITIONS</Subtitle>
+
+            <Text>
+              We reserve the right to refuse service to anyone for any reason at
+              any time.
+            </Text>
+
+            <Text>
+              You understand that your content (not including credit card
+              information), may be transferred unencrypted and involve (a)
+              transmissions over various networks; and (b) changes to conform
+              and adapt to technical requirements of connecting networks or
+              devices. Credit card information is always encrypted during
+              transfer over networks.
+            </Text>
+
+            <Text>
+              You agree not to reproduce, duplicate, copy, sell, resell or
+              exploit any portion of the Service, use of the Service, or access
+              to the Service or any contact on the website through which the
+              service is provided, without express written permission by us.
+            </Text>
+
+            <Text>
+              The headings used in this agreement are included for convenience
+              only and will not limit or otherwise affect these Terms.
+            </Text>
+            <Subtitle>
+              SECTION 3 - ACCURACY, COMPLETENESS AND TIMELINESS OF INFORMATION
+            </Subtitle>
+
+            <Text>
+              We are not responsible if information made available on this site
+              is not accurate, complete or current. The material on this site is
+              provided for general information only and should not be relied
+              upon or used as the sole basis for making decisions without
+              consulting primary, more accurate, more complete or more timely
+              sources of information. Any reliance on the material on this site
+              is at your own risk.
+            </Text>
+
+            <Text>
+              This site may contain certain historical information. Historical
+              information, necessarily, is not current and is provided for your
+              reference only. We reserve the right to modify the contents of
+              this site at any time, but we have no obligation to update any
+              information on our site. You agree that it is your responsibility
+              to monitor changes to our site.
+            </Text>
+            <Subtitle>
+              SECTION 4 - MODIFICATIONS TO THE SERVICE AND PRICES
+            </Subtitle>
+
+            <Text>
+              Prices for our products are subject to change without notice.
+            </Text>
+
+            <Text>
+              We reserve the right at any time to modify or discontinue the
+              Service (or any part or content thereof) without notice at any
+              time.
+            </Text>
+
+            <Text>
+              We shall not be liable to you or to any third-party for any
+              modification, price change, suspension or discontinuance of the
+              Service.
+            </Text>
+            <Subtitle>
+              SECTION 5 - PRODUCTS OR SERVICES (if applicable)
+            </Subtitle>
+
+            <Text>
+              Certain products or services may be available exclusively online
+              through the website. These products or services may have limited
+              quantities and are subject to return or exchange only according to
+              our Return Policy.
+            </Text>
+
+            <Text>
+              We have made every effort to display as accurately as possible the
+              colors and images of our products that appear at the store. We
+              cannot guarantee that your computer monitor's display of any color
+              will be accurate.
             </Text>
             <Text>
-              We use Your Personal data to provide and improve the Service. By
-              using the Service, You agree to the collection and use of
-              information in accordance with this Privacy Policy.
+              We reserve the right, but are not obligated, to limit the sales of
+              our products or Services to any person, geographic region or
+              jurisdiction. We may exercise this right on a case-by-case basis.
+              We reserve the right to limit the quantities of any products or
+              services that we offer. All descriptions of products or product
+              pricing are subject to change at anytime without notice, at the
+              sole discretion of us. We reserve the right to discontinue any
+              product at any time. Any offer for any product or service made on
+              this site is void where prohibited.
             </Text>
-            <TextTitle>Interpretation and Definitions</TextTitle>
-            <Subtitle>Interpretation</Subtitle>
+
             <Text>
-              The words of which the initial letter is capitalized have meanings
-              defined under the following conditions. The following definitions
-              shall have the same meaning regardless of whether they appear in
-              singular or in plural.
+              We do not warrant that the quality of any products, services,
+              information, or other material purchased or obtained by you will
+              meet your expectations, or that any errors in the Service will be
+              corrected.
             </Text>
-            <Subtitle>Definitions</Subtitle>
-            <Text>For the purposes of this Privacy Policy:</Text>
-            <ul>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Account</strong> means a unique account created for
-                    You to access our Service or parts of our Service.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Company</strong> (referred to as either &quot;the
-                    Company&quot;, &quot;We&quot;, &quot;Us&quot; or
-                    &quot;Our&quot; in this Agreement) refers to Poool Party.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Cookies</strong> are small files that are placed on
-                    Your computer, mobile device or any other device by a
-                    website, containing the details of Your browsing history on
-                    that website among its many uses.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Country</strong> refers to: Colorado, United States
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Device</strong> means any device that can access the
-                    Service such as a computer, a cellphone or a digital tablet.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Personal Data</strong> is any information that
-                    relates to an identified or identifiable individual.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Service</strong> refers to the Website.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Service Provider</strong> means any natural or legal
-                    person who processes the data on behalf of the Company. It
-                    refers to third-party companies or individuals employed by
-                    the Company to facilitate the Service, to provide the
-                    Service on behalf of the Company, to perform services
-                    related to the Service or to assist the Company in analyzing
-                    how the Service is used.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Usage Data</strong> refers to data collected
-                    automatically, either generated by the use of the Service or
-                    from the Service infrastructure itself (for example, the
-                    duration of a page visit).
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Website</strong> refers to Poool Party, accessible
-                    from{' '}
-                    <a
-                      href="https://poool.party"
-                      rel="external nofollow noopener"
-                      target="_blank"
-                    >
-                      https://poool.party
-                    </a>
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>You</strong> means the individual accessing or using
-                    the Service, or the company, or other legal entity on behalf
-                    of which such individual is accessing or using the Service,
-                    as applicable.
-                  </Text>
-                </Text>
-              </li>
-            </ul>
-            <TextTitle>Collecting and Using Your Personal Data</TextTitle>
-            <Subtitle>Types of Data Collected</Subtitle>
-            <h3>Personal Data</h3>
+            <Subtitle>
+              SECTION 6 - ACCURACY OF BILLING AND ACCOUNT INFORMATION
+            </Subtitle>
             <Text>
-              While using Our Service, We may ask You to provide Us with certain
-              personally identifiable information that can be used to contact or
-              identify You. Personally identifiable information may include, but
-              is not limited to:
+              We reserve the right to refuse any order you place with us. We
+              may, in our sole discretion, limit or cancel quantities purchased
+              per person, per household or per order. These restrictions may
+              include orders placed by or under the same customer account, the
+              same credit card, and/or orders that use the same billing and/or
+              shipping address. In the event that we make a change to or cancel
+              an order, we may attempt to notify you by contacting the e-mail
+              and/or billing address/phone number provided at the time the order
+              was made. We reserve the right to limit or prohibit orders that,
+              in our sole judgment, appear to be placed by dealers, resellers or
+              distributors. You agree to provide current, complete and accurate
+              purchase and account information for all purchases made at our
+              store. You agree to promptly update your account and other
+              information, including your email address and credit card numbers
+              and expiration dates, so that we can complete your transactions
+              and contact you as needed.
             </Text>
-            <ul>
-              <li>
-                <Text>
-                  <Text>Email address</Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>First name and last name</Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>Usage Data</Text>
-                </Text>
-              </li>
-            </ul>
-            <h3>Usage Data</h3>
+            <Text>For more detail, please review our Returns Policy. </Text>
+            <Subtitle>SECTION 7 - OPTIONAL TOOLS</Subtitle>
             <Text>
-              Usage Data is collected automatically when using the Service.
+              We may provide you with access to third-party tools over which we
+              neither monitor nor have any control nor input.
             </Text>
             <Text>
-              Usage Data may include information such as Your Device's Internet
-              Protocol address (e.g. IP address), browser type, browser version,
-              the pages of our Service that You visit, the time and date of Your
-              visit, the time spent on those pages, unique device identifiers
-              and other diagnostic data.
+              You acknowledge and agree that we provide access to such tools ”as
+              is” and “as available” without any warranties, representations or
+              conditions of any kind and without any endorsement. We shall have
+              no liability whatsoever arising from or relating to your use of
+              optional third-party tools.
             </Text>
             <Text>
-              When You access the Service by or through a mobile device, We may
-              collect certain information automatically, including, but not
-              limited to, the type of mobile device You use, Your mobile device
-              unique ID, the IP address of Your mobile device, Your mobile
-              operating system, the type of mobile Internet browser You use,
-              unique device identifiers and other diagnostic data.
+              Any use by you of optional tools offered through the site is
+              entirely at your own risk and discretion and you should ensure
+              that you are familiar with and approve of the terms on which tools
+              are provided by the relevant third-party provider(s).
             </Text>
             <Text>
-              We may also collect information that Your browser sends whenever
-              You visit our Service or when You access the Service by or through
-              a mobile device.
-            </Text>
-            <h3>Tracking Technologies and Cookies</h3>
-            <Text>
-              We use Cookies and similar tracking technologies to track the
-              activity on Our Service and store certain information. Tracking
-              technologies used are beacons, tags, and scripts to collect and
-              track information and to improve and analyze Our Service. The
-              technologies We use may include:
-            </Text>
-            <ul>
-              <li>
-                <Text>
-                  <strong>Cookies or Browser Cookies.</strong> A cookie is a
-                  small file placed on Your Device. You can instruct Your
-                  browser to refuse all Cookies or to indicate when a Cookie is
-                  being sent. However, if You do not accept Cookies, You may not
-                  be able to use some parts of our Service. Unless you have
-                  adjusted Your browser setting so that it will refuse Cookies,
-                  our Service may use Cookies.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>Web Beacons.</strong> Certain sections of our Service
-                  and our emails may contain small electronic files known as web
-                  beacons (also referred to as clear gifs, pixel tags, and
-                  single-pixel gifs) that permit the Company, for example, to
-                  count users who have visited those pages or opened an email
-                  and for other related website statistics (for example,
-                  recording the popularity of a certain section and verifying
-                  system and server integrity).
-                </Text>
-              </li>
-            </ul>
-            <Text>
-              Cookies can be &quot;Persistent&quot; or &quot;Session&quot;
-              Cookies. Persistent Cookies remain on Your personal computer or
-              mobile device when You go offline, while Session Cookies are
-              deleted as soon as You close Your web browser. You can learn more
-              about cookies here:{' '}
-              <a
-                href="https://www.termsfeed.com/privacy-policy-generator/#faq-8"
-                target="_blank"
-              >
-                Cookies by TermsFeed Generator
-              </a>
-              .
+              We may also, in the future, offer new services and/or features
+              through the website (including, the release of new tools and
+              resources). Such new features and/or services shall also be
+              subject to these Terms of Service. SECTION 8 - THIRD-PARTY LINKS
             </Text>
             <Text>
-              We use both Session and Persistent Cookies for the purposes set
-              out below:
-            </Text>
-            <ul>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Necessary / Essential Cookies</strong>
-                  </Text>
-                  <Text>Type: Session Cookies</Text>
-                  <Text>Administered by: Us</Text>
-                  <Text>
-                    Purpose: These Cookies are essential to provide You with
-                    services available through the Website and to enable You to
-                    use some of its features. They help to authenticate users
-                    and prevent fraudulent use of user accounts. Without these
-                    Cookies, the services that You have asked for cannot be
-                    provided, and We only use these Cookies to provide You with
-                    those services.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Cookies Policy / Notice Acceptance Cookies</strong>
-                  </Text>
-                  <Text>Type: Persistent Cookies</Text>
-                  <Text>Administered by: Us</Text>
-                  <Text>
-                    Purpose: These Cookies identify if users have accepted the
-                    use of cookies on the Website.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>Functionality Cookies</strong>
-                  </Text>
-                  <Text>Type: Persistent Cookies</Text>
-                  <Text>Administered by: Us</Text>
-                  <Text>
-                    Purpose: These Cookies allow us to remember choices You make
-                    when You use the Website, such as remembering your login
-                    details or language preference. The purpose of these Cookies
-                    is to provide You with a more personal experience and to
-                    avoid You having to re-enter your preferences every time You
-                    use the Website.
-                  </Text>
-                </Text>
-              </li>
-            </ul>
-            <Text>
-              For more information about the cookies we use and your choices
-              regarding cookies, please visit our Cookies Policy or the Cookies
-              section of our Privacy Policy.
-            </Text>
-            <Subtitle>Use of Your Personal Data</Subtitle>
-            <Text>
-              The Company may use Personal Data for the following purposes:
-            </Text>
-            <ul>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>To provide and maintain our Service</strong>,
-                    including to monitor the usage of our Service.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>To manage Your Account:</strong> to manage Your
-                    registration as a user of the Service. The Personal Data You
-                    provide can give You access to different functionalities of
-                    the Service that are available to You as a registered user.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>For the performance of a contract:</strong> the
-                    development, compliance and undertaking of the purchase
-                    contract for the products, items or services You have
-                    purchased or of any other contract with Us through the
-                    Service.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>To contact You:</strong> To contact You by email or
-                    other equivalent forms of electronic communication, such as
-                    a web application's push notifications regarding updates or
-                    informative communications related to the functionalities,
-                    products or contracted services, including the security
-                    updates, when necessary or reasonable for their
-                    implementation.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>To provide You</strong> with news, special offers
-                    and general information about other goods, services and
-                    events which we offer that are similar to those that you
-                    have already purchased or enquired about unless You have
-                    opted not to receive such information.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>To manage Your requests:</strong> To attend and
-                    manage Your requests to Us.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>For business transfers:</strong> We may use Your
-                    information to evaluate or conduct a merger, divestiture,
-                    restructuring, reorganization, dissolution, or other sale or
-                    transfer of some or all of Our assets, whether as a going
-                    concern or as part of bankruptcy, liquidation, or similar
-                    proceeding, in which Personal Data held by Us about our
-                    Service users is among the assets transferred.
-                  </Text>
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <Text>
-                    <strong>For other purposes</strong>: We may use Your
-                    information for other purposes, such as data analysis,
-                    identifying usage trends, determining the effectiveness of
-                    our promotional campaigns and to evaluate and improve our
-                    Service, products, services, marketing and your experience.
-                  </Text>
-                </Text>
-              </li>
-            </ul>
-            <Text>
-              We may share Your personal information in the following
-              situations:
-            </Text>
-            <ul>
-              <li>
-                <Text>
-                  <strong>With Service Providers:</strong> We may share Your
-                  personal information with Service Providers to monitor and
-                  analyze the use of our Service, to contact You.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>For business transfers:</strong> We may share or
-                  transfer Your personal information in connection with, or
-                  during negotiations of, any merger, sale of Company assets,
-                  financing, or acquisition of all or a portion of Our business
-                  to another company.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>With Affiliates:</strong> We may share Your
-                  information with Our affiliates, in which case we will require
-                  those affiliates to honor this Privacy Policy. Affiliates
-                  include Our parent company and any other subsidiaries, joint
-                  venture partners or other companies that We control or that
-                  are under common control with Us.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>With business partners:</strong> We may share Your
-                  information with Our business partners to offer You certain
-                  products, services or promotions.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>With other users:</strong> when You share personal
-                  information or otherwise interact in the public areas with
-                  other users, such information may be viewed by all users and
-                  may be publicly distributed outside.
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  <strong>With Your consent</strong>: We may disclose Your
-                  personal information for any other purpose with Your consent.
-                </Text>
-              </li>
-            </ul>
-            <Subtitle>Retention of Your Personal Data</Subtitle>
-            <Text>
-              The Company will retain Your Personal Data only for as long as is
-              necessary for the purposes set out in this Privacy Policy. We will
-              retain and use Your Personal Data to the extent necessary to
-              comply with our legal obligations (for example, if we are required
-              to retain your data to comply with applicable laws), resolve
-              disputes, and enforce our legal agreements and policies.
+              Certain content, products and services available via our Service
+              may include materials from third-parties.
             </Text>
             <Text>
-              The Company will also retain Usage Data for internal analysis
-              purposes. Usage Data is generally retained for a shorter period of
-              time, except when this data is used to strengthen the security or
-              to improve the functionality of Our Service, or We are legally
-              obligated to retain this data for longer time periods.
-            </Text>
-            <Subtitle>Transfer of Your Personal Data</Subtitle>
-            <Text>
-              Your information, including Personal Data, is processed at the
-              Company's operating offices and in any other places where the
-              parties involved in the processing are located. It means that this
-              information may be transferred to — and maintained on — computers
-              located outside of Your state, province, country or other
-              governmental jurisdiction where the data protection laws may
-              differ than those from Your jurisdiction.
+              Third-party links on this site may direct you to third-party
+              websites that are not affiliated with us. We are not responsible
+              for examining or evaluating the content or accuracy and we do not
+              warrant and will not have any liability or responsibility for any
+              third-party materials or websites, or for any other materials,
+              products, or services of third-parties.
             </Text>
             <Text>
-              Your consent to this Privacy Policy followed by Your submission of
-              such information represents Your agreement to that transfer.
+              We are not liable for any harm or damages related to the purchase
+              or use of goods, services, resources, content, or any other
+              transactions made in connection with any third-party websites.
+              Please review carefully the third-party's policies and practices
+              and make sure you understand them before you engage in any
+              transaction. Complaints, claims, concerns, or questions regarding
+              third-party products should be directed to the third-party.
+              SECTION 9 - USER COMMENTS, FEEDBACK AND OTHER SUBMISSIONS
             </Text>
             <Text>
-              The Company will take all steps reasonably necessary to ensure
-              that Your data is treated securely and in accordance with this
-              Privacy Policy and no transfer of Your Personal Data will take
-              place to an organization or a country unless there are adequate
-              controls in place including the security of Your data and other
-              personal information.
+              If, at our request, you send certain specific submissions (for
+              example contest entries) or without a request from us you send
+              creative ideas, suggestions, proposals, plans, or other materials,
+              whether online, by email, by postal mail, or otherwise
+              (collectively, 'comments'), you agree that we may, at any time,
+              without restriction, edit, copy, publish, distribute, translate
+              and otherwise use in any medium any comments that you forward to
+              us. We are and shall be under no obligation (1) to maintain any
+              comments in confidence; (2) to pay compensation for any comments;
+              or (3) to respond to any comments. We may, but have no obligation
+              to, monitor, edit or remove content that we determine in our sole
+              discretion are unlawful, offensive, threatening, libelous,
+              defamatory, pornographic, obscene or otherwise objectionable or
+              violates any party’s intellectual property or these Terms of
+              Service. You agree that your comments will not violate any right
+              of any third-party, including copyright, trademark, privacy,
+              personality or other personal or proprietary right. You further
+              agree that your comments will not contain libelous or otherwise
+              unlawful, abusive or obscene material, or contain any computer
+              virus or other malware that could in any way affect the operation
+              of the Service or any related website. You may not use a false
+              e-mail address, pretend to be someone other than yourself, or
+              otherwise mislead us or third-parties as to the origin of any
+              comments. You are solely responsible for any comments you make and
+              their accuracy. We take no responsibility and assume no liability
+              for any comments posted by you or any third-party.
             </Text>
-            <Subtitle>Disclosure of Your Personal Data</Subtitle>
-            <h3>Business Transactions</h3>
+            <Subtitle>SECTION 10 - PERSONAL INFORMATION</Subtitle>
             <Text>
-              If the Company is involved in a merger, acquisition or asset sale,
-              Your Personal Data may be transferred. We will provide notice
-              before Your Personal Data is transferred and becomes subject to a
-              different Privacy Policy.
+              Your submission of personal information through the store is
+              governed by our Privacy Policy. To view our Privacy Policy.{' '}
             </Text>
-            <h3>Law enforcement</h3>
+            <Subtitle>SECTION 11 - ERRORS, INACCURACIES AND OMISSIONS</Subtitle>
+
             <Text>
-              Under certain circumstances, the Company may be required to
-              disclose Your Personal Data if required to do so by law or in
-              response to valid requests by public authorities (e.g. a court or
-              a government agency).
-            </Text>
-            <h3>Other legal requirements</h3>
-            <Text>
-              The Company may disclose Your Personal Data in the good faith
-              belief that such action is necessary to:
-            </Text>
-            <ul>
-              <li>
-                <Text>Comply with a legal obligation</Text>
-              </li>
-              <li>
-                <Text>
-                  Protect and defend the rights or property of the Company
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  Prevent or investigate possible wrongdoing in connection with
-                  the Service
-                </Text>
-              </li>
-              <li>
-                <Text>
-                  Protect the personal safety of Users of the Service or the
-                  public
-                </Text>
-              </li>
-              <li>
-                <Text>Protect against legal liability</Text>
-              </li>
-            </ul>
-            <Subtitle>Security of Your Personal Data</Subtitle>
-            <Text>
-              The security of Your Personal Data is important to Us, but
-              remember that no method of transmission over the Internet, or
-              method of electronic storage is 100% secure. While We strive to
-              use commercially acceptable means to protect Your Personal Data,
-              We cannot guarantee its absolute security.
-            </Text>
-            <TextTitle>Children's Privacy</TextTitle>
-            <Text>
-              Our Service does not address anyone under the age of 13. We do not
-              knowingly collect personally identifiable information from anyone
-              under the age of 13. If You are a parent or guardian and You are
-              aware that Your child has provided Us with Personal Data, please
-              contact Us. If We become aware that We have collected Personal
-              Data from anyone under the age of 13 without verification of
-              parental consent, We take steps to remove that information from
-              Our servers.
+              Occasionally there may be information on our site or in the
+              Service that contains typographical errors, inaccuracies or
+              omissions that may relate to product descriptions, pricing,
+              promotions, offers, product shipping charges, transit times and
+              availability. We reserve the right to correct any errors,
+              inaccuracies or omissions, and to change or update information or
+              cancel orders if any information in the Service or on any related
+              website is inaccurate at any time without prior notice (including
+              after you have submitted your order).
             </Text>
             <Text>
-              If We need to rely on consent as a legal basis for processing Your
-              information and Your country requires consent from a parent, We
-              may require Your parent's consent before We collect and use that
-              information.
+              We undertake no obligation to update, amend or clarify information
+              in the Service or on any related website, including without
+              limitation, pricing information, except as required by law. No
+              specified update or refresh date applied in the Service or on any
+              related website, should be taken to indicate that all information
+              in the Service or on any related website has been modified or
+              updated.{' '}
             </Text>
-            <TextTitle>Links to Other Websites</TextTitle>
+            <Subtitle> SECTION 12 - PROHIBITED USES</Subtitle>
             <Text>
-              Our Service may contain links to other websites that are not
-              operated by Us. If You click on a third party link, You will be
-              directed to that third party's site. We strongly advise You to
-              review the Privacy Policy of every site You visit.
+              In addition to other prohibitions as set forth in the Terms of
+              Service, you are prohibited from using the site or its content:
+              (a) for any unlawful purpose; (b) to solicit others to perform or
+              participate in any unlawful acts; (c) to violate any
+              international, federal, provincial or state regulations, rules,
+              laws, or local ordinances; (d) to infringe upon or violate our
+              intellectual property rights or the intellectual property rights
+              of others; (e) to harass, abuse, insult, harm, defame, slander,
+              disparage, intimidate, or discriminate based on gender, sexual
+              orientation, religion, ethnicity, race, age, national origin, or
+              disability; (f) to submit false or misleading information; (g) to
+              upload or transmit viruses or any other type of malicious code
+              that will or may be used in any way that will affect the
+              functionality or operation of the Service or of any related
+              website, other websites, or the Internet; (h) to collect or track
+              the personal information of others; (i) to spam, phish, pharm,
+              pretext, spider, crawl, or scrape; (j) for any obscene or immoral
+              purpose; or (k) to interfere with or circumvent the security
+              features of the Service or any related website, other websites, or
+              the Internet. We reserve the right to terminate your use of the
+              Service or any related website for violating any of the prohibited
+              uses. SECTION 13 - DISCLAIMER OF WARRANTIES; LIMITATION OF
+              LIABILITY
             </Text>
             <Text>
-              We have no control over and assume no responsibility for the
-              content, privacy policies or practices of any third party sites or
-              services.
-            </Text>
-            <TextTitle>Changes to this Privacy Policy</TextTitle>
-            <Text>
-              We may update Our Privacy Policy from time to time. We will notify
-              You of any changes by posting the new Privacy Policy on this page.
+              We do not guarantee, represent or warrant that your use of our
+              service will be uninterrupted, timely, secure or error-free.
             </Text>
             <Text>
-              We will let You know via email and/or a prominent notice on Our
-              Service, prior to the change becoming effective and update the
-              &quot;Last updated&quot; date at the top of this Privacy Policy.
+              We do not warrant that the results that may be obtained from the
+              use of the service will be accurate or reliable.
             </Text>
             <Text>
-              You are advised to review this Privacy Policy periodically for any
-              changes. Changes to this Privacy Policy are effective when they
-              are posted on this page.
+              You agree that from time to time we may remove the service for
+              indefinite periods of time or cancel the service at any time,
+              without notice to you. You expressly agree that your use of, or
+              inability to use, the service is at your sole risk. The service
+              and all products and services delivered to you through the service
+              are (except as expressly stated by us) provided 'as is' and 'as
+              available' for your use, without any representation, warranties or
+              conditions of any kind, either express or implied, including all
+              implied warranties or conditions of merchantability, merchantable
+              quality, fitness for a particular purpose, durability, title, and
+              non-infringement. In no case shall Birthday Guy, LLC, our
+              directors, officers, employees, affiliates, agents, contractors,
+              interns, suppliers, service providers or licensors be liable for
+              any injury, loss, claim, or any direct, indirect, incidental,
+              punitive, special, or consequential damages of any kind,
+              including, without limitation lost profits, lost revenue, lost
+              savings, loss of data, replacement costs, or any similar damages,
+              whether based in contract, tort (including negligence), strict
+              liability or otherwise, arising from your use of any of the
+              service or any products procured using the service, or for any
+              other claim related in any way to your use of the service or any
+              product, including, but not limited to, any errors or omissions in
+              any content, or any loss or damage of any kind incurred as a
+              result of the use of the service or any content (or product)
+              posted, transmitted, or otherwise made available via the service,
+              even if advised of their possibility. Because some states or
+              jurisdictions do not allow the exclusion or the limitation of
+              liability for consequential or incidental damages, in such states
+              or jurisdictions, our liability shall be limited to the maximum
+              extent permitted by law.
             </Text>
-            <TextTitle>Contact Us</TextTitle>
+            <Subtitle>SECTION 14 - INDEMNIFICATION</Subtitle>
             <Text>
-              If you have any questions about this Privacy Policy, You can
-              contact us:
+              You agree to indemnify, defend and hold harmless Birthday Guy, LLC
+              and our parent, subsidiaries, affiliates, partners, officers,
+              directors, agents, contractors, licensors, service providers,
+              subcontractors, suppliers, interns and employees, harmless from
+              any claim or demand, including reasonable attorneys’ fees, made by
+              any third-party due to or arising out of your breach of these
+              Terms of Service or the documents they incorporate by reference,
+              or your violation of any law or the rights of a third-party.
             </Text>
-            <ul>
-              <li>
-                <Text>By email: privacy@poool.party</Text>
-              </li>
-            </ul>
+            <Subtitle>SECTION 15 - SEVERABILITY</Subtitle>
+
+            <Text>
+              In the event that any provision of these Terms of Service is
+              determined to be unlawful, void or unenforceable, such provision
+              shall nonetheless be enforceable to the fullest extent permitted
+              by applicable law, and the unenforceable portion shall be deemed
+              to be severed from these Terms of Service, such determination
+              shall not affect the validity and enforceability of any other
+              remaining provisions.
+            </Text>
+            <Subtitle>SECTION 16 - TERMINATION</Subtitle>
+            <Text>
+              The obligations and liabilities of the parties incurred prior to
+              the termination date shall survive the termination of this
+              agreement for all purposes.
+            </Text>
+            <Text>
+              These Terms of Service are effective unless and until terminated
+              by either you or us. You may terminate these Terms of Service at
+              any time by notifying us that you no longer wish to use our
+              Services, or when you cease using our site. If in our sole
+              judgment you fail, or we suspect that you have failed, to comply
+              with any term or provision of these Terms of Service, we also may
+              terminate this agreement at any time without notice and you will
+              remain liable for all amounts due up to and including the date of
+              termination; and/or accordingly may deny you access to our
+              Services (or any part thereof).
+            </Text>
+            <Subtitle>SECTION 17 - ENTIRE AGREEMENT</Subtitle>
+            <Text>
+              The failure of us to exercise or enforce any right or provision of
+              these Terms of Service shall not constitute a waiver of such right
+              or provision.
+            </Text>
+            <Text>
+              These Terms of Service and any policies or operating rules posted
+              by us on this site or in respect to The Service constitutes the
+              entire agreement and understanding between you and us and govern
+              your use of the Service, superseding any prior or contemporaneous
+              agreements, communications and proposals, whether oral or written,
+              between you and us (including, but not limited to, any prior
+              versions of the Terms of Service). Any ambiguities in the
+              interpretation of these Terms of Service shall not be construed
+              against the drafting party.
+            </Text>
+            <Subtitle>SECTION 18 - GOVERNING LAW</Subtitle>
+            <Text>
+              These Terms of Service and any separate agreements whereby we
+              provide you Services shall be governed by and construed in
+              accordance with the laws of 4165 Cooper Ct, Boulder, CO, 80303,
+              United States.
+            </Text>
+            <Subtitle>SECTION 19 - CHANGES TO TERMS OF SERVICE</Subtitle>
+            <Text>
+              You can review the most current version of the Terms of Service at
+              any time at this page.
+            </Text>
+            <Text>
+              We reserve the right, at our sole discretion, to update, change or
+              replace any part of these Terms of Service by posting updates and
+              changes to our website. It is your responsibility to check our
+              website periodically for changes. Your continued use of or access
+              to our website or the Service following the posting of any changes
+              to these Terms of Service constitutes acceptance of those changes.
+            </Text>
+            <Subtitle>SECTION 20 - CONTACT INFORMATION</Subtitle>
+            <Text>
+              Questions about the Terms of Service should be sent to us at
+              terms@poool.party.
+            </Text>
           </Content>
         </WrapContent>
       </Panel>

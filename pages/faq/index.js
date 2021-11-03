@@ -32,7 +32,7 @@ const Heading = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   position: absolute;
   background-color: ${({ theme }) => theme.bg.content};
-  padding: 0 35px;
+  padding: 0 10px;
 `;
 
 const Title = styled.div`
