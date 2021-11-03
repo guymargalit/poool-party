@@ -76,7 +76,7 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  padding: 65px 15px 20px;
+  padding: 85px 15px 20px;
   color: ${({ theme }) => theme.text.primary};
   font-size: 18px;
 `;
@@ -125,8 +125,6 @@ const Terms = () => {
             <Title>Terms and Conditions</Title>
           </Heading>
           <Content>
-            <Text>Last updated: October 27, 2021</Text>
-
             <Subtitle>OVERVIEW</Subtitle>
 
             <Text>
