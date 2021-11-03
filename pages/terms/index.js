@@ -113,7 +113,7 @@ const Panel = styled.div`
   }
 `;
 
-const Privacy = () => {
+const Terms = () => {
   return (
     <Container>
       <Header>
@@ -122,7 +122,7 @@ const Privacy = () => {
       <Panel>
         <WrapContent>
           <Heading>
-            <Title>Privacy Policy</Title>
+            <Title>Terms and Conditions</Title>
           </Heading>
           <Content>
             <Text>Last updated: October 27, 2021</Text>
@@ -707,4 +707,4 @@ const Privacy = () => {
   );
 };
 
-export default Privacy;
+export default Terms;
