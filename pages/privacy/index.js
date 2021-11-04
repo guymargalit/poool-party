@@ -232,7 +232,7 @@ const Privacy = () => {
           </Content>
         </WrapContent>
       </Panel>
-      <Footer />
+      <Footer fixed />
     </Container>
   );
 };

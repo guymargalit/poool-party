@@ -571,7 +571,7 @@ const Terms = () => {
           </Content>
         </WrapContent>
       </Panel>
-      <Footer />
+      <Footer fixed />
     </Container>
   );
 };

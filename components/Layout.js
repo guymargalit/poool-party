@@ -14,9 +14,10 @@ import Tooltip from './Tooltip';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   width: 100%;
   min-height: 100%;
+  min-height: 100vh;
   z-index: 1;
   margin-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
@@ -443,7 +444,7 @@ const Layout = (props) => {
   }
 
   return (
-    <Container>
+    <Container fixed={router.pathname !== '/'}>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
           <Venmo

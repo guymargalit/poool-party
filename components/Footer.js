@@ -8,7 +8,7 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 50px;
-  position: fixed;
+  position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.sky};
   padding: 0 20px;
@@ -46,9 +46,9 @@ const FooterText = styled.div`
   font-weight: 600;
 `;
 
-const Footer = () => {
+const Footer = ({ fixed }) => {
   return (
-    <Container>
+    <Container fixed={fixed}>
       <Content>
         <Items>
           <FooterText>

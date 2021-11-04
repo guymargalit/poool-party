@@ -19,26 +19,28 @@ const Container = styled.div`
   justify-content: flex-start;
   flex: 1;
   z-index: 4;
-  overflow: hidden;
+  overflow-y: auto;
+  height: 100vh;
 `;
 
 const Header = styled.div`
   display: flex;
   width: 100%;
   top: 0;
-  position: fixed;
+  position: absolute;
 `;
 
 const Hero = styled.div`
   display: flex;
   flex-direction: column;
-  left: 100px;
-  position: absolute;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0 35px;
   @media (max-width: 675px) {
-    position: relative;
-    left: 0px;
+    align-items: center;
   }
+  padding-bottom: 10px;
 `;
 
 const Content = styled.div`
@@ -72,17 +74,9 @@ const dash = keyframes`
   }
 `;
 
-const Title = styled.div`
-  text-align: center;
-  font-size: 50px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.white};
-  @media (max-width: 675px) {
-    margin-top: 10%;
-  }
-`;
+const WrapTitleLogo = styled.div``;
 
-const Subtitle = styled.div`
+const Title = styled.div`
   text-align: left;
   font-size: 50px;
   width: 450px;
@@ -95,12 +89,24 @@ const Subtitle = styled.div`
   }
 `;
 
+const Subtitle = styled.div`
+  font-size: 20px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const Text = styled.div`
+  font-size: 15px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
 const Caption = styled.div`
   text-align: left;
   font-size: 16px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
-  margin: 20px;
+  margin: 20px 0;
   max-width: 450px;
   @media (max-width: 675px) {
     text-align: center;
@@ -274,11 +280,11 @@ const TitleLogo = styled(Logo)`
 `;
 
 const WrapLogo = styled(Logo)`
-  height: 60px;
-  margin: 20px 25px;
+  height: ${({ header }) => (header ? '50px' : '60px')};
+  margin: ${({ header }) => (header ? '15px 20px' : '20px 25px')};
   @media (max-width: 675px) {
-    height: 50px;
-    margin: 15px 20px;
+    height: ${({ header }) => (header ? '40px' : '50px')};
+    margin: ${({ header }) => (header ? '15px 20px' : '15px 20px')};
   }
   transition: all 0.25s ease 0s;
   cursor: pointer;
@@ -347,6 +353,30 @@ const Modal = styled.div`
   padding: 15px;
 `;
 
+const Items = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  height: 300px;
+  @media (max-width: 675px) {
+    align-items: center;
+    flex-direction: column;
+    height: 500px;
+  }
+`;
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: 675px) {
+    height: 100px;
+  }
+  max-width: 250px;
+  text-align: center;
+`;
+
 const Home = () => {
   const [apple, setApple] = useState(false);
   const [google, setGoogle] = useState(false);
@@ -394,72 +424,96 @@ const Home = () => {
 
   if (!isInStandaloneMode()) {
     return (
-      <Container>
-        {typeof window !== 'undefined' && isIos() && banner && (
-          <Banner>
-            <Left>
-              <Close onClick={() => setBanner(false)} />
-              <Icon src={'/favicon.png'} />
-              <Info>
-                <AppTitle>Poool Party</AppTitle>
-                <AppDescription>Add to Home Screen</AppDescription>
-              </Info>
-            </Left>
-            <Right>
-              <GetButton onClick={() => setModal(true)}>Get</GetButton>
-            </Right>
-          </Banner>
-        )}
-        <Header>
-          <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
-        </Header>
-        <Hero>
-          <Subtitle>Make a splash.</Subtitle>
-          <Caption>
-            Poool Party lets you send Venmos to your friends, with easy
-            splitting and monthly requests.
-          </Caption>
-          <Button onClick={handleApple}>
-            <AppleIcon />
-            Sign In with Apple
-            {apple ? (
-              <Svg viewBox="0 0 50 50">
-                <Circle cx="25" cy="25" r="20"></Circle>
-              </Svg>
-            ) : (
-              <Empty />
-            )}
-          </Button>
-          <Button onClick={handleGoogle}>
-            <GoogleIcon />
-            Sign In with Google
-            {google ? (
-              <Svg viewBox="0 0 50 50">
-                <Circle cx="25" cy="25" r="20"></Circle>
-              </Svg>
-            ) : (
-              <Empty />
-            )}
-          </Button>
-        </Hero>
+      <>
+        <Container>
+          {typeof window !== 'undefined' && isIos() && banner && (
+            <Banner>
+              <Left>
+                <Close onClick={() => setBanner(false)} />
+                <Icon src={'/favicon.png'} />
+                <Info>
+                  <AppTitle>Poool Party</AppTitle>
+                  <AppDescription>Add to Home Screen</AppDescription>
+                </Info>
+              </Left>
+              <Right>
+                <GetButton onClick={() => setModal(true)}>Get</GetButton>
+              </Right>
+            </Banner>
+          )}
+          <Header>
+            <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
+          </Header>
+          <Hero>
+            <Title>Make a splash.</Title>
+            <Caption>
+              Poool Party lets you send Venmos to your friends, with easy
+              splitting and monthly requests.
+            </Caption>
+            <Button onClick={handleApple}>
+              <AppleIcon />
+              Sign In with Apple
+              {apple ? (
+                <Svg viewBox="0 0 50 50">
+                  <Circle cx="25" cy="25" r="20"></Circle>
+                </Svg>
+              ) : (
+                <Empty />
+              )}
+            </Button>
+            <Button onClick={handleGoogle}>
+              <GoogleIcon />
+              Sign In with Google
+              {google ? (
+                <Svg viewBox="0 0 50 50">
+                  <Circle cx="25" cy="25" r="20"></Circle>
+                </Svg>
+              ) : (
+                <Empty />
+              )}
+            </Button>
+          </Hero>
+          <Items>
+            <Item>
+              <Subtitle>Easy Splitting</Subtitle>
+              <Text>
+                Seamlessly split your dinner bill and share the link with your
+                guests.
+              </Text>
+            </Item>
+            <Item>
+              <Subtitle>Monthly Requests</Subtitle>
+              <Text>
+                Set a Venmo request to repeat weekly or monthly. Great for
+                subscriptions!
+              </Text>
+            </Item>
+
+            <Item>
+              <Subtitle>Venmo Integration</Subtitle>
+              <Text>If your friends have Venmo, they have Poool Party!</Text>
+            </Item>
+          </Items>
+
+          <WrapModal onClick={() => setModal(false)} modal={modal}>
+            <Modal modal={modal}>
+              <Step>
+                1. Open <Share /> on the bottom of Safari
+              </Step>
+              <Step>2. Scroll down and "Add to Home Screen"</Step>
+            </Modal>
+          </WrapModal>
+        </Container>
         <Footer />
-        <WrapModal onClick={() => setModal(false)} modal={modal}>
-          <Modal modal={modal}>
-            <Step>
-              1. Open <Share /> on the bottom of Safari
-            </Step>
-            <Step>2. Scroll down and "Add to Home Screen"</Step>
-          </Modal>
-        </WrapModal>
-      </Container>
+      </>
     );
   }
   if (isInStandaloneMode()) {
     return (
       <Content>
-        <Title>
+        <WrapTitleLogo>
           <TitleLogo />
-        </Title>
+        </WrapTitleLogo>
         <Button onClick={handleApple}>
           <AppleIcon />
           Continue with Apple

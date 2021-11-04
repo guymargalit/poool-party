@@ -129,7 +129,7 @@ const FAQ = () => {
           </Content>
         </WrapContent>
       </Panel>
-      <Footer />
+      <Footer fixed />
     </Container>
   );
 };
