@@ -132,7 +132,7 @@ const Banner = styled.div`
   height: 65px;
   user-select: none;
   bottom: 0;
-  position: absolute;
+  position: fixed;
   background-color: ${({ theme }) => theme.bg.content};
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
     0px 2px 10px 0px rgba(0, 0, 0, 0.08);
@@ -425,22 +425,22 @@ const Home = () => {
   if (!isInStandaloneMode()) {
     return (
       <>
+        {typeof window !== 'undefined' && isIos() && banner && (
+          <Banner>
+            <Left>
+              <Close onClick={() => setBanner(false)} />
+              <Icon src={'/favicon.png'} />
+              <Info>
+                <AppTitle>Poool Party</AppTitle>
+                <AppDescription>Add to Home Screen</AppDescription>
+              </Info>
+            </Left>
+            <Right>
+              <GetButton onClick={() => setModal(true)}>Get</GetButton>
+            </Right>
+          </Banner>
+        )}
         <Container>
-          {typeof window !== 'undefined' && isIos() && banner && (
-            <Banner>
-              <Left>
-                <Close onClick={() => setBanner(false)} />
-                <Icon src={'/favicon.png'} />
-                <Info>
-                  <AppTitle>Poool Party</AppTitle>
-                  <AppDescription>Add to Home Screen</AppDescription>
-                </Info>
-              </Left>
-              <Right>
-                <GetButton onClick={() => setModal(true)}>Get</GetButton>
-              </Right>
-            </Banner>
-          )}
           <Header>
             <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
           </Header>

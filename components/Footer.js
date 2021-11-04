@@ -12,6 +12,7 @@ const Container = styled.div`
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.sky};
   padding: 0 20px;
+  z-index: 10;
 `;
 
 const Content = styled.div`
