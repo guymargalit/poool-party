@@ -20,7 +20,9 @@ const Container = styled.div`
   flex: 1;
   z-index: 4;
   overflow-y: auto;
+  overflow-x: hidden;
   height: 100vh;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -41,7 +43,7 @@ const Hero = styled.div`
   height: 400px;
   @media (max-width: 675px) {
     align-items: center;
-    height: 300px;
+    height: 250px;
   }
 `;
 
