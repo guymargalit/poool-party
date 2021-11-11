@@ -37,10 +37,12 @@ const Hero = styled.div`
   justify-content: flex-start;
   width: 100%;
   padding: 0 35px;
+  padding-bottom: 10px;
+  height: 400px;
   @media (max-width: 675px) {
     align-items: center;
+    height: 300px;
   }
-  padding-bottom: 10px;
 `;
 
 const Content = styled.div`
@@ -473,7 +475,7 @@ const Home = () => {
               )}
             </Button>
           </Hero>
-          <Items>
+          {/* <Items>
             <Item>
               <Subtitle>Easy Splitting</Subtitle>
               <Text>
@@ -493,7 +495,7 @@ const Home = () => {
               <Subtitle>Venmo Integration</Subtitle>
               <Text>If your friends have Venmo, they have Poool Party!</Text>
             </Item>
-          </Items>
+          </Items> */}
 
           <WrapModal onClick={() => setModal(false)} modal={modal}>
             <Modal modal={modal}>

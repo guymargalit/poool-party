@@ -20,6 +20,10 @@ const Content = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  @media (max-width: 420px) {
+    flex-direction: column-reverse;
+    justify-content: center;
+  }
 `;
 
 const Items = styled.div`
@@ -64,6 +68,13 @@ const Footer = ({ fixed }) => {
         </Items>
         <Items>
           <Item onClick={() => Router.push('/faq')}>FAQs</Item>
+          <Item><a
+              href="mailto:help@poool.party"
+              rel="external nofollow noopener"
+              target="_blank"
+            >
+             Help
+            </a></Item>
           <Item onClick={() => Router.push('/terms')}>Terms</Item>
           <Item onClick={() => Router.push('/privacy')}>Privacy</Item>
         </Items>
