@@ -108,8 +108,9 @@ const Panel = styled.div`
   padding: 0px 15px;
 
   @media (max-width: 675px) {
-    width: calc(100% - 20px);
-    height: calc(100% - 200px);
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
 `;
 
