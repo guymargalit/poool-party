@@ -491,7 +491,7 @@ const Expense = (props) => {
                       </Badge>
                     )}
                     <Badge date>
-                      {moment(expense?.createdAt).format('M/D/YY h:mmA')}
+                      {moment(expense?.startDate).format('M/D/YY h:mmA')}
                     </Badge>
                   </Description>
                 </Top>
@@ -524,12 +524,12 @@ const Expense = (props) => {
                   </Top>
                   <WrapBottom>
                     {u?.requests?.map((r) => (
-                      <Bottom>
+                      <Bottom key={r?.id}>
                         <Description>
                           <Amount>{formatter.format(u?.amount)}</Amount>
-                          <Status status={r?.status}>
+                          {expense?.venmo?.id === props?.user?.venmo?.id && <Status status={r?.status}>
                             {r?.status === 'succeeded' ? 'paid' : r?.status}
-                          </Status>
+                          </Status>}
                         </Description>
                         <Date>
                           {moment(r?.updatedAt).format('M/D/YY h:mmA')}

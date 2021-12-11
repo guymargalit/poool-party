@@ -451,8 +451,8 @@ const Home = () => {
           <Hero>
             <Title>Make a splash.</Title>
             <Caption>
-              Poool Party lets you send Venmos to your friends, with easy
-              splitting and monthly requests.
+              Request your friends on Venmo, with easy dinner splitting and
+              monthly requests.
             </Caption>
             <Button onClick={handleApple}>
               <AppleIcon />

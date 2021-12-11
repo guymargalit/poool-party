@@ -198,9 +198,8 @@ const Profile = ({ user }) => {
     }
   };
 
-  const options = ['flamingo'];
-
-  const premiumOptions = [
+  const options = [
+    'flamingo',
     'unicorn',
     'duck',
     'turtle',
@@ -209,6 +208,8 @@ const Profile = ({ user }) => {
     'tiger',
     'bunny',
   ];
+
+  const premiumOptions = [];
 
   return (
     <Fragment>

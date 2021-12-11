@@ -277,6 +277,7 @@ export default async function handler(req, res) {
         interval: true,
         metadata: true,
         draft: true,
+        startDate: true,
         venmo: {
           select: {
             id: true,
