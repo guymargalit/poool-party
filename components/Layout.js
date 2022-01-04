@@ -450,7 +450,10 @@ const Layout = (props) => {
         <Hero background>
           <Wave />
         </Hero>
-        {props.children}
+        {React.cloneElement(props.children, {
+          darkMode,
+          setDarkMode,
+        })}
       </Container>
     );
   }
@@ -554,7 +557,12 @@ const Layout = (props) => {
           <>
             {(router.pathname === '/' || routes[router.pathname]?.landing) &&
             !props?.user ? (
-              <>{props.children}</>
+              <>
+                {React.cloneElement(props.children, {
+                  darkMode,
+                  setDarkMode,
+                })}
+              </>
             ) : router.pathname !== '/' &&
               (props?.user || routes[router.pathname]?.public) &&
               !routes[router.pathname]?.landing ? (

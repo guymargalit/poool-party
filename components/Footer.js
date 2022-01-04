@@ -1,6 +1,10 @@
 import Router from 'next/router';
-import React, { useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
+import {
+  IconMoon,
+  IconSun,
+} from '../icons';
 
 const Container = styled.div`
   display: flex;
@@ -11,8 +15,11 @@ const Container = styled.div`
   position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.sky};
-  padding: 0 20px;
+  padding: 0 10px 5px;
   z-index: 10;
+  @media (max-width: 500px) {
+    height: 70px;
+  }
 `;
 
 const Content = styled.div`
@@ -20,7 +27,7 @@ const Content = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  @media (max-width: 420px) {
+  @media (max-width: 500px) {
     flex-direction: column-reverse;
     justify-content: center;
   }
@@ -28,13 +35,15 @@ const Content = styled.div`
 
 const Items = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const Item = styled.div`
   color: ${({ theme }) => theme.colors.white};
   font-size: 14px;
   font-weight: 600;
-  padding: 3px 5px;
+  padding: 0px 5px;
+  height: 20px;
   cursor: pointer;
   border-radius: 5px;
   @media (hover: hover) and (pointer: fine) {
@@ -54,7 +63,66 @@ const FooterText = styled.div`
   font-weight: 600;
 `;
 
-const Footer = ({ fixed }) => {
+const WrapSunIcon = styled.div`
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+`;
+const WrapMoonIcon = styled.div`
+  position: absolute;
+  top: 2px;
+  left: 26px;
+  width: 18px;
+  height: 18px;
+`;
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
+const CheckBoxLabel = styled.label`
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 46px;
+  height: 22px;
+  border-radius: 15px;
+  background: #111236;
+  cursor: pointer;
+  &::after {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    margin: 0px;
+    background: #ffffff;
+    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+  }
+`;
+const CheckBox = styled.input`
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 46px;
+  height: 22px;
+  &:checked + ${CheckBoxLabel} {
+    background: #8fd0fa;
+    &::after {
+      content: '';
+      display: block;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      margin-left: 26px;
+      transition: 0.2s;
+    }
+  }
+`;
+
+const Footer = ({ fixed, darkMode, setDarkMode }) => {
   return (
     <Container fixed={fixed}>
       <Content>
@@ -82,6 +150,26 @@ const Footer = ({ fixed }) => {
           </Item>
           <Item onClick={() => Router.push('/terms')}>Terms</Item>
           <Item onClick={() => Router.push('/privacy')}>Privacy</Item>
+          <Item onClick={() => Router.push('/blog')}>Blog</Item>
+          <CheckBoxWrapper>
+            <CheckBox
+              checked={darkMode}
+              id="checkbox"
+              type="checkbox"
+              onChange={setDarkMode}
+            />
+            <CheckBoxLabel htmlFor="checkbox">
+              {darkMode ? (
+                <WrapSunIcon>
+                  <IconSun />
+                </WrapSunIcon>
+              ) : (
+                <WrapMoonIcon>
+                  <IconMoon />
+                </WrapMoonIcon>
+              )}
+            </CheckBoxLabel>
+          </CheckBoxWrapper>
         </Items>
       </Content>
     </Container>

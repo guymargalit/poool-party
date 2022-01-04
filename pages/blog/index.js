@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Logo } from '../../icons';
 import Router from 'next/router';
 import Footer from '../../components/Footer';
+import { getSortedPostsData } from '../../lib/posts';
+import Link from 'next/link';
 
 const Container = styled.div`
   display: flex;
@@ -125,13 +127,22 @@ const WrapItem = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
 `;
 
-const Item = styled.div`
+const Item = styled(Link)`
   color: ${({ theme }) => theme.text.primary};
   font-size: 18px;
   font-weight: 600;
 `;
 
-const FAQ = ({darkMode, setDarkMode}) => {
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+const Blog = ({ darkMode, setDarkMode, allPostsData }) => {
   return (
     <Container>
       <Header>
@@ -140,46 +151,16 @@ const FAQ = ({darkMode, setDarkMode}) => {
       <Panel>
         <WrapContent>
           <Heading>
-            <Title>FAQs</Title>
+            <Title>Blog</Title>
           </Heading>
           <Content>
             <Items>
-              <WrapItem>
-                <Item>How do I create an expense?</Item>
-                <Text>
-                  You can click the "Plus" button in the upper right corner for
-                  general expenses or click the "New Expense" button in one of
-                  your pools. For general expenses, you can search and user on
-                  Venmo whereas pool expenses will be a selection on existing
-                  pool users.
-                </Text>
-              </WrapItem>
-              <WrapItem>
-                <Item>Do my friends need an account?</Item>
-                <Text>
-                  If they have a Venmo account, they have Poool Party! All Venmo
-                  users are searchable on Poool Party so no need to ask your
-                  friends to make accounts.
-                </Text>
-              </WrapItem>
-              <WrapItem>
-                <Item>What information does Poool Party collect?</Item>
-                <Text>
-                  Anything that's public on your Venmo profile is stored on Poool Party. 
-                </Text>
-              </WrapItem>
-              <WrapItem>
-                <Item>Can Poool Party send payments on my behalf?</Item>
-                <Text>
-                  Nope. We will only send requests on your behalf for security purposes. 
-                </Text>
-              </WrapItem>
-              <WrapItem>
-                <Item>Is Poool Party free?</Item>
-                <Text>
-                  For now, yes. We will be adding "premium" features in the future.
-                </Text>
-              </WrapItem>
+              {allPostsData.map(({ id, date, title }, index) => (
+                <WrapItem>
+                  <Item href={`/blog/${id}`}>{title}</Item>
+                  <Text>{date}</Text>
+                </WrapItem>
+              ))}
             </Items>
           </Content>
         </WrapContent>
@@ -189,4 +170,4 @@ const FAQ = ({darkMode, setDarkMode}) => {
   );
 };
 
-export default FAQ;
+export default Blog;

@@ -28,7 +28,6 @@ const Heading = styled.div`
   align-items: center;
   height: 75px;
   width: 100%;
-  transition: all 0.5s ease 0s;
   border-bottom: 1px solid ${({ theme }) => theme.bg.border};
   position: absolute;
   background-color: ${({ theme }) => theme.bg.content};
@@ -99,8 +98,8 @@ const Panel = styled.div`
   background-color: ${({ theme }) => theme.bg.content};
   bottom: 0px;
   width: calc(100% - 35px);
-  height: calc(100% - 215px);
-  margin-top: 75px;
+  height: calc(100% - 165px);
+  margin-top: 35px;
   transition: height 0.5s cubic-bezier(0, 0, 0.1, 1) 0s, visibility 0s ease 0s;
   user-select: none;
   overflow: hidden;
@@ -110,11 +109,12 @@ const Panel = styled.div`
   @media (max-width: 675px) {
     width: 100%;
     height: 100%;
+    margin-top: 75px;
     border-radius: 0;
   }
 `;
 
-const Terms = () => {
+const Terms = ({darkMode, setDarkMode}) => {
   return (
     <Container>
       <Header>
@@ -572,7 +572,7 @@ const Terms = () => {
           </Content>
         </WrapContent>
       </Panel>
-      <Footer fixed />
+      <Footer darkMode={darkMode} setDarkMode={setDarkMode} fixed />
     </Container>
   );
 };

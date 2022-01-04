@@ -390,7 +390,7 @@ const Item = styled.div`
   text-align: center;
 `;
 
-const Home = () => {
+const Home = ({ darkMode, setDarkMode }) => {
   const [apple, setApple] = useState(false);
   const [google, setGoogle] = useState(false);
   const [banner, setBanner] = useState(true);
@@ -517,7 +517,7 @@ const Home = () => {
             </Modal>
           </WrapModal>
         </Container>
-        <Footer />
+        <Footer darkMode={darkMode} setDarkMode={setDarkMode} />
       </>
     );
   }
