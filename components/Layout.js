@@ -143,6 +143,9 @@ const WrapItem = styled.div`
       color: ${({ theme }) => theme.text.primary};
     }
   }
+  :active {
+    color: ${({ theme }) => theme.text.primary};
+  }
   ${Item} {
     color: ${({ active, theme }) =>
       active ? theme.colors.purple : theme.nav.icon};
@@ -151,6 +154,9 @@ const WrapItem = styled.div`
     :hover ${Item} {
       color: ${({ theme }) => theme.colors.purple};
     }
+  }
+  :active ${Item} {
+    color: ${({ theme }) => theme.colors.purple};
   }
   cursor: pointer;
   display: flex;
@@ -273,6 +279,12 @@ const WrapPlus = styled.div`
     :hover ${Plus} {
       fill: ${({ theme }) => theme.colors.purple};
     }
+  }
+  :active ${PlusFill} {
+    background: ${({ theme }) => theme.colors.white};
+  }
+  :active ${Plus} {
+    fill: ${({ theme }) => theme.colors.purple};
   }
 `;
 

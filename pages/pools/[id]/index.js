@@ -85,6 +85,9 @@ const LeftChevron = styled(IconLeftChevron)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const Settings = styled(IconSettings)`
@@ -97,6 +100,9 @@ const Settings = styled(IconSettings)`
     :hover {
       fill: ${({ theme }) => theme.colors.purple};
     }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
   }
 `;
 
@@ -234,6 +240,13 @@ const Button = styled.div`
       transform: rotate(-10deg);
     }
   }
+  :active {
+    background-color: ${({ disabled, theme }) =>
+      !disabled && theme.button.hover};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
+  }
 `;
 
 const Items = styled.div`
@@ -275,6 +288,13 @@ const Item = styled.div`
     :hover ${RightChevron} {
       fill: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
+  :active ${RightChevron} {
+    fill: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -446,6 +466,12 @@ const DeleteButton = styled.div`
       transform: rotate(-10deg);
     }
   }
+  :active {
+    background-color: ${({ disabled, theme }) => !disabled && '#d1435b'};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
+  }
 `;
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -576,9 +602,7 @@ const Pool = (props) => {
             ) : pool?.expenses?.length > 0 ? (
               pool?.expenses?.map((e) => (
                 <Item
-                  onClick={() =>
-                    Router.push(`/expenses/${e?.id}`)
-                  }
+                  onClick={() => Router.push(`/expenses/${e?.id}`)}
                   key={e?.id}
                 >
                   <Info>

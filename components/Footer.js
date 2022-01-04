@@ -42,6 +42,9 @@ const Item = styled.div`
       background-color: rgba(255, 255, 255, 0.1);
     }
   }
+  :active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
   transition: all 0.25s ease 0s;
 `;
 
@@ -68,13 +71,15 @@ const Footer = ({ fixed }) => {
         </Items>
         <Items>
           <Item onClick={() => Router.push('/faq')}>FAQs</Item>
-          <Item><a
+          <Item>
+            <a
               href="mailto:help@poool.party"
               rel="external nofollow noopener"
               target="_blank"
             >
-             Help
-            </a></Item>
+              Help
+            </a>
+          </Item>
           <Item onClick={() => Router.push('/terms')}>Terms</Item>
           <Item onClick={() => Router.push('/privacy')}>Privacy</Item>
         </Items>

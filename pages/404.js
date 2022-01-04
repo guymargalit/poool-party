@@ -92,6 +92,9 @@ const Item = styled.div`
       background-color: rgba(255, 255, 255, 0.1);
     }
   }
+  :active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
   transition: all 0.25s ease 0s;
 `;
 

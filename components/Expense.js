@@ -78,6 +78,9 @@ const Camera = styled(IconCamera)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const Picture = styled(IconPicture)`
@@ -102,6 +105,9 @@ const Share = styled(IconShare)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const Close = styled(IconClose)`
@@ -115,6 +121,9 @@ const Close = styled(IconClose)`
     :hover {
       fill: ${({ theme }) => theme.colors.purple};
     }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
   }
 `;
 
@@ -202,6 +211,13 @@ const Button = styled.div`
     &:hover ${Popper} {
       transform: rotate(-10deg);
     }
+  }
+  :active {
+    background-color: ${({ disabled, theme }) =>
+      !disabled && theme.button.hover};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   :disabled {
@@ -410,6 +426,9 @@ const Unlock = styled(IconUnlock)`
       fill: ${({ theme }) => theme.bg.border};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.bg.border};
+  }
 `;
 
 const WrapSelect = styled.div`
@@ -429,6 +448,9 @@ const WrapSelect = styled.div`
     :hover {
       background-color: ${({ theme }) => theme.bg.item};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.bg.item};
   }
 `;
 
@@ -450,6 +472,9 @@ const WrapDate = styled.div`
     :hover {
       background-color: ${({ theme }) => theme.bg.item};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.bg.item};
   }
   text-align: center;
 `;
@@ -604,6 +629,9 @@ const SaveButton = styled.div`
       background-color: #042759;
     }
   }
+  :active {
+    background-color: #042759;
+  }
 `;
 
 const DiscardButton = styled.div`
@@ -629,6 +657,9 @@ const DiscardButton = styled.div`
     :hover {
       background-color: #d1435b;
     }
+  }
+  :active {
+    background-color: #d1435b;
   }
 `;
 
@@ -678,6 +709,10 @@ const Item = styled.div`
       color: ${({ theme }) => theme.colors.white};
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const WrapTip = styled.div`
@@ -709,6 +744,9 @@ const Tip = styled.div`
     :hover {
       background-color: ${({ theme }) => theme.bg.item};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.bg.item};
   }
   border-right: 2px solid ${({ theme }) => theme.bg.item};
   :last-child {
@@ -1060,7 +1098,7 @@ const Expense = ({ pool, expense, setExpense, close }) => {
         },
         ...users.slice(index + 1),
       ];
-      console.log(users)
+      console.log(users);
       if (!usr?.locked) {
         const amounts = currency(total - lockedTotal)?.distribute(
           unlockedUsers

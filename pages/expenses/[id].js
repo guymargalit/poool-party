@@ -75,6 +75,9 @@ const LeftChevron = styled(IconLeftChevron)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const Settings = styled(IconEmpty)`
@@ -109,6 +112,13 @@ const WrapPlus = styled.div`
     :hover ${Plus} {
       fill: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background: ${({ theme }) => theme.colors.purple};
+    border: 2px solid ${({ theme }) => theme.colors.purple};
+  }
+  :active ${Plus} {
+    fill: ${({ theme }) => theme.colors.white};
   }
   transition: all 0.25s ease 0s;
 `;
@@ -215,6 +225,13 @@ const Item = styled.div`
     :hover ${RightChevron} {
       fill: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
+  :active ${RightChevron} {
+    fill: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -527,9 +544,11 @@ const Expense = (props) => {
                       <Bottom key={r?.id}>
                         <Description>
                           <Amount>{formatter.format(u?.amount)}</Amount>
-                          {expense?.venmo?.id === props?.user?.venmo?.id && <Status status={r?.status}>
-                            {r?.status === 'succeeded' ? 'paid' : r?.status}
-                          </Status>}
+                          {expense?.venmo?.id === props?.user?.venmo?.id && (
+                            <Status status={r?.status}>
+                              {r?.status === 'succeeded' ? 'paid' : r?.status}
+                            </Status>
+                          )}
                         </Description>
                         <Date>
                           {moment(r?.updatedAt).format('M/D/YY h:mmA')}

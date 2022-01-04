@@ -175,6 +175,9 @@ const WrapSelect = styled.div`
       background-color: ${({ theme }) => theme.bg.item};
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.bg.item};
+  }
 `;
 
 const Picture = styled(IconPicture)`
@@ -245,6 +248,13 @@ const Button = styled.div`
     &:hover ${Popper} {
       transform: rotate(-10deg);
     }
+  }
+  :active {
+    background-color: ${({ disabled, theme }) =>
+      !disabled && theme.button.hover};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
   }
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   :disabled {

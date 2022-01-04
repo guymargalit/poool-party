@@ -70,6 +70,10 @@ const Radio = styled.label`
       color: ${({ theme }) => theme.colors.white};
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const WrapInput = styled.div`
@@ -154,6 +158,9 @@ const Confirm = styled.svg`
     :hover {
       fill: ${({ theme }) => theme.colors.success};
     }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.success};
   }
 `;
 

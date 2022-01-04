@@ -20,14 +20,19 @@ const Radio = styled.label`
   padding-left: 10px;
   cursor: pointer;
   transition: all 0.25s ease 0s;
-  background-color: ${({theme, checked}) =>
+  background-color: ${({ theme, checked }) =>
     checked ? theme.colors.purple : 'transparent'};
-  color: ${({theme, checked}) => (checked ? theme.colors.white : theme.text.primary)};
+  color: ${({ theme, checked }) =>
+    checked ? theme.colors.white : theme.text.primary};
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      background-color: ${({theme}) => theme.colors.purple};
-      color: ${({theme}) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.purple};
+      color: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 

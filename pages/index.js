@@ -162,6 +162,9 @@ const Close = styled(IconClose)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
   margin-right: 5px;
 `;
 
@@ -219,6 +222,9 @@ const Button = styled.div`
       background-color: #eb68a8;
     }
   }
+  :active {
+    background-color: #eb68a8;
+  }
   @media (max-width: 675px) {
     width: 250px;
     padding: 0.5rem 1.2rem;
@@ -257,6 +263,9 @@ const GetButton = styled.div`
     :hover {
       background-color: #111236;
     }
+  }
+  :active {
+    background-color: #111236;
   }
 `;
 

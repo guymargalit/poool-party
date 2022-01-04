@@ -90,6 +90,12 @@ const Button = styled.div`
       transform: rotate(-10deg);
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.button.hover};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
+  }
 `;
 
 const Header = styled.div`
@@ -160,6 +166,9 @@ const Chevron = styled(IconLeftChevron)`
     :hover {
       fill: ${({ theme }) => theme.colors.purple};
     }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
   }
 `;
 
@@ -245,6 +254,10 @@ const Item = styled.div`
       background-color: ${({ theme }) => theme.colors.purple};
       color: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 

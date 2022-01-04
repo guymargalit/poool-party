@@ -133,6 +133,12 @@ const Button = styled.div`
       transform: rotate(-10deg);
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.button.hover};
+  }
+  &:active ${Popper} {
+    transform: rotate(-10deg);
+  }
   @media (max-width: 675px) {
     margin-top: 10px;
   }
@@ -173,6 +179,13 @@ const VenmoButton = styled.div`
     &:hover ${VenmoIcon} {
       fill: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    color: ${({ theme }) => theme.colors.white};
+    background-color: #00d791;
+  }
+  &:active ${VenmoIcon} {
+    fill: ${({ theme }) => theme.colors.white};
   }
 `;
 

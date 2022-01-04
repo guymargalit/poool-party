@@ -124,6 +124,13 @@ const Item = styled.div`
       fill: ${({ theme }) => theme.colors.white};
     }
   }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
+  :active ${RightChevron} {
+    fill: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const Label = styled.div`
@@ -196,6 +203,9 @@ const Logout = styled(IconLogout)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const WrapModal = styled.div`
@@ -266,6 +276,9 @@ const SaveButton = styled.div`
       background-color: #042759;
     }
   }
+  :active {
+    background-color: #042759;
+  }
 `;
 
 const DiscardButton = styled.div`
@@ -291,6 +304,9 @@ const DiscardButton = styled.div`
     :hover {
       background-color: #d1435b;
     }
+  }
+  :active {
+    background-color: #d1435b;
   }
 `;
 
@@ -343,7 +359,9 @@ const Dashboard = ({ user }) => {
         <Modal modal={modal}>
           <ModalTitle>Are you sure you want to log out?</ModalTitle>
           <WrapButtons>
-            <DiscardButton onClick={() => setModal(false)}>Cancel</DiscardButton>
+            <DiscardButton onClick={() => setModal(false)}>
+              Cancel
+            </DiscardButton>
             <SaveButton onClick={handleLogout}>Log out</SaveButton>
           </WrapButtons>
         </Modal>

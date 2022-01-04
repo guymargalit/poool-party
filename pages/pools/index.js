@@ -56,6 +56,9 @@ const Plus = styled(IconAdd)`
       fill: ${({ theme }) => theme.colors.purple};
     }
   }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const Item = styled.div`
@@ -79,6 +82,13 @@ const Item = styled.div`
     :hover ${Chevron} {
       fill: ${({ theme }) => theme.colors.white};
     }
+  }
+  :active {
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: ${({ theme }) => theme.colors.white};
+  }
+  :active ${Chevron} {
+    fill: ${({ theme }) => theme.colors.white};
   }
 `;
 
