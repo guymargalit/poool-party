@@ -56,14 +56,16 @@ const Content = styled.div`
   margin-top: 20px;
   overflow: hidden;
   transition: all 0.5s ease 0s;
-  height: ${({ height, collapse }) =>
+  height: ${({ height, collapse, navigation }) =>
     collapse
-      ? `calc(85vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))`
+      ? `calc(${
+          navigation ? '85vh' : '92vh'
+        } - env(safe-area-inset-top) - env(safe-area-inset-bottom))`
       : `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` ||
         '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
-    height: ${({ collapse }) => (collapse ? '100vh' : 'calc(100vh - 150px)')};
+    height: ${({ collapse }) => (collapse ? '80vh' : 'calc(100vh - 150px)')};
   }
   ${({ background }) =>
     !background &&
