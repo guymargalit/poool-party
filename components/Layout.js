@@ -59,13 +59,18 @@ const Content = styled.div`
   height: ${({ height, collapse, navigation }) =>
     collapse
       ? `calc(${
-          navigation ? '85vh' : '92vh'
+          navigation ? 'calc(100vh - 130px)' : 'calc(100vh - 65px)'
         } - env(safe-area-inset-top) - env(safe-area-inset-bottom))`
       : `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` ||
         '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
-    height: ${({ collapse }) => (collapse ? '80vh' : 'calc(100vh - 150px)')};
+    height: ${({ collapse, navigation }) =>
+      collapse
+        ? navigation
+          ? 'calc(100vh - 130px)'
+          : 'calc(100vh - 65px)'
+        : 'calc(100vh - 150px)'};
   }
   ${({ background }) =>
     !background &&
@@ -363,7 +368,7 @@ const Notification = styled.div`
 `;
 
 const ExpandIcon = styled(IconExpand)`
-  z-index: 11;
+  z-index: 3;
   width: 32px;
   height: 32px;
   fill: #fff;
@@ -382,7 +387,7 @@ const ExpandIcon = styled(IconExpand)`
 `;
 
 const CollapseIcon = styled(IconCollapse)`
-  z-index: 11;
+  z-index: 3;
   width: 32px;
   height: 32px;
   fill: #fff;
