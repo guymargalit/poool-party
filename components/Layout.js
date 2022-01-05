@@ -6,7 +6,14 @@ import Router from 'next/router';
 import Toy from './Toy';
 import Wave from './Wave';
 import { routes } from '../lib/routes';
-import { IconAdd, IconDashboard, IconPools, IconProfile } from '../icons';
+import {
+  IconAdd,
+  IconDashboard,
+  IconPools,
+  IconProfile,
+  IconCollapse,
+  IconExpand,
+} from '../icons';
 import Venmo from './Venmo';
 import Expense from './Expense';
 import Tooltip from './Tooltip';
@@ -49,12 +56,14 @@ const Content = styled.div`
   margin-top: 20px;
   overflow: hidden;
   transition: all 0.5s ease 0s;
-  height: ${({ height }) =>
-    `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` ||
-    '50%'};
+  height: ${({ height, collapse }) =>
+    collapse
+      ? `calc(85vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))`
+      : `calc(${height} - env(safe-area-inset-top) - env(safe-area-inset-bottom))` ||
+        '50%'};
   bottom: ${({ navigation }) => (navigation ? `65px` : '0px')};
   @media (min-width: 500px) and (max-height: 600px) {
-    height: calc(100vh - 150px);
+    height: ${({ collapse }) => (collapse ? '100vh' : 'calc(100vh - 150px)')};
   }
   ${({ background }) =>
     !background &&
@@ -73,7 +82,7 @@ const Area = styled.div`
 const Hero = styled.div`
   display: ${({ background }) => (background ? 'flex' : 'none')};
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.bg.sky};
   overflow: hidden;
   position: relative;
@@ -351,6 +360,44 @@ const Notification = styled.div`
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.35, 1.1) 0s;
 `;
 
+const ExpandIcon = styled(IconExpand)`
+  z-index: 11;
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 15px;
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
+`;
+
+const CollapseIcon = styled(IconCollapse)`
+  z-index: 11;
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 15px;
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
+`;
+
 const toys = [
   {
     type: 'zebra',
@@ -381,6 +428,7 @@ const Layout = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
+  const [collapse, setCollapse] = useState(false);
   const { mutate } = useSWR('/api/user');
 
   useEffect(() => {
@@ -492,37 +540,44 @@ const Layout = (props) => {
       </Panel>
       <Hero background={background}>
         {!routes[router.pathname]?.public && (
-          <WrapTooltip>
-            <TooltipContainer active={!localStorage.getItem('tooltip')}>
-              <Tooltip
-                content={
+          <>
+            {collapse ? (
+              <ExpandIcon onClick={() => setCollapse(false)} />
+            ) : (
+              <CollapseIcon onClick={() => setCollapse(true)} />
+            )}
+            <WrapTooltip>
+              <TooltipContainer active={!localStorage.getItem('tooltip')}>
+                <Tooltip
+                  content={
+                    <>
+                      Create an expense, <br /> make a splash!
+                    </>
+                  }
+                />
+              </TooltipContainer>
+              <WrapPlus>
+                <Notification notification={props?.user?.draft !== null} />
+                {submitting ? (
+                  <PlusEmpty>
+                    <Loader viewBox="0 0 50 50">
+                      <Circle cx="25" cy="25" r="20"></Circle>
+                    </Loader>
+                  </PlusEmpty>
+                ) : (
                   <>
-                    Create an expense, <br /> make a splash!
+                    <Plus
+                      onClick={() => {
+                        localStorage.setItem('tooltip', 'true');
+                        handleExpense();
+                      }}
+                    />
+                    <PlusFill />
                   </>
-                }
-              />
-            </TooltipContainer>
-            <WrapPlus>
-              <Notification notification={props?.user?.draft !== null} />
-              {submitting ? (
-                <PlusEmpty>
-                  <Loader viewBox="0 0 50 50">
-                    <Circle cx="25" cy="25" r="20"></Circle>
-                  </Loader>
-                </PlusEmpty>
-              ) : (
-                <>
-                  <Plus
-                    onClick={() => {
-                      localStorage.setItem('tooltip', 'true');
-                      handleExpense();
-                    }}
-                  />
-                  <PlusFill />
-                </>
-              )}
-            </WrapPlus>
-          </WrapTooltip>
+                )}
+              </WrapPlus>
+            </WrapTooltip>
+          </>
         )}
         {!routes[router.pathname]?.public && props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
@@ -571,6 +626,7 @@ const Layout = (props) => {
                   background={background}
                   navigation={navigation}
                   height={height}
+                  collapse={collapse}
                 >
                   {React.cloneElement(props.children, {
                     setVenmo,
