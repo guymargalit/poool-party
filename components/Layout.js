@@ -435,7 +435,9 @@ const Layout = (props) => {
   const [submitting, setSubmitting] = useState(false);
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
-  const [collapse, setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(
+    localStorage.getItem('collapse') || false
+  );
   const { mutate } = useSWR('/api/user');
 
   useEffect(() => {
@@ -549,9 +551,19 @@ const Layout = (props) => {
         {!routes[router.pathname]?.public && (
           <>
             {collapse ? (
-              <ExpandIcon onClick={() => setCollapse(false)} />
+              <ExpandIcon
+                onClick={() => {
+                  localStorage.setItem('collapse', 'false');
+                  setCollapse(false);
+                }}
+              />
             ) : (
-              <CollapseIcon onClick={() => setCollapse(true)} />
+              <CollapseIcon
+                onClick={() => {
+                  localStorage.setItem('collapse', 'true');
+                  setCollapse(true);
+                }}
+              />
             )}
             <WrapTooltip>
               <TooltipContainer active={!localStorage.getItem('tooltip')}>
@@ -586,7 +598,7 @@ const Layout = (props) => {
             </WrapTooltip>
           </>
         )}
-        {!routes[router.pathname]?.public && props?.user?.toy ? (
+        {!routes[router.pathname]?.public && !collapse && props?.user?.toy ? (
           <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
         ) : !props?.user &&
           router.pathname === '/' &&
