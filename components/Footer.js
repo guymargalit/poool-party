@@ -135,7 +135,7 @@ const Footer = ({ fixed, darkMode, setDarkMode }) => {
               rel="external nofollow noopener"
               target="_blank"
             >
-              © 2021 Birthday Guy, LLC
+              © 2022 Birthday Guy, LLC
             </a>
           </FooterText>
         </Items>
