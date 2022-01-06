@@ -12,12 +12,14 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 50px;
+  min-height: 50px;
   position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.sky};
   padding: 0 10px 5px;
   z-index: 10;
   @media (max-width: 500px) {
+    min-height: 70px;
     height: 70px;
   }
 `;
@@ -83,7 +85,7 @@ const CheckBoxWrapper = styled.div`
 `;
 const CheckBoxLabel = styled.label`
   position: absolute;
-  top: 2px;
+  top: 3px;
   left: 4px;
   width: 46px;
   height: 22px;
@@ -94,9 +96,9 @@ const CheckBoxLabel = styled.label`
     content: '';
     display: block;
     border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    margin: 0px;
+    width: 18px;
+    height: 18px;
+    margin: 2px;
     background: #ffffff;
     box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
     transition: 0.2s;
@@ -114,8 +116,8 @@ const CheckBox = styled.input`
       content: '';
       display: block;
       border-radius: 50%;
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
       margin-left: 26px;
       transition: 0.2s;
     }
