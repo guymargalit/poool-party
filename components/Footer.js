@@ -135,7 +135,7 @@ const Footer = ({ fixed, darkMode, setDarkMode }) => {
               rel="external nofollow noopener"
               target="_blank"
             >
-              © 2022 Birthday Guy, LLC
+              {`© ${new Date().getFullYear()} Birthday Guy, LLC`}
             </a>
           </FooterText>
         </Items>
