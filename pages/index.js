@@ -93,18 +93,6 @@ const Title = styled.div`
   }
 `;
 
-const Subtitle = styled.div`
-  font-size: 20px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const Text = styled.div`
-  font-size: 15px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.white};
-`;
-
 const Caption = styled.div`
   text-align: left;
   font-size: 16px;
@@ -296,8 +284,8 @@ const WrapLogo = styled(Logo)`
   height: ${({ header }) => (header ? '50px' : '60px')};
   margin: ${({ header }) => (header ? '15px 20px' : '20px 25px')};
   @media (max-width: 675px) {
-    height: ${({ header }) => (header ? '40px' : '50px')};
-    margin: ${({ header }) => (header ? '15px 20px' : '15px 20px')};
+    height: 45px;
+    margin: 10px 15px;
   }
   transition: all 0.25s ease 0s;
   cursor: pointer;

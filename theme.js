@@ -8,6 +8,7 @@ const light = {
     input: '#b0b0b0',
     item: '#e2e2e2',
     code: 'rgb(221, 221, 221)',
+    header:'#54c0f9',
   },
   text: {
     primary: '#222222',
@@ -41,6 +42,7 @@ const dark = {
     input: '#dddddd',
     item: '#5a489b',
     code: '#151718',
+    header: '#18194a',
   },
   text: {
     primary: '#fefefe',

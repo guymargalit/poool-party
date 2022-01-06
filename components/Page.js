@@ -18,7 +18,7 @@ const Header = styled.div`
   width: 100%;
   top: 0;
   position: absolute;
-  background-color: ${({ theme }) => theme.bg.wave};
+  background-color: ${({ theme }) => theme.bg.header};
   z-index: 999;
 `;
 
