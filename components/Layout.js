@@ -436,7 +436,7 @@ const Layout = (props) => {
   const [height, setHeight] = useState('50%');
   const [background, setBackground] = useState(true);
   const [collapse, setCollapse] = useState(
-    localStorage.getItem('collapse') || 'false'
+    localStorage.getItem('collapse') || false
   );
   const { mutate } = useSWR('/api/user');
 
@@ -550,18 +550,18 @@ const Layout = (props) => {
       <Hero background={background}>
         {!routes[router.pathname]?.public && (
           <>
-            {collapse === 'true' ? (
+            {collapse ? (
               <ExpandIcon
                 onClick={() => {
-                  localStorage.setItem('collapse', 'false');
-                  setCollapse('false');
+                  localStorage.removeItem('collapse');
+                  setCollapse(false);
                 }}
               />
             ) : (
               <CollapseIcon
                 onClick={() => {
-                  localStorage.setItem('collapse', 'true');
-                  setCollapse('true');
+                  localStorage.setItem('collapse', true);
+                  setCollapse(true);
                 }}
               />
             )}
