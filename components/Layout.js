@@ -553,14 +553,14 @@ const Layout = (props) => {
             {collapse ? (
               <ExpandIcon
                 onClick={() => {
-                  localStorage.setItem('collapse', 'false');
+                  localStorage.setItem('collapse', false);
                   setCollapse(false);
                 }}
               />
             ) : (
               <CollapseIcon
                 onClick={() => {
-                  localStorage.setItem('collapse', 'true');
+                  localStorage.setItem('collapse', true);
                   setCollapse(true);
                 }}
               />
