@@ -638,8 +638,7 @@ const Layout = (props) => {
                 })}
               </>
             ) : router.pathname !== '/' &&
-              (props?.user || routes[router.pathname]?.public) &&
-              !routes[router.pathname]?.landing ? (
+              (props?.user || routes[router.pathname]?.public) ? (
               <WrapContent>
                 <Content
                   background={background}
