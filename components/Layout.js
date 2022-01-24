@@ -629,8 +629,8 @@ const Layout = (props) => {
       {!(props?.user && router.pathname === '/') &&
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>
-            {(router.pathname === '/' || routes[router.pathname]?.landing) &&
-            !props?.user ? (
+            {(router.pathname === '/' && !props?.user) ||
+            routes[router.pathname]?.landing ? (
               <>
                 {React.cloneElement(props.children, {
                   darkMode,
