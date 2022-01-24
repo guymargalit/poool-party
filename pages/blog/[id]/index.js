@@ -38,15 +38,28 @@ const Content = styled.div`
     overflow-wrap: break-word;
   }
 
-  code {
+  a {
+    color: #0070f3;
+    text-decoration: underline;
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: monospace, monospace;
+    font-size: 16px;
+  }
+
+  pre>code {
     display: block;
     color: ${({ theme }) => theme.text.code};
     background-color: ${({ theme }) => theme.bg.code};
     border-radius: 4px;
     font-size: 16px;
-    padding: 1rem 1.75rem;
+    padding: 1rem 1.5rem;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
-    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+      0px 2px 10px 0px rgba(0, 0, 0, 0.08);
   }
 `;
 
