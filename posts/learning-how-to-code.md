@@ -4,7 +4,7 @@ description: A lot of people have asked me how to get started learning how to co
 date: '2022-01-24'
 ---
 
-A lot of people have asked me how to get started learning how to code. There's a lot of opinions on how to get started but here's mine. **Make a website**. It's fun and visual and is useful! Everyone should have their own website. But I also think you should be using all the new cool tools so let's do it :)
+A lot of people have asked me how to get started learning how to code. There's a lot of opinions on how to get started but here's mine. **Make a website**. It's fun and visual and is useful! Everyone should have their own website. But I also think you should be using all the new cool tools so let's do it 🥳
 
 1. Make a [Github](https://github.com/signup) account
 
@@ -31,7 +31,7 @@ To make JavaScript easier to use, smart people at Facebook invented **React** wh
 
 Don't worry too much about understanding why you're using it for now. Just know it's the latest and greatest and a lot of people use it!
 
-As you learn more, it will start to make sense why people use it :)
+As you learn more, it will start to make sense why people use it 😊
 
 Ok enough learning, let's make a website !
 
@@ -51,7 +51,7 @@ https://github.com/{YOUR_GITHUB_NAME}/website
 
 Now you're probably thinking, "Ok sweet I have a website! But I want to edit it and not make it look like that..."
 
-That's where coding comes in :)
+That's where coding comes in 🙂
 
 First, we need a way to edit code. These days, you can setup a local development environment (fancy talk for getting coding apps for your computer) but super smart people made a way for you to be able to code, online!
 
@@ -73,7 +73,7 @@ gitpod.io/#https://github.com/{YOUR_GITHUB_NAME}/website
 
 That's it!
 
-It should open up a code editor that has all these different files. Don't worry about all of them, you'll learn one day :)
+It should open up a code editor that has all these different files. Don't worry about all of them, you'll learn one day 😊
 
 The main file we care about is found in **pages/index.js**. Let's breakdown the file real quick.
 
@@ -85,7 +85,7 @@ Then we have "export default function Home() {". That's some JavaScript, don't w
 
 Ok let's get to the **HTML**. If you don't know HTML, maybe just a quick overview of the basics. 
 
-You have things called HTML "elements". These are seen in between the arrow brackets. For example we have `<div>`, `<title>`, `<main>`, `<h1>` etc. These are all different HTML elements that let us structure our page. You can learn more about them here: https://www.w3schools.com/tags/default.asp
+You have things called HTML "elements". These are seen in between the arrow brackets. For example we have `<div>`, `<title>`, `<main>`, `<h1>` etc. These are all different HTML elements that let us structure our page. You can learn more about them [here](https://www.w3schools.com/tags/default.asp).
 
 You should know the basics, really not too bad. Only other thing to know is this. If we open an HTML block we need to close it too! Let's use `<div>` as it is one of the most common elements.
 
@@ -99,7 +99,7 @@ The first line starts the `<div>`, the second line has what's in the `<div>`, an
 
 But how do we "style" the div?
 
-You'll see this is done for us already "className={styles.container}". This goes to the styles file we imported and gets the styles for "styles.container". Those look like this:
+You'll see this is done for us already `className={styles.container}`. This goes to the styles file we imported and gets the styles for `styles.container`. Those look like this:
 
 ```css
 .container {
@@ -160,7 +160,7 @@ On the left bar in Gitpod, find the icon that says *Remote Explorer*. When you c
 
 This site isn't "live", so don't worry! We're editing it and haven't uploaded our code anywhere. Before we upload our new code, let's change the color cause why not!
 
-Go to the styles file in `styles/Home.module.css` and find .title it should look like this:
+Go to the styles file in `styles/Home.module.css` and find `.title` it should look like this:
 
 ```css
 .title {
@@ -189,11 +189,11 @@ There should be a tab that looks like some lines and circles. When you hover ove
 
 >If you see a popup that says, "There ar eno staged changes to commit. Would you like stage all your changes and commit them directly?", click "Yes"
 
-Almost done, now click "Sync Changes" and it should send your new code to Github!
+Almost done, now click *Sync Changes* and it should send your new code to Github!
 
 Now Vercel will detect that your Github code changed and it will automatically update your site with the new code!
 
-If anything went wrong and didn't work, ask me for help :)
+If anything went wrong and didn't work, ask me for help 🥳
 
 This should at least be a start to a free website with all the coolest latest tools. If you want to continue the coding journey and make your website cooler, learn some of these:
 
