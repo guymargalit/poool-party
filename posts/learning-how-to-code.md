@@ -23,11 +23,11 @@ Most websites have a combination of HTML, CSS, and JavaScript (not Java, that's 
 
 **HTML** (Hypertext Markup Language) is the "bones" of your site. It's the structure of where everything goes.
 
-**CSS** (Cascading Style Sheets) is the "clothes" of your site. It makes everything look pretty. If you want it to not look like a Word document, you'll need to "style" your site with it.
+**CSS** (Cascading Style Sheets) is the "clothes" of your site. It makes everything look pretty. If you want it to not look like a Word document, you'll need to *style* your site with it.
 
 **JavaScript** is like the "actions" of your site. Say someone wants to "sign up" for your site or click on something and it does something, a lot of that is done with JavaScript!
 
-To make JavaScript easier to use, smart people at Facebook invented **React** which is a "framework", basically an easier way to use JavaScript. Then some more smart people came along and wrote **Next.js** which is a "React framework".
+To make JavaScript easier to use, smart people at Facebook invented **React** which is a *framework*, basically an easier way to use JavaScript. Then some more smart people came along and wrote **Next.js** which is a *React framework*.
 
 Don't worry too much about understanding why you're using it for now. Just know it's the latest and greatest and a lot of people use it!
 
@@ -187,7 +187,7 @@ But we need to upload our code to our site. The way we do this is with Github bu
 
 There should be a tab that looks like some lines and circles. When you hover over it, it should say "Source Control". Click on it and it'll show all the changes we made. We're gonna write a message of what we changed (just for us to keep track) in the bar that says "Message (Enter to commit...)" and then click the Checkmark above it!
 
->If you see a popup that says, "There ar eno staged changes to commit. Would you like stage all your changes and commit them directly?", click "Yes"
+>If you see a popup that says, "There are no staged changes to commit. Would you like stage all your changes and commit them directly?", click "Yes"
 
 Almost done, now click *Sync Changes* and it should send your new code to Github!
 
