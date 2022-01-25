@@ -63,7 +63,7 @@ Click "Continue with Github" and make an account.
 
 What's really cool about Gitpod is that you can take any Github link, and open it with Gitpod with a really simple trick.
 
-Just put "gitpod.io/#" in front of any Github repo and you can edit it!
+Just put *gitpod.io/#* in front of any Github repo and you can edit it!
 
 Here's what it will look like for us:
 
