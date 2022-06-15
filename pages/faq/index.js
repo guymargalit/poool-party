@@ -70,14 +70,8 @@ const FAQ = ({ darkMode, setDarkMode }) => {
         <WrapItem>
           <Item>Can Poool Party send payments on my behalf?</Item>
           <Text>
-            Nope. We will only send requests on your behalf for security
+            Nope. It will only send requests on your behalf for security
             purposes.
-          </Text>
-        </WrapItem>
-        <WrapItem>
-          <Item>Is Poool Party free?</Item>
-          <Text>
-            For now, yes. We will be adding "premium" features in the future.
           </Text>
         </WrapItem>
       </Items>
