@@ -11,6 +11,8 @@ import {
 } from '../icons';
 import Router from 'next/router';
 import Footer from '../components/Footer';
+import Phone from '../components/Phone';
+import Wave from '../components/Wave';
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +46,32 @@ const Hero = styled.div`
   @media (max-width: 675px) {
     align-items: center;
     height: 250px;
+  }
+`;
+
+const WrapContent = styled.div`
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  max-width: 1000px;
+  @media (max-width: 675px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+`;
+
+const Column = styled.div`
+  width: 60%;
+  :last-child {
+    width: 40%;
+  }
+  @media (max-width: 675px) {
+    width: 100%;
+    :last-child {
+      width: 100%;
+    }
   }
 `;
 
@@ -378,6 +406,43 @@ const Item = styled.div`
   text-align: center;
 `;
 
+const PhoneComponent = styled(Phone)`
+  display: inline-flex;
+  align-self: center;
+  position: relative;
+  margin-top: 42px;
+  margin-right: -15px;
+  margin-left: auto;
+  width: 372px;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  user-select: none;
+  pointer-events: none;
+  @media (max-width: 675px) {
+    width: 100%;
+    margin: 0;
+    margin-top: 20px;
+  }
+`;
+
+const WrapPhone = styled.div`
+  display: flex;
+  width: 100%;
+
+  flex: 1;
+  margin-bottom: -140px;
+  transform: rotate(1.59deg) translateZ(1px);
+  @media (max-width: 675px) {
+    transform: rotate(0deg) translateZ(1px);
+    margin-bottom: -40%;
+  }
+`;
+
+const WrapWave = styled(Wave)`
+  position: relative;
+  margin-bottom: -20px;
+`;
+
 const Home = ({ darkMode, setDarkMode }) => {
   const [apple, setApple] = useState(false);
   const [google, setGoogle] = useState(false);
@@ -445,35 +510,45 @@ const Home = ({ darkMode, setDarkMode }) => {
           <Header>
             <WrapLogo onClick={() => Router.push('/')} fill={'#fff'} />
           </Header>
-          <Hero>
-            <Title>Make a splash.</Title>
-            <Caption>
-              Request your friends on Venmo, with easy dinner splitting and
-              monthly requests.
-            </Caption>
-            <Button onClick={handleApple}>
-              <AppleIcon />
-              Sign In with Apple
-              {apple ? (
-                <Svg viewBox="0 0 50 50">
-                  <Circle cx="25" cy="25" r="20"></Circle>
-                </Svg>
-              ) : (
-                <Empty />
-              )}
-            </Button>
-            <Button onClick={handleGoogle}>
-              <GoogleIcon />
-              Sign In with Google
-              {google ? (
-                <Svg viewBox="0 0 50 50">
-                  <Circle cx="25" cy="25" r="20"></Circle>
-                </Svg>
-              ) : (
-                <Empty />
-              )}
-            </Button>
-          </Hero>
+          <WrapContent>
+            <Column>
+              <Hero>
+                <Title>Make a splash.</Title>
+                <Caption>
+                  Request your friends on Venmo, with easy dinner splitting and
+                  monthly requests.
+                </Caption>
+                <Button onClick={handleApple}>
+                  <AppleIcon />
+                  Sign In with Apple
+                  {apple ? (
+                    <Svg viewBox="0 0 50 50">
+                      <Circle cx="25" cy="25" r="20"></Circle>
+                    </Svg>
+                  ) : (
+                    <Empty />
+                  )}
+                </Button>
+                <Button onClick={handleGoogle}>
+                  <GoogleIcon />
+                  Sign In with Google
+                  {google ? (
+                    <Svg viewBox="0 0 50 50">
+                      <Circle cx="25" cy="25" r="20"></Circle>
+                    </Svg>
+                  ) : (
+                    <Empty />
+                  )}
+                </Button>
+              </Hero>
+            </Column>
+            <Column>
+              <WrapPhone>
+                <PhoneComponent />
+              </WrapPhone>
+              <WrapWave />
+            </Column>
+          </WrapContent>
           {/* <Items>
             <Item>
               <Subtitle>Easy Splitting</Subtitle>

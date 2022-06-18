@@ -15,7 +15,7 @@ const Container = styled.div`
   min-height: 50px;
   position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   bottom: 0;
-  background-color: ${({ theme }) => theme.bg.sky};
+  background-color: ${({ theme }) => theme.bg.wave};
   padding: 0 10px 5px;
   z-index: 10;
   @media (max-width: 500px) {
@@ -29,9 +29,11 @@ const Content = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-left: 5px;
   @media (max-width: 500px) {
     flex-direction: column-reverse;
     justify-content: center;
+    padding: 0;
   }
 `;
 
@@ -43,7 +45,7 @@ const Items = styled.div`
 const Item = styled.div`
   color: ${({ theme }) => theme.colors.white};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   padding: 0px 5px;
   height: 20px;
   cursor: pointer;
@@ -62,7 +64,7 @@ const Item = styled.div`
 const FooterText = styled.div`
   color: ${({ theme }) => theme.colors.white};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 const WrapSunIcon = styled.div`
@@ -82,6 +84,7 @@ const WrapMoonIcon = styled.div`
 const CheckBoxWrapper = styled.div`
   display: flex;
   position: relative;
+  margin-bottom: 3px;
 `;
 const CheckBoxLabel = styled.label`
   position: absolute;
@@ -135,7 +138,7 @@ const Footer = ({ fixed, darkMode, setDarkMode }) => {
               rel="external nofollow noopener"
               target="_blank"
             >
-              {`© ${new Date().getFullYear()} Birthday Guy, LLC`}
+              {`© ${new Date().getFullYear()} Birthday Guy`}
             </a>
           </FooterText>
         </Items>
