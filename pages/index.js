@@ -23,7 +23,7 @@ const Container = styled.div`
   z-index: 4;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 `;
 
@@ -51,28 +51,32 @@ const Hero = styled.div`
 
 const WrapContent = styled.div`
   display: flex;
+  flex: 1;
   width: 100%;
-  overflow: hidden;
   max-width: 1000px;
   @media (max-width: 675px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    overflow: hidden;
   }
 `;
 
 const Column = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 60%;
   :last-child {
     width: 40%;
   }
   @media (max-width: 675px) {
+    flex: 1;
     width: 100%;
     :last-child {
       width: 100%;
     }
   }
+  overflow: hidden;
 `;
 
 const Content = styled.div`
@@ -205,6 +209,19 @@ const AppTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   color: ${({ theme }) => theme.text.primary};
+`;
+
+const Subtitle = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+const Text = styled.div`
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const AppDescription = styled.div`
@@ -391,6 +408,7 @@ const Items = styled.div`
     align-items: center;
     flex-direction: column;
     height: 500px;
+    margin-top: 0px;
   }
 `;
 
@@ -399,10 +417,12 @@ const Item = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0 10px 0px;
   @media (max-width: 675px) {
-    height: 100px;
+    height: 110px;
   }
   max-width: 250px;
+  height: 110px;
   text-align: center;
 `;
 
@@ -422,19 +442,20 @@ const PhoneComponent = styled(Phone)`
     width: 100%;
     margin: 0;
     margin-top: 20px;
+    overflow: hidden;
   }
 `;
 
 const WrapPhone = styled.div`
   display: flex;
   width: 100%;
-
-  flex: 1;
-  margin-bottom: -140px;
+  height: 100%;
+  margin-bottom: -100px;
   transform: rotate(1.59deg) translateZ(1px);
   @media (max-width: 675px) {
     transform: rotate(0deg) translateZ(1px);
     margin-bottom: -40%;
+    overflow: hidden;
   }
 `;
 
@@ -549,7 +570,7 @@ const Home = ({ darkMode, setDarkMode }) => {
               <WrapWave />
             </Column>
           </WrapContent>
-          {/* <Items>
+          <Items>
             <Item>
               <Subtitle>Easy Splitting</Subtitle>
               <Text>
@@ -569,7 +590,7 @@ const Home = ({ darkMode, setDarkMode }) => {
               <Subtitle>Venmo Integration</Subtitle>
               <Text>If your friends have Venmo, they have Poool Party!</Text>
             </Item>
-          </Items> */}
+          </Items>
 
           <WrapModal onClick={() => setModal(false)} modal={modal}>
             <Modal modal={modal}>

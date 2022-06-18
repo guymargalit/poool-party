@@ -85,9 +85,11 @@ const Content = styled.div`
   width: 100%;
   transform-origin: 50% 80% 0px;
   transform: none;
+  overflow: hidden;
 `;
 
 const WrapPhone = styled.div`
+  overflow: hidden;
   transform: translateY(0.0876686px) translateZ(0px);
   svg {
     width: 100%;
@@ -109,6 +111,7 @@ const WrapVideo = styled.div`
   left: 14.5%;
   width: 71%;
   height: 77.8%;
+  overflow: hidden;
 `;
 
 const DefaultVideo = styled.div`
@@ -116,6 +119,7 @@ const DefaultVideo = styled.div`
   z-index: 2;
   position: absolute;
   inset: 0px;
+  overflow: hidden;
 `;
 
 const Video = styled.video`
@@ -123,4 +127,5 @@ const Video = styled.video`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
