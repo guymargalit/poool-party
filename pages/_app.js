@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     overflow: hidden;
-    overflow-y: ${({navigation}) => navigation ? 'hidden' : 'auto'};
+    overflow-y: ${({ navigation }) => (navigation ? 'hidden' : 'auto')};
     touch-action: none;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -31,6 +31,11 @@ const GlobalStyle = createGlobalStyle`
 }
 * {
   box-sizing: border-box;
+}
+
+.resize-animation-stopper * {
+  transition: none !important;
+  animation: none !important;
 }
 
 /* Scroll bar stylings */
