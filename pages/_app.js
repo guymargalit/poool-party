@@ -10,7 +10,7 @@ import useDarkMode from 'use-dark-mode';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
-    height: 100vh;
+    min-height: 100vh;
     background: ${({ navigation, theme }) =>
       navigation
         ? `linear-gradient(to bottom, ${theme.bg.sky} 0%, ${theme.bg.sky} 80%, ${theme.bg.content} 80%, ${theme.bg.content} 100%)`

@@ -30,6 +30,7 @@ const Container = styled.div`
   padding-bottom: env(safe-area-inset-bottom);
   background-color: ${({ theme }) => theme.bg.wave};
   overflow: hidden;
+  overflow-y: ${({ navigation }) => navigation ? 'hidden' : 'auto'};
 `;
 
 const WrapContent = styled.div`
