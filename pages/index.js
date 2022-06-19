@@ -21,8 +21,7 @@ const Container = styled.div`
   justify-content: flex-start;
   flex: 1;
   z-index: 4;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   min-height: 100vh;
   width: 100%;
 `;
@@ -404,6 +403,8 @@ const Items = styled.div`
   width: 100%;
   justify-content: space-evenly;
   height: 300px;
+  z-index: 13;
+  background: ${({ theme }) => theme.bg.footer};
   @media (max-width: 675px) {
     align-items: center;
     flex-direction: column;
@@ -453,15 +454,19 @@ const WrapPhone = styled.div`
   margin-bottom: -100px;
   transform: rotate(1.59deg) translateZ(1px);
   @media (max-width: 675px) {
+    margin-bottom: -30%;
     transform: rotate(0deg) translateZ(1px);
-    margin-bottom: -40%;
     overflow: hidden;
   }
 `;
 
-const WrapWave = styled(Wave)`
+const WaveComponent = styled(Wave)`
   position: relative;
-  margin-bottom: -20px;
+  margin-top: -180px;
+  z-index: 12;
+  @media (max-width: 675px) {
+    margin-top: -40px;
+  }
 `;
 
 const Home = ({ darkMode, setDarkMode }) => {
@@ -567,30 +572,8 @@ const Home = ({ darkMode, setDarkMode }) => {
               <WrapPhone>
                 <PhoneComponent />
               </WrapPhone>
-              <WrapWave />
             </Column>
           </WrapContent>
-          <Items>
-            <Item>
-              <Subtitle>Easy Splitting</Subtitle>
-              <Text>
-                Seamlessly split your dinner bill and share the link with your
-                guests.
-              </Text>
-            </Item>
-            <Item>
-              <Subtitle>Monthly Requests</Subtitle>
-              <Text>
-                Set a Venmo request to repeat weekly or monthly. Great for
-                subscriptions!
-              </Text>
-            </Item>
-
-            <Item>
-              <Subtitle>Venmo Integration</Subtitle>
-              <Text>If your friends have Venmo, they have Poool Party!</Text>
-            </Item>
-          </Items>
 
           <WrapModal onClick={() => setModal(false)} modal={modal}>
             <Modal modal={modal}>
@@ -601,6 +584,28 @@ const Home = ({ darkMode, setDarkMode }) => {
             </Modal>
           </WrapModal>
         </Container>
+        <WaveComponent color={({ theme }) => theme.bg.footer} />
+        <Items>
+          <Item>
+            <Subtitle>Easy Splitting</Subtitle>
+            <Text>
+              Seamlessly split your dinner bill and share the link with your
+              guests.
+            </Text>
+          </Item>
+          <Item>
+            <Subtitle>Monthly Requests</Subtitle>
+            <Text>
+              Set a Venmo request to repeat weekly or monthly. Great for
+              subscriptions!
+            </Text>
+          </Item>
+
+          <Item>
+            <Subtitle>Venmo Integration</Subtitle>
+            <Text>If your friends have Venmo, they have Poool Party!</Text>
+          </Item>
+        </Items>
         <Footer darkMode={darkMode} setDarkMode={setDarkMode} />
       </>
     );

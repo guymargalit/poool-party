@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export default function Phone(props) {
   return (
@@ -12,7 +12,7 @@ export default function Phone(props) {
               muted
               playsInline
               autoPlay
-              preload='auto'
+              preload="auto"
               src="https://poool-party.s3.amazonaws.com/intro.mp4"
             ></Video>
           </WrapVideo>
@@ -77,6 +77,18 @@ L 410.1 79.3 Z"
   );
 }
 
+const slideUp = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
 const Container = styled.div``;
 
 const Content = styled.div`
@@ -90,7 +102,12 @@ const Content = styled.div`
 
 const WrapPhone = styled.div`
   overflow: hidden;
-  transform: translateY(0.0876686px) translateZ(0px);
+  transform: translateY(0px) translateZ(0px);
+  animation-name: ${slideUp};
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
   svg {
     width: 100%;
     height: auto;

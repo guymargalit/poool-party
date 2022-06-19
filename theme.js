@@ -3,12 +3,13 @@ const light = {
   bg: {
     sky: '#8fd0fa',
     wave: '#54c0f9',
+    footer: '#4CAFE2',
     content: '#ffffff',
     border: '#eeeeee',
     input: '#b0b0b0',
     item: '#e2e2e2',
     code: 'rgb(221, 221, 221)',
-    header:'#54c0f9',
+    header: '#54c0f9',
   },
   text: {
     primary: '#222222',
@@ -37,6 +38,7 @@ const dark = {
   bg: {
     sky: '#111236',
     wave: '#042759',
+    footer: '#0B1D48',
     content: '#02122c',
     border: '#111236',
     input: '#dddddd',
