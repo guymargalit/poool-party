@@ -68,9 +68,9 @@ const FAQ = ({ darkMode, setDarkMode }) => {
           </Text>
         </WrapItem>
         <WrapItem>
-          <Item>Can Poool Party pay other users on my behalf?</Item>
+          <Item>Can Poool Party send money on my behalf?</Item>
           <Text>
-            Nope. It will only charge other users on your behalf
+            Nope. It will only ask for money (charge users) on your behalf
             for security purposes.
           </Text>
         </WrapItem>

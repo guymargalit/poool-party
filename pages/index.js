@@ -8,11 +8,26 @@ import {
   IconGoogle,
   IconAppleShare,
   Logo,
+  IconCalendar,
+  IconReceipt,
+  IconVenmo,
 } from '../icons';
 import Router from 'next/router';
 import Footer from '../components/Footer';
 import Phone from '../components/Phone';
 import Wave from '../components/Wave';
+
+const slideUp = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -211,16 +226,23 @@ const AppTitle = styled.div`
 `;
 
 const Subtitle = styled.div`
-  font-size: 18px;
+  margin-top: 8px;
+  font-size: 22px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.white};
+  @media (max-width: 675px) {
+    font-size: 18px;
+  }
 `;
 
 const Text = styled.div`
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
+  @media (max-width: 675px) {
+    font-size: 14px;
+  }
 `;
 
 const AppDescription = styled.div`
@@ -403,13 +425,15 @@ const Items = styled.div`
   width: 100%;
   justify-content: space-evenly;
   height: 300px;
+  margin-top: -5%;
   z-index: 13;
   background: ${({ theme }) => theme.bg.footer};
   @media (max-width: 675px) {
     align-items: center;
     flex-direction: column;
-    height: 500px;
+    height: 550px;
     margin-top: 0px;
+    padding-bottom: 50px;
   }
 `;
 
@@ -419,12 +443,29 @@ const Item = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 10px 0px;
+  max-width: 280px;
+  height: 200px;
   @media (max-width: 675px) {
-    height: 110px;
+    height: 135px;
+    margin: 10px 0;
   }
-  max-width: 250px;
-  height: 110px;
   text-align: center;
+  animation-name: ${slideUp};
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  :nth-child(1) {
+    animation-delay: 0s;
+    animation-duration: 5s;
+  }
+  :nth-child(2) {
+    animation-delay: 1s;
+    animation-duration: 5s;
+  }
+  :nth-child(3) {
+    animation-delay: 0.5s;
+    animation-duration: 5s;
+  }
 `;
 
 const PhoneComponent = styled(Phone)`
@@ -467,6 +508,34 @@ const WaveComponent = styled(Wave)`
   @media (max-width: 675px) {
     margin-top: -40px;
   }
+`;
+
+const CalendarIcon = styled(IconCalendar)`
+  width: 45px;
+  height: 45px;
+`;
+
+const ReceiptIcon = styled(IconReceipt)`
+  width: 45px;
+  height: 45px;
+`;
+
+const WrapVenmoIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  background: #008cff;
+  border-radius: 12px;
+`;
+
+const VenmoIcon = styled(IconVenmo)`
+  width: 25px;
+  height: 25px;
+  fill: #fff;
 `;
 
 const Home = ({ darkMode, setDarkMode }) => {
@@ -541,8 +610,8 @@ const Home = ({ darkMode, setDarkMode }) => {
               <Hero>
                 <Title>Make a splash.</Title>
                 <Caption>
-                  Request your friends on Venmo, with easy dinner splitting and
-                  monthly requests.
+                  Charge your friends on Venmo, with easy dinner splitting and
+                  automated monthly requests.
                 </Caption>
                 <Button onClick={handleApple}>
                   <AppleIcon />
@@ -587,23 +656,31 @@ const Home = ({ darkMode, setDarkMode }) => {
         <WaveComponent color={({ theme }) => theme.bg.footer} />
         <Items>
           <Item>
+            <ReceiptIcon />
             <Subtitle>Easy Splitting</Subtitle>
             <Text>
-              Seamlessly split your dinner bill and share the link with your
-              guests.
+              Seamlessly split your dinner bill by using Poool Party's smart
+              splitting and public receipt features.
             </Text>
           </Item>
           <Item>
-            <Subtitle>Monthly Requests</Subtitle>
+            <CalendarIcon />
+            <Subtitle>Recurring Requests</Subtitle>
             <Text>
-              Set a Venmo request to repeat weekly or monthly. Great for
-              subscriptions!
+              Set up automated Venmo requests to repeat weekly or monthly. Great
+              for subscriptions!
             </Text>
           </Item>
 
           <Item>
+            <WrapVenmoIcon>
+              <VenmoIcon />
+            </WrapVenmoIcon>
             <Subtitle>Venmo Integration</Subtitle>
-            <Text>If your friends have Venmo, they have Poool Party!</Text>
+            <Text>
+              Your friends don't need to do anything to use Poool Party. We send
+              all requests through Venmo.
+            </Text>
           </Item>
         </Items>
         <Footer darkMode={darkMode} setDarkMode={setDarkMode} />
