@@ -22,11 +22,16 @@ export async function getStaticPaths() {
 }
 
 const Content = styled.div`
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
+  max-width: 100%;
   color: ${({ theme }) => theme.text.primary};
   font-size: 18px;
   margin-bottom: 40px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 
   h1 {
     font-size: 24px;
@@ -43,15 +48,22 @@ const Content = styled.div`
     text-decoration: underline;
   }
 
+  img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
   code,
   kbd,
   pre,
   samp {
     font-family: monospace, monospace;
     font-size: 16px;
+    white-space: pre-wrap;
   }
 
-  pre>code {
+  pre > code {
     display: block;
     color: ${({ theme }) => theme.text.code};
     background-color: ${({ theme }) => theme.bg.code};
@@ -60,6 +72,8 @@ const Content = styled.div`
     padding: 1rem 1.5rem;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
       0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
   }
 `;
 

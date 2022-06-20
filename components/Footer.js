@@ -13,6 +13,7 @@ const Container = styled.div`
   width: 100%;
   height: 50px;
   min-height: 50px;
+  max-height: 50px;
   position: ${({ fixed }) => (fixed ? 'fixed' : 'relative')};
   bottom: 0;
   background-color: ${({ theme }) => theme.bg.wave};
@@ -21,6 +22,7 @@ const Container = styled.div`
   @media (max-width: 500px) {
     min-height: 70px;
     height: 70px;
+    max-height: 70px;
   }
 `;
 

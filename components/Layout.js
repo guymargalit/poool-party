@@ -30,7 +30,7 @@ const Container = styled.div`
   padding-bottom: env(safe-area-inset-bottom);
   background-color: ${({ theme }) => theme.bg.wave};
   overflow: hidden;
-  overflow-y: ${({ navigation }) => navigation ? 'hidden' : 'auto'};
+  overflow-y: ${({ navigation }) => (navigation ? 'hidden' : 'auto')};
 `;
 
 const WrapContent = styled.div`
@@ -516,8 +516,14 @@ const Layout = (props) => {
     );
   }
 
+  const isPublic =
+    router.pathname.includes('/blog') ||
+    router.pathname.includes('/privacy') ||
+    router.pathname.includes('/faq') ||
+    router.pathname.includes('/terms');
+
   return (
-    <Container fixed={router.pathname !== '/'}>
+    <Container fixed={router.pathname !== '/' && !isPublic}>
       <WrapModal modal={venmo}>
         <Modal modal={venmo}>
           <Venmo
@@ -548,85 +554,90 @@ const Layout = (props) => {
           />
         )}
       </Panel>
-      <Hero background={background}>
-        {!routes[router.pathname]?.public && (
-          <>
-            {collapse ? (
-              <ExpandIcon
-                onClick={() => {
-                  localStorage.removeItem('collapse');
-                  setCollapse(false);
-                }}
-              />
-            ) : (
-              <CollapseIcon
-                onClick={() => {
-                  localStorage.setItem('collapse', true);
-                  setCollapse(true);
-                }}
-              />
-            )}
-            <WrapTooltip>
-              <TooltipContainer active={!localStorage.getItem('tooltip')}>
-                <Tooltip
-                  content={
-                    <>
-                      Create an expense, <br /> make a splash!
-                    </>
-                  }
+      {!isPublic && (
+        <Hero background={background}>
+          {!routes[router.pathname]?.public && (
+            <>
+              {collapse ? (
+                <ExpandIcon
+                  onClick={() => {
+                    localStorage.removeItem('collapse');
+                    setCollapse(false);
+                  }}
                 />
-              </TooltipContainer>
-              <WrapPlus>
-                <Notification notification={props?.user?.draft !== null} />
-                {submitting ? (
-                  <PlusEmpty>
-                    <Loader viewBox="0 0 50 50">
-                      <Circle cx="25" cy="25" r="20"></Circle>
-                    </Loader>
-                  </PlusEmpty>
-                ) : (
-                  <>
-                    <Plus
-                      onClick={() => {
-                        localStorage.setItem('tooltip', 'true');
-                        handleExpense();
-                      }}
-                    />
-                    <PlusFill />
-                  </>
-                )}
-              </WrapPlus>
-            </WrapTooltip>
-          </>
-        )}
-        {!routes[router.pathname]?.public && !collapse && props?.user?.toy ? (
-          <Toy type={props?.user?.toy} position={{ x: '18%', y: '5%', z: 7 }} />
-        ) : !props?.user &&
-          router.pathname === '/' &&
-          !localStorage.getItem('apple') &&
-          !window.location.href?.includes('#') &&
-          isInStandaloneMode() ? (
-          <Toys>
-            {toys.map((toy, i) => (
-              <Toy key={i} {...toy} />
-            ))}
-          </Toys>
-        ) : !props?.user &&
-          router.pathname === '/' &&
-          !localStorage.getItem('apple') &&
-          !window.location.href?.includes('#') &&
-          !isInStandaloneMode() ? (
-          <Toy
-            type={'flamingo'}
-            position={{ x: '10%', y: '4%', z: 6 }}
-            maxWidth={'250px'}
-            width={'25%'}
-          />
-        ) : (
-          <></>
-        )}
-        <Wave />
-      </Hero>
+              ) : (
+                <CollapseIcon
+                  onClick={() => {
+                    localStorage.setItem('collapse', true);
+                    setCollapse(true);
+                  }}
+                />
+              )}
+              <WrapTooltip>
+                <TooltipContainer active={!localStorage.getItem('tooltip')}>
+                  <Tooltip
+                    content={
+                      <>
+                        Create an expense, <br /> make a splash!
+                      </>
+                    }
+                  />
+                </TooltipContainer>
+                <WrapPlus>
+                  <Notification notification={props?.user?.draft !== null} />
+                  {submitting ? (
+                    <PlusEmpty>
+                      <Loader viewBox="0 0 50 50">
+                        <Circle cx="25" cy="25" r="20"></Circle>
+                      </Loader>
+                    </PlusEmpty>
+                  ) : (
+                    <>
+                      <Plus
+                        onClick={() => {
+                          localStorage.setItem('tooltip', 'true');
+                          handleExpense();
+                        }}
+                      />
+                      <PlusFill />
+                    </>
+                  )}
+                </WrapPlus>
+              </WrapTooltip>
+            </>
+          )}
+          {!routes[router.pathname]?.public && !collapse && props?.user?.toy ? (
+            <Toy
+              type={props?.user?.toy}
+              position={{ x: '18%', y: '5%', z: 7 }}
+            />
+          ) : !props?.user &&
+            router.pathname === '/' &&
+            !localStorage.getItem('apple') &&
+            !window.location.href?.includes('#') &&
+            isInStandaloneMode() ? (
+            <Toys>
+              {toys.map((toy, i) => (
+                <Toy key={i} {...toy} />
+              ))}
+            </Toys>
+          ) : !props?.user &&
+            router.pathname === '/' &&
+            !localStorage.getItem('apple') &&
+            !window.location.href?.includes('#') &&
+            !isInStandaloneMode() ? (
+            <Toy
+              type={'flamingo'}
+              position={{ x: '10%', y: '4%', z: 6 }}
+              maxWidth={'250px'}
+              width={'25%'}
+            />
+          ) : (
+            <></>
+          )}
+          {!isPublic && <Wave />}
+        </Hero>
+      )}
       {!(props?.user && router.pathname === '/') &&
         !(!props?.user && !routes[router.pathname]?.public) && (
           <>

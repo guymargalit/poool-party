@@ -7,9 +7,7 @@ import Footer from './Footer';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  z-index: 3;
-  height: 100%;
+  flex: 1;
   width: 100%;
 `;
 
@@ -29,6 +27,10 @@ const Area = styled.div`
   justify-content: flex-start;
   width: 100%;
   flex: 1;
+  min-height: calc(100vh - 50px);
+  @media (max-width: 500px) {
+    min-height: calc(100vh - 70px);
+  }
 `;
 
 const Heading = styled.div`
@@ -36,7 +38,8 @@ const Heading = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 800px;
-  border-bottom: 1px solid ${({ border, theme }) => border ? theme.bg.border : 'transparent'};
+  border-bottom: 1px solid
+    ${({ border, theme }) => (border ? theme.bg.border : 'transparent')};
   background-color: ${({ theme }) => theme.bg.content};
   margin-top: 65px;
   padding: 10px 0;
@@ -52,6 +55,9 @@ const WrapContent = styled.div`
 `;
 
 const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
   padding: 0px 15px 30px;
   color: ${({ theme }) => theme.text.primary};
