@@ -36,8 +36,8 @@ export default async function handler(req, res) {
   }
 
   const body = {
-    note: note,
-    amount: `-${parseFloat(amount)}`,
+    note: `${note} with poool.party`,
+    amount: `-${parseFloat(Math.abs(amount))}`,
     user_id: userId,
     audience: 'private',
   };
