@@ -6,7 +6,7 @@ import {
   IconPopper,
   IconRightChevron,
 } from '../../icons';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 import Skeleton from 'react-loading-skeleton';
 import Router from 'next/router';
 import Link from 'next/link';

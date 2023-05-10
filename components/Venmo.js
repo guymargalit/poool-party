@@ -199,20 +199,21 @@ const Error = styled.div`
 `;
 
 const Venmo = (props) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [otp, setOTP] = useState(undefined);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [deviceId, setDeviceId] = useState('');
-  const { mutate } = useSWR('/api/user');
-  useEffect(async () => {
-    const fpPromise = FingerprintJS.load();
-    const fp = await fpPromise;
-    const result = await fp.get();
-    setDeviceId(result.visitorId);
-  }, []);
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [otp, setOTP] = useState(undefined);
+  // const [error, setError] = useState('');
+  // const [success, setSuccess] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [deviceId, setDeviceId] = useState('');
+  // const { mutate } = useSWR('/api/user');
+  
+  // useEffect(async () => {
+  //   const fpPromise = FingerprintJS.load();
+  //   const fp = await fpPromise;
+  //   const result = await fp.get();
+  //   setDeviceId(result.visitorId);
+  // }, []);
 
   const getToken = async () => {
     setError('');
@@ -247,7 +248,7 @@ const Venmo = (props) => {
 
   return (
     <Fragment>
-      <Header>
+      {/* <Header>
         <VenmoLogo />
       </Header>
       {success ? (
@@ -329,7 +330,7 @@ const Venmo = (props) => {
           )}
           <Caption onClick={() => props.close()}>I'll do it later</Caption>
         </Form>
-      )}
+      )} */}
     </Fragment>
   );
 };

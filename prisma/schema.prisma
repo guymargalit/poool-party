@@ -1,40 +1,22 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-enum Interval {
-  day
-  week
-  month
-  year
-}
-
-model Receipt {
-  id        String   @id @default(cuid())
-  expense   Expense  @relation("expense_receipt", fields: [expenseId], references: [id])
-  expenseId Int      @map(name: "expense_id")
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-
-  @@map(name: "receipts")
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Expense {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  total         Float?
-  venmo         Venmo     @relation("expenses_created", fields: [venmoId], references: [id])
-  venmoId       String    @map(name: "venmo_id")
-  pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
-  poolId        Int?      @map(name: "pool_id")
+  id      Int     @id @default(autoincrement())
+  name    String?
+  total   Float?
+  venmo   Venmo   @relation(fields: [venmoId], references: [id])
+  venmoId String  @map(name: "venmo_id")
+  pool    Pool?   @relation(fields: [poolId], references: [id])
+  poolId  Int?    @map(name: "pool_id")
+
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   interval      Interval?
@@ -46,26 +28,91 @@ model Expense {
   image         String?
   metadata      Json?
 
-  receipt            Receipt?      @relation("expense_receipt")
-  currentPoolExpense PoolUser?     @relation("current_pool_expense")
-  currentExpense     User?         @relation("current_expense")
-  users              ExpenseUser[] @relation(name: "expense_users")
+  users ExpenseUser[]
 
+  @@index([venmoId])
+  @@index([poolId])
   @@map(name: "expenses")
 }
 
 model ExpenseUser {
   id        Int      @id @default(autoincrement())
   amount    Float
-  expense   Expense  @relation(name: "expense_users", fields: [expenseId], references: [id])
+  expense   Expense  @relation(fields: [expenseId], references: [id])
   expenseId Int      @map(name: "expense_id")
-  venmo     Venmo    @relation("expenses", fields: [venmoId], references: [id])
+  venmo     Venmo    @relation(fields: [venmoId], references: [id])
   venmoId   String   @map(name: "venmo_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
-  requests Request[] @relation(name: "expense_user_requests")
+  requests Request[]
+
+  @@unique([expenseId, venmoId])
+  @@index([venmoId])
   @@map(name: "expenseusers")
+}
+
+enum Interval {
+  day
+  week
+  month
+  year
+}
+
+model Pool {
+  id        Int       @id @default(autoincrement())
+  name      String
+  venmo     Venmo     @relation(fields: [venmoId], references: [id])
+  venmoId   String    @map(name: "venmo_id")
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @updatedAt @map(name: "updated_at")
+  deletedAt DateTime? @map(name: "deleted_at")
+
+  expenses Expense[]
+  users    PoolUser[]
+
+  @@index([venmoId])
+  @@map(name: "pools")
+}
+
+model PoolUser {
+  id      Int     @id @default(autoincrement())
+  pool    Pool    @relation(fields: [poolId], references: [id])
+  poolId  Int     @map(name: "pool_id")
+  venmo   Venmo?  @relation(fields: [venmoId], references: [id])
+  venmoId String? @map(name: "venmo_id")
+
+  deletedAt DateTime? @map(name: "deleted_at")
+
+  @@unique([venmoId, poolId], name: "venmopoolId")
+  @@index([poolId])
+  @@map(name: "poolusers")
+}
+
+model Request {
+  id            Int          @id @default(autoincrement())
+  name          String
+  amount        Float
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+  expenseUser   ExpenseUser? @relation(fields: [expenseUserId], references: [id])
+  expenseUserId Int?         @map(name: "expense_user_id")
+  status        Status       @default(pending)
+  paymentId     String?      @map(name: "payment_id")
+
+  @@index([expenseUserId])
+  @@map(name: "requests")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
 }
 
 enum Status {
@@ -75,116 +122,229 @@ enum Status {
   cancelled
 }
 
-model Request {
-  id            Int          @id @default(autoincrement())
-  name          String
-  amount        Float
-  createdAt     DateTime     @default(now()) @map(name: "created_at")
-  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  expenseUser   ExpenseUser? @relation("expense_user_requests", fields: [expenseUserId], references: [id])
-  expenseUserId Int?         @map(name: "expense_user_id")
-  status        Status       @default(pending)
-  paymentId     String?      @map(name: "payment_id")
-
-  @@map(name: "requests")
-}
-
-model Pool {
-  id        Int       @id @default(autoincrement())
-  name      String
-  venmo     Venmo     @relation(name: "pools_created", fields: [venmoId], references: [id])
-  venmoId   String    @map(name: "venmo_id")
-  createdAt DateTime  @default(now()) @map(name: "created_at")
-  updatedAt DateTime  @updatedAt @map(name: "updated_at")
-  deletedAt DateTime? @map(name: "deleted_at")
-
-  expenses Expense[]  @relation(name: "pool_expenses")
-  users    PoolUser[] @relation(name: "users")
-
-  @@map(name: "pools")
-}
-
-model PoolUser {
-  id        Int       @id @default(autoincrement())
-  pool      Pool      @relation("users", fields: [poolId], references: [id])
-  poolId    Int       @map(name: "pool_id")
-  venmo     Venmo?    @relation("venmos", fields: [venmoId], references: [id])
-  venmoId   String?   @map(name: "venmo_id")
-  draft     Expense?  @relation("current_pool_expense", fields: [draftId], references: [id])
-  draftId   Int?      @map(name: "draft_id")
-  deletedAt DateTime? @map(name: "deleted_at")
-
-  @@unique([venmoId, poolId], name: "venmopoolId")
-  @@map(name: "poolusers")
-}
-
 model User {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime? @map(name: "email_verified")
+  emailVerified DateTime? @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   toy           String?   @default("flamingo")
-  settings      Json?
-  deletedAt     DateTime? @map(name: "deleted_at")
-  draft         Expense?  @relation("current_expense", fields: [draftId], references: [id])
-  draftId       Int?      @map(name: "draft_id")
 
-  venmo Venmo? @relation(name: "venmo")
+  venmo Venmo?
 
-  @@map(name: "users")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+    sessions        Session[]
+
+  @@map("users")
 }
 
 model Venmo {
   id          String    @id
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?   @unique @map(name: "user_id")
   username    String
   displayName String    @map(name: "display_name")
   image       String?
-  user        User?     @relation("venmo", fields: [userId], references: [id])
-  userId      Int?      @map(name: "user_id")
   accessToken String?   @map(name: "access_token")
   expiredAt   DateTime? @map(name: "expired_at")
   createdAt   DateTime  @default(now()) @map(name: "created_at")
   updatedAt   DateTime  @updatedAt @map(name: "updated_at")
 
-  poolUsers       PoolUser[]    @relation(name: "venmos")
-  poolsCreated    Pool[]        @relation(name: "pools_created")
-  expensesCreated Expense[]     @relation(name: "expenses_created")
-  expenses        ExpenseUser[] @relation(name: "expenses")
+  pools           PoolUser[]
+  poolsCreated    Pool[]
+  expenses        ExpenseUser[]
+  expensesCreated Expense[]
 
   @@map(name: "venmos")
 }
 
-model Account {
-  id                 Int       @id @default(autoincrement())
-  compoundId         String    @unique @map(name: "compound_id")
-  userId             Int       @map(name: "user_id")
-  providerType       String    @map(name: "provider_type")
-  providerId         String    @map(name: "provider_id")
-  providerAccountId  String    @map(name: "provider_account_id")
-  refreshToken       String?   @map(name: "refresh_token")
-  accessToken        String?   @map(name: "access_token")
-  accessTokenExpires DateTime? @map(name: "access_token_expires")
-  createdAt          DateTime  @default(now()) @map(name: "created_at")
-  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-
-  @@index([providerAccountId], name: "providerAccountId")
-  @@index([providerId], name: "providerId")
-  @@index([userId], name: "userId")
-  @@map(name: "accounts")
+  @@unique([identifier, token])
+  @@map("verificationtokens")
 }
 
-model Session {
-  id           Int      @id @default(autoincrement())
-  userId       Int      @map(name: "user_id")
-  expires      DateTime
-  sessionToken String   @unique @map(name: "session_token")
-  accessToken  String   @unique @map(name: "access_token")
-  createdAt    DateTime @default(now()) @map(name: "created_at")
-  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+// enum Interval {
+//   day
+//   week
+//   month
+//   year
+// }
 
-  @@map(name: "sessions")
-}
+// model Receipt {
+//   id        String   @id @default(cuid())
+//   expense   Expense  @relation("expense_receipt", fields: [expenseId], references: [id])
+//   expenseId Int      @map(name: "expense_id")
+//   createdAt DateTime @default(now()) @map(name: "created_at")
+//   updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+//   @@unique([expenseId])
+//   @@map(name: "receipts")
+// }
+
+// model Expense {
+//   id            Int       @id @default(autoincrement())
+//   name          String?
+//   total         Float?
+//   venmo         Venmo     @relation("expenses_created", fields: [venmoId], references: [id])
+//   venmoId       String    @map(name: "venmo_id")
+//   pool          Pool?     @relation("pool_expenses", fields: [poolId], references: [id])
+//   poolId        Int?      @map(name: "pool_id")
+//   createdAt     DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+//   interval      Interval?
+//   intervalCount Int?      @map(name: "interval_count")
+//   startDate     DateTime? @map(name: "start_date")
+//   lastRequest   DateTime? @map(name: "last_request")
+//   active        Boolean   @default(false)
+//   draft         Boolean   @default(true)
+//   image         String?
+//   metadata      Json?
+
+//   receipt            Receipt?      @relation("expense_receipt")
+//   currentPoolExpense PoolUser?     @relation("current_pool_expense")
+//   currentExpense     User?         @relation("current_expense")
+//   users              ExpenseUser[] @relation(name: "expense_users")
+
+//   @@map(name: "expenses")
+// }
+
+// model ExpenseUser {
+//   id        Int      @id @default(autoincrement())
+//   amount    Float
+//   expense   Expense  @relation(name: "expense_users", fields: [expenseId], references: [id])
+//   expenseId Int      @map(name: "expense_id")
+//   venmo     Venmo    @relation("expenses", fields: [venmoId], references: [id])
+//   venmoId   String   @map(name: "venmo_id")
+//   createdAt DateTime @default(now()) @map(name: "created_at")
+//   updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+//   requests Request[] @relation(name: "expense_user_requests")
+
+//   @@map(name: "expenseusers")
+// }
+
+// enum Status {
+//   succeeded
+//   pending
+//   failed
+//   cancelled
+// }
+
+// model Request {
+//   id            Int          @id @default(autoincrement())
+//   name          String
+//   amount        Float
+//   createdAt     DateTime     @default(now()) @map(name: "created_at")
+//   updatedAt     DateTime     @updatedAt @map(name: "updated_at")
+//   expenseUser   ExpenseUser? @relation("expense_user_requests", fields: [expenseUserId], references: [id])
+//   expenseUserId Int?         @map(name: "expense_user_id")
+//   status        Status       @default(pending)
+//   paymentId     String?      @map(name: "payment_id")
+
+//   @@map(name: "requests")
+// }
+
+// model Pool {
+//   id        Int       @id @default(autoincrement())
+//   name      String
+//   venmo     Venmo     @relation(name: "pools_created", fields: [venmoId], references: [id])
+//   venmoId   String    @map(name: "venmo_id")
+//   createdAt DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt DateTime  @updatedAt @map(name: "updated_at")
+//   deletedAt DateTime? @map(name: "deleted_at")
+
+//   expenses Expense[]  @relation(name: "pool_expenses")
+//   users    PoolUser[] @relation(name: "users")
+
+//   @@map(name: "pools")
+// }
+
+// model PoolUser {
+//   id        Int       @id @default(autoincrement())
+//   pool      Pool      @relation("users", fields: [poolId], references: [id])
+//   poolId    Int       @map(name: "pool_id")
+//   venmo     Venmo?    @relation("venmos", fields: [venmoId], references: [id])
+//   venmoId   String?   @map(name: "venmo_id")
+//   draft     Expense?  @relation("current_pool_expense", fields: [draftId], references: [id])
+//   draftId   Int?      @map(name: "draft_id")
+//   deletedAt DateTime? @map(name: "deleted_at")
+
+//   @@unique([venmoId, poolId], name: "venmopoolId")
+//   @@map(name: "poolusers")
+// }
+
+// model User {
+//   id            Int       @id @default(autoincrement())
+//   name          String?
+//   email         String?   @unique
+//   emailVerified DateTime? @map(name: "email_verified")
+//   image         String?
+//   createdAt     DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+//   toy           String?   @default("flamingo")
+//   settings      Json?
+//   deletedAt     DateTime? @map(name: "deleted_at")
+//   draft         Expense?  @relation("current_expense", fields: [draftId], references: [id])
+//   draftId       Int?      @map(name: "draft_id")
+
+//   venmo Venmo? @relation(name: "venmo")
+
+//   @@map(name: "users")
+// }
+
+// model Venmo {
+//   id          String    @id
+//   username    String
+//   displayName String    @map(name: "display_name")
+//   image       String?
+//   user        User?     @relation("venmo", fields: [userId], references: [id])
+//   userId      Int?      @map(name: "user_id")
+//   accessToken String?   @map(name: "access_token")
+//   expiredAt   DateTime? @map(name: "expired_at")
+//   createdAt   DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt   DateTime  @updatedAt @map(name: "updated_at")
+
+//   poolUsers       PoolUser[]    @relation(name: "venmos")
+//   poolsCreated    Pool[]        @relation(name: "pools_created")
+//   expensesCreated Expense[]     @relation(name: "expenses_created")
+//   expenses        ExpenseUser[] @relation(name: "expenses")
+
+//   @@map(name: "venmos")
+// }
+
+// model Account {
+//   id                 Int       @id @default(autoincrement())
+//   compoundId         String    @unique @map(name: "compound_id")
+//   userId             Int       @map(name: "user_id")
+//   providerType       String    @map(name: "provider_type")
+//   providerId         String    @map(name: "provider_id")
+//   providerAccountId  String    @map(name: "provider_account_id")
+//   refreshToken       String?   @map(name: "refresh_token")
+//   accessToken        String?   @map(name: "access_token")
+//   accessTokenExpires DateTime? @map(name: "access_token_expires")
+//   createdAt          DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+
+//   @@index([providerAccountId], name: "providerAccountId")
+//   @@index([providerId], name: "providerId")
+//   @@index([userId], name: "userId")
+//   @@map(name: "accounts")
+// }
+
+// model Session {
+//   id           Int      @id @default(autoincrement())
+//   userId       Int      @map(name: "user_id")
+//   expires      DateTime
+//   sessionToken String   @unique @map(name: "session_token")
+//   accessToken  String   @unique @map(name: "access_token")
+//   createdAt    DateTime @default(now()) @map(name: "created_at")
+//   updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+//   @@map(name: "sessions")
+// }

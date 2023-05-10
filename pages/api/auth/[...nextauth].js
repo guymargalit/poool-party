@@ -1,72 +1,70 @@
 // pages/api/auth/[...nextauth].js
 
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
-import Adapters from 'next-auth/adapters';
-import prisma from '../../../lib/prisma';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from '@/lib/prisma';
+import { html, text } from '@/lib/mailer';
+import EmailProvider from 'next-auth/providers/email';
 
 const authHandler = (req, res) => NextAuth(req, res, options);
 export default authHandler;
 
 const options = {
+  adapter: PrismaAdapter(prisma),
+  // pages: {
+  //   signIn: '/',
+  //   error: '/', // Error code passed in query string as ?error=
+  // },
   callbacks: {
-    async jwt(token, user) {
-      // Add user id to the token right after signin
-      if (user?.id) {
-        token.id = user.id;
+    session: async ({ session, user }) => {
+      if (session?.user) {
+        session.user.id = user.id;
       }
-      return Promise.resolve(token);
-    },
-    async session(session, token) {
-      // Add property to session
-      session.user.id = token.id;
       return session;
-    },
-    async redirect(url, baseUrl) {
-      return Promise.resolve(url)
     },
   },
   providers: [
-    Providers.Apple({
-      clientId: process.env.APPLE_ID,
-      clientSecret: {
-        appleId: process.env.APPLE_ID,
-        teamId: process.env.APPLE_TEAM_ID,
-        privateKey: process.env.APPLE_PRIVATE_KEY,
-        keyId: process.env.APPLE_KEY_ID,
+    EmailProvider({
+      id: 'email',
+      type: 'email',
+      maxAge: 5 * 60,
+      async generateVerificationToken() {
+        return `${Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000}`;
+      },
+      async sendVerificationRequest({ identifier: email, url, token }) {
+        // Call the cloud Email provider API for sending emails
+        // See https://docs.sendgrid.com/api-reference/mail-send/mail-send
+        const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+          // The body format will vary depending on provider, please see their documentation
+          // for further details.
+          body: JSON.stringify({
+            personalizations: [{ to: [{ email }] }],
+            from: { email: 'help@poool.party', name: 'Poool Party' },
+            subject: `Your temporary Poool Party login code is ${token}`,
+            content: [
+              {
+                type: 'text/plain',
+                value: text({ url, host: 'Poool Party', token }),
+              },
+              {
+                type: 'text/html',
+                value: html({ url, host: 'Poool Party', email, token }),
+              },
+            ],
+          }),
+          headers: {
+            // Authentication will also vary from provider to provider, please see their docs.
+            Authorization: `Bearer ${process.env.sendgridApi}`,
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        });
+
+        if (!response.ok) {
+          const { errors } = await response.json();
+          throw new Error(JSON.stringify(errors));
+        }
       },
     }),
-    Providers.Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    // {
-    //   id: "venmo",
-    //   name: "Venmo",
-    //   type: "oauth",
-    //   version: "2.0",
-    //   scope: "make_payments access_profile access_email access_phone access_friends",
-    //   params: { grant_type: "authorization_code" },
-    //   accessTokenUrl: "https://api.venmo.com/v1/oauth/access_token",
-    //   authorizationUrl: `https://api.venmo.com/v1/oauth/authorize?client_id=${process.env.VENMO_CLIENT_ID}&response_type=code`,
-    //   profileUrl:'https://api.venmo.com/v1/me',
-    //   async profile(response, tokens) {
-    //     console.log(response, tokens)
-    //     const user = response?.data?.user;
-    //     // You can use the tokens, in case you want to fetch more profile information
-    //     // For example several OAuth providers do not return email by default.
-    //     // Depending on your provider, will have tokens like `access_token`, `id_token` and or `refresh_token`
-    //     return {
-    //       id: user?.id,
-    //       name: user?.display_name,
-    //       email: user?.email,
-    //       image: user?.profile_picture_url,
-    //     }
-    //   },
-    //   clientId: process.env.VENMO_CLIENT_ID,
-    //   clientSecret: process.env.VENMO_CLIENT_SECRET
-    // }
   ],
-  adapter: Adapters.Prisma.Adapter({ prisma }),
-  secret: process.env.SECRET,
 };

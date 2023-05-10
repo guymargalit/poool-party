@@ -441,37 +441,37 @@ const Layout = (props) => {
   );
   const { mutate } = useSWR('/api/user');
 
-  useEffect(() => {
-    setNavigation(!props?.user ? false : routes[router.pathname]?.navigation);
-    setHeight(routes[router.pathname]?.height);
-    setBackground(
-      !props?.user
-        ? routes[router.pathname]?.landing
-          ? true
-          : false
-        : routes[router.pathname]?.background
-    );
-    // Non-auth user can only access homepage
-    if (!props?.user && !routes[router.pathname]?.public) {
-      Router.push('/');
-    }
-    // Auth-user redirected from homepage to dashboard
-    else if (props?.user && router.pathname === '/') {
-      Router.push('/dashboard');
-    } else {
-      if (
-        props?.user?.id &&
-        !hideVenmo &&
-        (!props?.user?.venmo || props?.user?.venmo?.expiredAt)
-      ) {
-        if (!venmo) {
-          setVenmo(true);
-        }
-      } else if (props?.user?.id && (props?.user?.venmo || hideVenmo)) {
-        setVenmo(false);
-      }
-    }
-  }, [props?.user?.id, props?.user?.venmo, hideVenmo, router.pathname]);
+  // useEffect(() => {
+  //   setNavigation(!props?.user ? false : routes[router.pathname]?.navigation);
+  //   setHeight(routes[router.pathname]?.height);
+  //   setBackground(
+  //     !props?.user
+  //       ? routes[router.pathname]?.landing
+  //         ? true
+  //         : false
+  //       : routes[router.pathname]?.background
+  //   );
+  //   // Non-auth user can only access homepage
+  //   if (!props?.user && !routes[router.pathname]?.public) {
+  //     Router.push('/');
+  //   }
+  //   // Auth-user redirected from homepage to dashboard
+  //   else if (props?.user && router.pathname === '/') {
+  //     Router.push('/dashboard');
+  //   } else {
+  //     if (
+  //       props?.user?.id &&
+  //       !hideVenmo &&
+  //       (!props?.user?.venmo || props?.user?.venmo?.expiredAt)
+  //     ) {
+  //       if (!venmo) {
+  //         setVenmo(true);
+  //       }
+  //     } else if (props?.user?.id && (props?.user?.venmo || hideVenmo)) {
+  //       setVenmo(false);
+  //     }
+  //   }
+  // }, [props?.user?.id, props?.user?.venmo, hideVenmo, router.pathname]);
 
   const handleExpense = async () => {
     if (props?.user?.draft) {
@@ -499,7 +499,7 @@ const Layout = (props) => {
     return 'standalone' in window.navigator && window.navigator.standalone;
   };
 
-  useEffect(() => mutate(), []);
+  // useEffect(() => mutate(), []);
 
   // 404 layout
   if (!routes[router.pathname]) {

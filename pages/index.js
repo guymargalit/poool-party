@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 import {
   IconApple,
   IconClose,
@@ -538,40 +538,25 @@ const VenmoIcon = styled(IconVenmo)`
   fill: #fff;
 `;
 
+const VenmoButtonIcon = styled(IconVenmo)`
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  user-select: none;
+  transition: all 0.25s ease 0s;
+`;
+
 const Home = ({ darkMode, setDarkMode }) => {
-  const [apple, setApple] = useState(false);
-  const [google, setGoogle] = useState(false);
   const [banner, setBanner] = useState(true);
   const [modal, setModal] = useState(false);
+  const [venmo, setVenmo] = useState(false);
 
-  useEffect(() => {
-    let timeout = null;
-    if (localStorage.getItem('apple') || window.location.href?.includes('#')) {
-      timeout = setTimeout(() => {
-        localStorage.removeItem('apple');
-        Router.push('/');
-      }, 3000);
-    }
-    return () => (timeout ? clearTimeout(timeout) : null);
-  }, []);
-
-  if (localStorage.getItem('apple') || window.location.href?.includes('#')) {
-    return <></>;
-  }
-
-  const handleApple = (e) => {
+  const handleVenmo = (e) => {
     e.preventDefault();
-    setApple(true);
-    signIn('apple', {
-      callbackUrl: `/#`,
-    }).then(() => localStorage.setItem('apple', 'true'));
-  };
-  const handleGoogle = (e) => {
-    e.preventDefault();
-    setGoogle(true);
-    signIn('google', {
-      callbackUrl: `${window.location.origin}/#`,
-    });
+    setVenmo(true);
+    signIn('email');
   };
 
   const isIos = () => {
@@ -613,7 +598,14 @@ const Home = ({ darkMode, setDarkMode }) => {
                   Charge your friends on Venmo, with easy dinner splitting and
                   automated monthly requests.
                 </Caption>
-                <Button onClick={handleApple}>
+                <Button onClick={handleVenmo}>
+                  <VenmoButtonIcon />
+                  Continue with Venmo
+                  {/* <Svg viewBox="0 0 50 50">
+                    <Circle cx="25" cy="25" r="20"></Circle>
+                  </Svg> */}
+                </Button>
+                {/* <Button onClick={handleApple}>
                   <AppleIcon />
                   Sign In with Apple
                   {apple ? (
@@ -634,7 +626,7 @@ const Home = ({ darkMode, setDarkMode }) => {
                   ) : (
                     <Empty />
                   )}
-                </Button>
+                </Button> */}
               </Hero>
             </Column>
             <Column>
@@ -693,7 +685,7 @@ const Home = ({ darkMode, setDarkMode }) => {
         <WrapTitleLogo>
           <TitleLogo />
         </WrapTitleLogo>
-        <Button onClick={handleApple}>
+        {/* <Button onClick={handleApple}>
           <AppleIcon />
           Continue with Apple
           {apple ? (
@@ -714,7 +706,7 @@ const Home = ({ darkMode, setDarkMode }) => {
           ) : (
             <Empty />
           )}
-        </Button>
+        </Button> */}
       </Content>
     );
   }

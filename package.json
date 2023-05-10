@@ -1,16 +1,19 @@
 {
-  "name": "nextjs",
-  "version": "0.1.0",
+  "name": "poool-party",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "db": "pscale org switch guymargalit && pscale connect poool-party main --port 3309",
+    "db:push": "npx prisma db push",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.3.0",
-    "@prisma/client": "^3.3.0",
+    "@next-auth/prisma-adapter": "^1.0.6",
+    "@prisma/client": "^4.13.0",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "browser-image-compression": "^1.0.15",
     "crypto-js": "^4.1.1",
@@ -21,22 +24,23 @@
     "gray-matter": "^4.0.3",
     "ioredis": "^4.27.9",
     "moment": "^2.29.1",
-    "next": "^11.1.2",
-    "next-auth": "^3.29.0",
-    "next-pwa": "^5.3.1",
+    "next": "^13.4.1",
+    "next-auth": "^4.22.1",
+    "next-pwa": "^5.6.0",
     "next-s3-upload": "^0.1.7",
+    "nodemailer": "^6.9.1",
     "pusher": "^5.0.0",
     "pusher-js": "^7.0.3",
-    "react": "^17.0.2",
-    "react-confetti": "^6.0.1",
+    "react": "^18.2.0",
+    "react-confetti": "^6.1.0",
     "react-currency-input-field": "^3.5.1",
-    "react-dom": "^17.0.2",
-    "react-loading-skeleton": "^2.2.0",
+    "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.3.1",
     "react-use": "^17.3.1",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
-    "styled-components": "^5.3.1",
-    "swr": "^1.0.0",
+    "styled-components": "^6.0.0-rc.1",
+    "swr": "^2.1.5",
     "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
@@ -44,6 +48,6 @@
     "eslint-config-next": "^11.1.2",
     "eslint-config-prettier": "^8.3.0",
     "prettier": "2.3.2",
-    "prisma": "^3.3.0"
+    "prisma": "^4.13.0"
   }
 }
