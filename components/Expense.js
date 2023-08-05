@@ -891,12 +891,11 @@ const Expense = ({ pool, expense, setExpense, close }) => {
 
   const deleteDraft = async () => {
     if (expense?.id) {
-      close(
-        fetch(`/api/expenses/${expense?.id}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-        })
-      );
+      await fetch(`/api/expenses/${expense?.id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      close();
     }
   };
 
