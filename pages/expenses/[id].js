@@ -332,6 +332,13 @@ const Area = styled.div`
   user-select: none;
 `;
 
+const DeleteWrapper = styled.div`
+  display: flex;
+  position: relative;
+  font-size: 28px;
+  margin-right: 15px;
+`;
+
 const CheckBoxWrapper = styled.div`
   display: flex;
   position: relative;
@@ -447,6 +454,17 @@ const Expense = (props) => {
     setActive(expense?.active);
   }, [expense?.active]);
 
+  const deleteExpense = async () => {
+    const response = await fetch(`/api/expenses/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      Router.push('/dashboard');
+    }
+  };
+
   const toggleActive = async () => {
     setActive(!active);
     const body = {
@@ -468,6 +486,7 @@ const Expense = (props) => {
         ) : (
           <Title>{expense?.name}</Title>
         )}
+        <DeleteWrapper onClick={deleteExpense}>🗑️</DeleteWrapper>
         {expense?.interval && expense?.venmo?.id === props?.user?.venmo?.id ? (
           <CheckBoxWrapper>
             <CheckBox
