@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Router from 'next/router';
 import { useRouter } from 'next/router';
 import {
@@ -9,9 +9,8 @@ import {
   IconPlus,
   IconPopper,
   IconRightChevron,
-  IconSettings,
+  IconTrash,
 } from '../../icons';
-import currency from 'currency.js';
 import Skeleton from 'react-loading-skeleton';
 import moment from 'moment';
 
@@ -32,7 +31,7 @@ const Title = styled.div`
   color: ${({ theme }) => theme.text.primary};
   font-size: 24px;
   line-height: 24px;
-  width: 50%;
+  flex-grow: 1;
   @media (max-width: 675px) {
     font-size: 20px;
   }
@@ -95,78 +94,10 @@ const Plus = styled(IconPlus)`
   transition: all 0.25s ease 0s;
 `;
 
-const WrapPlus = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  border: 1px solid #555;
-  cursor: pointer;
-  @media (hover: hover) and (pointer: fine) {
-    :hover {
-      background: ${({ theme }) => theme.colors.purple};
-      border: 2px solid ${({ theme }) => theme.colors.purple};
-    }
-    :hover ${Plus} {
-      fill: ${({ theme }) => theme.colors.white};
-    }
-  }
-  :active {
-    background: ${({ theme }) => theme.colors.purple};
-    border: 2px solid ${({ theme }) => theme.colors.purple};
-  }
-  :active ${Plus} {
-    fill: ${({ theme }) => theme.colors.white};
-  }
-  transition: all 0.25s ease 0s;
-`;
-
 const Section = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
-
-const List = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 0 0 10px;
-  overflow-x: auto;
-  padding: 0 35px;
-  @media (max-width: 675px) {
-    padding: 0 20px;
-  }
-`;
-
-const WrapAvatar = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 15px;
-`;
-
-const Name = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  font-size: 12px;
-  color: #555;
-  margin: 5px 0 0;
-`;
-
-const Avatar = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-`;
-
-const Popper = styled(IconPopper)`
-  width: 20px;
-  margin-left: 6px;
-  margin-bottom: 2px;
-  transition: all 0.25s ease 0s;
 `;
 
 const Items = styled.div`
@@ -335,8 +266,23 @@ const Area = styled.div`
 const DeleteWrapper = styled.div`
   display: flex;
   position: relative;
-  font-size: 28px;
   margin-right: 15px;
+`;
+
+const Trash = styled(IconTrash)`
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  stroke: ${({ theme }) => theme.text.primary};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      fill: ${({ theme }) => theme.colors.purple};
+    }
+  }
+  :active {
+    fill: ${({ theme }) => theme.colors.purple};
+  }
 `;
 
 const CheckBoxWrapper = styled.div`
@@ -457,7 +403,6 @@ const Expense = (props) => {
   const deleteExpense = async () => {
     const response = await fetch(`/api/expenses/${id}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
     });
 
     if (response.ok) {
@@ -486,7 +431,9 @@ const Expense = (props) => {
         ) : (
           <Title>{expense?.name}</Title>
         )}
-        <DeleteWrapper onClick={deleteExpense}>🗑️</DeleteWrapper>
+        <DeleteWrapper>
+          <Trash onClick={deleteExpense} />
+        </DeleteWrapper>
         {expense?.interval && expense?.venmo?.id === props?.user?.venmo?.id ? (
           <CheckBoxWrapper>
             <CheckBox
