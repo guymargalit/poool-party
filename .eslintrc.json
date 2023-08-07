@@ -15,6 +15,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "plugins": ["react"],
   "rules": {
     "react-hooks/exhaustive-deps":"off",
     "react/no-unescaped-entities": "off",
