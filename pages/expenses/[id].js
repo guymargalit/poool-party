@@ -79,6 +79,108 @@ const LeftChevron = styled(IconLeftChevron)`
   }
 `;
 
+const WrapDelete = styled.div`
+  visibility: ${({ modal }) => (modal ? 'visible' : 'hidden')};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: ${({ modal }) =>
+    modal ? ' rgba(0, 0, 0, 0.4)' : ' rgba(0, 0, 0, 0);'};
+  transition: all 0.25s ease 0s;
+`;
+
+const Delete = styled.div`
+  position: fixed;
+  display: ${({ modal }) => (modal ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+  padding: 5px 30px;
+  background-color: ${({ theme }) => theme.bg.content};
+  border-radius: 18px;
+  height: 100px;
+  transition: all 0.1s ease 0s;
+`;
+
+const DeleteTitle = styled.div`
+  width: 100%;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text.tertiary};
+  text-align: center;
+  font-size: 16px;
+  margin: 10px 0 20px;
+`;
+
+const WrapButtons = styled.div`
+  display: flex;
+`;
+
+const CancelButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 75px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.purple};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #042759;
+    }
+  }
+  :active {
+    background-color: #042759;
+  }
+`;
+
+const DeleteButton = styled.div`
+  display: flex;
+  text-align: center;
+  width: 80px;
+  height: 30px;
+  padding-bottom: 2px;
+  margin-right: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 1.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background-color: ${({ theme }) => theme.colors.error};
+  transition: all 0.25s ease 0s;
+  @media (hover: hover) and (pointer: fine) {
+    :hover {
+      background-color: #d1435b;
+    }
+  }
+  :active {
+    background-color: #d1435b;
+  }
+`;
+
 const Settings = styled(IconEmpty)`
   width: 28px;
   height: 28px;
@@ -379,6 +481,7 @@ const Expense = (props) => {
   const [expense, setExpense] = useState(props?.expense);
   const [active, setActive] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   const getExpense = async () => {
     setLoading(true);
@@ -401,7 +504,7 @@ const Expense = (props) => {
   }, [expense?.active]);
 
   const deleteExpense = async () => {
-    const response = await fetch(`/api/expenses/${id}`, {
+    const response = await fetch(`/api/expenses/${expense?.id}`, {
       method: 'DELETE',
     });
 
@@ -424,6 +527,17 @@ const Expense = (props) => {
 
   return (
     <Fragment>
+      <WrapDelete onClick={() => setDeleting(false)} modal={deleting}>
+        <Delete modal={deleting}>
+          <DeleteTitle>Delete Expense?</DeleteTitle>
+          <WrapButtons>
+            <CancelButton onClick={() => setDeleting(false)}>
+              Cancel
+            </CancelButton>
+            <DeleteButton onClick={deleteExpense}>Delete</DeleteButton>
+          </WrapButtons>
+        </Delete>
+      </WrapDelete>
       <Header>
         <LeftChevron onClick={() => Router.back()} />
         {loading ? (
@@ -432,7 +546,7 @@ const Expense = (props) => {
           <Title>{expense?.name}</Title>
         )}
         <DeleteWrapper>
-          <Trash onClick={deleteExpense} />
+          <Trash onClick={() => setDeleting(true)} />
         </DeleteWrapper>
         {expense?.interval && expense?.venmo?.id === props?.user?.venmo?.id ? (
           <CheckBoxWrapper>
