@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
   skipWaiting: true,
 });
 
-module.exports = withPWA({
+const nextConfig = withPWA({
   images: {
     domains: [`${process.env.S3_UPLOAD_BUCKET}.s3.amazonaws.com`],
   },
@@ -13,3 +13,5 @@ module.exports = withPWA({
     styledComponents: true,
   },
 });
+
+module.exports = nextConfig;
