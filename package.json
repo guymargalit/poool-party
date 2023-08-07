@@ -17,7 +17,7 @@
     "currency.js": "^2.0.4",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-react": "^7.33.1",
-    "file-type": "^18.5.0",
+    "file-type": "^16.5.3",
     "gray-matter": "^4.0.3",
     "ioredis": "^5.3.2",
     "moment": "^2.29.4",
