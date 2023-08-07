@@ -11,4 +11,7 @@ module.exports = withPWA({
   images: {
     domains: [`${process.env.S3_UPLOAD_BUCKET}.s3.amazonaws.com`],
   },
+  compiler: {
+    styledComponents: true,
+  },
 });
