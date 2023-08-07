@@ -504,8 +504,9 @@ const Expense = (props) => {
   }, [expense?.active]);
 
   const deleteExpense = async () => {
-    const response = await fetch(`/api/expenses/${expense?.id}`, {
-      method: 'DELETE',
+    const response = await fetch(`/api/expenses/${expense?.id}/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     });
 
     if (response.ok) {
