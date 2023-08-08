@@ -508,8 +508,9 @@ const Expense = (props) => {
       method: 'DELETE',
     });
 
-    if (response.ok) {
-      Router.push('/dashboard');
+    // TODO: If this works, next try `Router.back()` without the outer condition
+    if (response.ok && typeof window !== 'undefined') {
+      history.back();
     }
   };
 
