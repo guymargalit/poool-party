@@ -379,11 +379,11 @@ const Trash = styled(IconTrash)`
   transition: all 0.25s ease 0s;
   @media (hover: hover) and (pointer: fine) {
     :hover {
-      fill: ${({ theme }) => theme.colors.purple};
+      stroke: ${({ theme }) => theme.colors.purple};
     }
   }
   :active {
-    fill: ${({ theme }) => theme.colors.purple};
+    stroke: ${({ theme }) => theme.colors.purple};
   }
 `;
 
@@ -504,9 +504,8 @@ const Expense = (props) => {
   }, [expense?.active]);
 
   const deleteExpense = async () => {
-    const response = await fetch(`/api/expenses/${expense?.id}/delete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch(`/api/expenses/${expense?.id}`, {
+      method: 'DELETE',
     });
 
     if (response.ok) {
