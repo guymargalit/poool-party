@@ -44,11 +44,13 @@ export default async function handler(req, res) {
       },
     });
 
-    await prisma.receipt.delete({
-      where: {
-        id: receipt?.id,
-      },
-    });
+    if (receipt?.id) {
+      await prisma.receipt.delete({
+        where: {
+          id: receipt?.id,
+        },
+      });
+    }
 
     await prisma.expense.delete({
       where: {
