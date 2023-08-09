@@ -2,7 +2,7 @@ import { getSession } from 'next-auth/client';
 import prisma from '../../../../lib/prisma';
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     const session = await getSession({ req });
     if (!session) {
       return res.status(403).end();
