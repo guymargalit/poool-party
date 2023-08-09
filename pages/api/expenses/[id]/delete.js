@@ -52,6 +52,13 @@ export default async function handler(req, res) {
       });
     }
 
+    // Delete all expense users
+    await prisma.expenseUser.deleteMany({
+      where: {
+        expenseId: expense?.id,
+      },
+    });
+
     await prisma.expense.delete({
       where: {
         id: Number(req?.query?.id) || -1,
