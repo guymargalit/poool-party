@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.3.0",
-    "@prisma/client": "^3.3.0",
+    "@prisma/client": "^3.13.0",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "browser-image-compression": "^1.0.15",
     "crypto-js": "^4.1.1",
