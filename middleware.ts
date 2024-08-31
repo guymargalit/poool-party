@@ -5,4 +5,4 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
