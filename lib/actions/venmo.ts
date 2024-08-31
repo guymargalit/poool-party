@@ -4,8 +4,6 @@ import { Status } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { decrypt } from "@/lib/utils";
 
-export const runtime = "edge";
-
 export async function sendVenmoRequest({
   amount,
   note,
