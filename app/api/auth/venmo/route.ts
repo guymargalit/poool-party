@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { encrypt } from "@/lib/utils";
 import { NextRequest } from "next/server";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session) {
