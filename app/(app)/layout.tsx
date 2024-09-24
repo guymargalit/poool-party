@@ -25,8 +25,6 @@ interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-export const runtime = "edge";
-
 export default async function AppLayout({ children }: AppLayoutProps) {
   const user = await getUser();
 

@@ -5,8 +5,6 @@ import { decrypt } from "@/lib/utils";
 import { Status } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session) {

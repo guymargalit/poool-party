@@ -33,5 +33,3 @@ export default function RootLayout({ children }: RootLayoutProps) {
     </html>
   );
 }
-
-export const runtime = "edge";
